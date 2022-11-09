@@ -25,5 +25,13 @@ module.exports = {
     },
   },
   'rules': {
+    'max-len': [
+      'error',
+      {
+        'ignoreUrls': true,
+        'ignoreStrings': true,
+        'ignoreTemplateLiterals': true,
+      },
+    ],
   },
 };
