@@ -1,6 +1,7 @@
 import { IDescribe } from '../helpers';
+import { BotCommands } from './bot-commands.enum';
 
-class Command implements IDescribe {
+class DescribedCommand implements IDescribe {
   name: string = '';
   description: string = '';
 
@@ -10,27 +11,27 @@ class Command implements IDescribe {
   }
 }
 
-Command.prototype.toString = function featureToString() {
+DescribedCommand.prototype.toString = function featureToString() {
   return `${this.name} — ${this.description}`;
 };
 
-const BotCommands: Command[] = [
-  new Command(
-    '/start',
+const describedCommands: DescribedCommand[] = [
+  new DescribedCommand(
+    BotCommands.START,
     'The basic command that you cannot avoid',
   ),
-  new Command(
-    '/help',
+  new DescribedCommand(
+    BotCommands.HELP,
     'Shows a list of available commands',
   ),
 ];
 
-const commandsToString = (commands: Command[]): string => {
+const commandsToString = (commands: DescribedCommand[]): string => {
   const stringifiedCommands: string[] =
     commands.map((command) => `\n${command.toString()}`);
   return stringifiedCommands.join('\n');
 };
 
-const commandsList = commandsToString(BotCommands);
+const commandsList = commandsToString(describedCommands);
 
 export { commandsList };
