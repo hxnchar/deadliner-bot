@@ -8,6 +8,9 @@ class BotService {
     return sendMessage(ctx, BotReplies.START);
   }
 
+  help(ctx: Context) {
+    return sendMessage(ctx, BotReplies.HELP);
+  }
 }
 
 export { BotService };

@@ -6,6 +6,7 @@ const bot = new Telegraf(BOT_CONFIG.token);
 const botService = new BotService();
 
 bot.start((ctx) => botService.start(ctx));
+bot.help((ctx) => botService.help(ctx));
 bot.launch();
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
