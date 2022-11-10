@@ -1,4 +1,6 @@
-class Feature {
+import { IDescribe } from '../helpers';
+
+class Feature implements IDescribe {
   name: string = '';
   description: string = '';
   hint: string | undefined;
