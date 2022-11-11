@@ -33,5 +33,8 @@ module.exports = {
         'ignoreTemplateLiterals': true,
       },
     ],
+    'class-methods-use-this': 0,
+    'import/no-unresolved': 0,
+    'no-unused-vars': 0,
   },
 };
