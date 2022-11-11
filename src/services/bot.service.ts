@@ -1,6 +1,6 @@
 import { Context } from 'telegraf';
 import { sendMessage } from '../helpers';
-import { BotReplies } from '../constants';
+import { BotReplies, NewSubjectKeyboard } from '../constants';
 
 class BotService {
 
@@ -10,6 +10,10 @@ class BotService {
 
   help(ctx: Context) {
     return sendMessage(ctx, BotReplies.HELP);
+  }
+
+  newSubject(ctx: Context) {
+    return sendMessage(ctx, BotReplies.NEW_SUBJECT, NewSubjectKeyboard);
   }
 }
 
