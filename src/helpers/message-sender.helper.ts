@@ -1,5 +1,5 @@
 import { Context } from 'telegraf';
-import { escapeMessage } from './';
+import escapeMessage from './message-escaper.helper';
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 
 const sendMessage =

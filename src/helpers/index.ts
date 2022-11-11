@@ -1,3 +1,3 @@
-export { sendMessage } from './message-sender.helper';
-export { default as escapeMessage } from './message-escaper.helper';
-export { IDescribe } from './describe.interface';
+export * from './message-sender.helper';
+export * from './message-escaper.helper';
+export * from './describe.interface';

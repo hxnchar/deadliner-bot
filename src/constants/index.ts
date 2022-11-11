@@ -1,5 +1,5 @@
 export * from './bot-replies.constant';
 export * from './inline-keyboards';
-export { featuresList } from './bot-features.constant';
-export { commandsList } from './described-commands.constant';
-export { BotCommands } from './bot-commands.enum';
+export * from './bot-features.constant';
+export * from './described-commands.constant';
+export * from './bot-commands.enum';
