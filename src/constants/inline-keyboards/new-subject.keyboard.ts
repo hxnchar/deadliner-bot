@@ -1,34 +1,39 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
+import { CALLBACK_DATA } from './callback-data.enum';
 
 export const NewSubjectKeyboard: InlineKeyboardButton[][] = [
   [
     {
       'text': '✏️ Name',
-      'callback_data': 'Button 1',
+      'callback_data': CALLBACK_DATA.SUBJECT_CHANGE_NAME,
     },
   ],
   [
     {
       'text': '🟢 General',
-      'callback_data': 'Button 1',
+      'callback_data': CALLBACK_DATA.SUBJECT_MAKE_GENERAL,
     },
     {
       'text': '🟡 Non-general',
-      'callback_data': 'Button 2',
+      'callback_data': CALLBACK_DATA.SUBJECT_MAKE_NON_GENERAL,
     },
   ],
   [
     {
       'text': '↩️ Undo',
-      'callback_data': 'Button 1',
+      'callback_data': CALLBACK_DATA.SUBJECT_UNDO,
     },
     {
       'text': '🛑 Discard',
-      'callback_data': 'Button 2',
+      'callback_data': CALLBACK_DATA.SUBJECT_DISCARD,
+    },
+    {
+      'text': '✅ Save',
+      'callback_data': CALLBACK_DATA.SUBJECT_SAVE,
     },
     {
       'text': '↪️ Redo',
-      'callback_data': 'Button 2',
+      'callback_data': CALLBACK_DATA.SUBJECT_REDO,
     },
   ],
 ];

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 interface IBotConfig {
-  token: string
+  token: string;
 }
 
 const BOT_CONFIG: IBotConfig = {

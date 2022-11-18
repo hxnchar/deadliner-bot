@@ -1,8 +1,10 @@
-const escapeMessage = (message: string) => message
-  .replaceAll('>', '\\>')
-  .replaceAll('=', '\\=')
-  .replaceAll('.', '\\.')
-  .replaceAll('(', '\\(')
-  .replaceAll(')', '\\)');
+const escapeMessage = (message: string) =>
+  message
+    .replaceAll('>', '\\>')
+    .replaceAll('=', '\\=')
+    .replaceAll('.', '\\.')
+    .replaceAll('(', '\\(')
+    .replaceAll(')', '\\)')
+    .replaceAll('-', '\\-');
 
-export default escapeMessage;
+export { escapeMessage };

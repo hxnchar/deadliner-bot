@@ -1,18 +1,18 @@
-import { IDescribe } from '../helpers';
+import { BotCommand } from 'telegraf/typings/core/types/typegram';
 import { BotCommands } from './bot-commands.enum';
 
-class DescribedCommand implements IDescribe {
-  name: string = '';
+class DescribedCommand {
+  command: string = '';
   description: string = '';
 
-  constructor(name: string, description: string) {
-    this.name = name;
+  constructor(command: string, description: string) {
+    this.command = command;
     this.description = description;
   }
 }
 
 DescribedCommand.prototype.toString = function featureToString() {
-  return `${this.name} — ${this.description}`;
+  return `${this.command} — ${this.description}`;
 };
 
 const describedCommands: DescribedCommand[] = [
@@ -20,18 +20,28 @@ const describedCommands: DescribedCommand[] = [
     BotCommands.START,
     'The basic command that you cannot avoid',
   ),
-  new DescribedCommand(
-    BotCommands.HELP,
-    'Shows a list of available commands',
-  ),
+  new DescribedCommand(BotCommands.NEW_SUBJECT, 'Creates a new subject'),
+  new DescribedCommand(BotCommands.HELP, 'Shows a list of available commands'),
 ];
 
 const commandsToString = (commands: DescribedCommand[]): string => {
-  const stringifiedCommands: string[] =
-    commands.map((command) => `\n${command.toString()}`);
+  const stringifiedCommands: string[] = commands.map(
+    (command) => `\n${command.toString()}`,
+  );
   return stringifiedCommands.join('\n');
 };
 
-const commandsList = commandsToString(describedCommands);
+const commandsToList = (commands: DescribedCommand[]): BotCommand[] => {
+  const commandsList: BotCommand[] = [];
+  commands.forEach((command) =>
+    commandsList.push({
+      ...command,
+    }),
+  );
+  return commandsList;
+};
 
-export { commandsList };
+const commandsString = commandsToString(describedCommands);
+const commandsList = commandsToList(describedCommands);
+
+export { commandsString, commandsList };

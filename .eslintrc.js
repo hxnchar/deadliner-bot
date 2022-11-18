@@ -10,6 +10,7 @@ module.exports = {
     'eslint:recommended',
     'metarhia',
     'plugin:sonarjs/recommended',
+    'prettier',
   ],
   'overrides': [
   ],
@@ -36,5 +37,6 @@ module.exports = {
     'class-methods-use-this': 0,
     'import/no-unresolved': 0,
     'no-unused-vars': 0,
+    'new-cap': 0,
   },
 };
