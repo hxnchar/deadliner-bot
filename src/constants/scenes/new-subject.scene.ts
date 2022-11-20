@@ -25,8 +25,8 @@ newSubjectScene.enter(async (ctx) => {
   ctx.session.chatID = sentMessage.chat.id;
 
   ctx.scene.session.subjectNameInput = false;
-  console.log(ctx.session.subject);
-  ctx.session.subject = new Subject();
+  ctx.session.subject =
+    ctx.session.subject === undefined ? new Subject() : ctx.session.subject;
 });
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_CHANGE_NAME, async (ctx) => {
@@ -95,8 +95,11 @@ newSubjectScene.on('text',  (ctx) => {
 
 newSubjectScene.leave(async (ctx) => {
   if (ctx.session.messageID) {
-    console.log(ctx.session.subject);
-    deleteMessage(ctx, ctx.session.messageID);
+    try {
+      deleteMessage(ctx, ctx.session.messageID);
+    } catch (e: any) {
+      ctx.answerCbQuery(`${e.message}`);
+    }
   }
 })
 
