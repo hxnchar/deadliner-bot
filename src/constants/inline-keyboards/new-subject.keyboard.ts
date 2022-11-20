@@ -24,16 +24,22 @@ export const NewSubjectKeyboard: InlineKeyboardButton[][] = [
       'callback_data': CALLBACK_DATA.SUBJECT_UNDO,
     },
     {
+      'text': '🔄 Reset',
+      'callback_data': CALLBACK_DATA.SUBJECT_RESET,
+    },
+    {
+      'text': '↪️ Redo',
+      'callback_data': CALLBACK_DATA.SUBJECT_REDO,
+    },
+  ],
+  [
+    {
       'text': '🛑 Discard',
       'callback_data': CALLBACK_DATA.SUBJECT_DISCARD,
     },
     {
       'text': '✅ Save',
       'callback_data': CALLBACK_DATA.SUBJECT_SAVE,
-    },
-    {
-      'text': '↪️ Redo',
-      'callback_data': CALLBACK_DATA.SUBJECT_REDO,
     },
   ],
 ];

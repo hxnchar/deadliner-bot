@@ -1,5 +1,5 @@
 export enum BotCommands {
   START = '/start',
-  NEW_SUBJECT = '/new_subject',
+  NEW_SUBJECT = '/newsubject',
   HELP = '/help',
 }
