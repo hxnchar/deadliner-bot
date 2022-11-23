@@ -1,10 +1,11 @@
 import { Scenes } from 'telegraf';
 import { BotContext, sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMessage } from '../../helpers';
-import { BotReplies } from '../bot-replies.constant';
-import { SceneIDs } from './scene-ids.enum';
-import { NewSubjectKeyboard, CALLBACK_DATA } from '../inline-keyboards';
+import { BotReplies } from '../../constants';
+import { SceneIDs } from '../../constants/enums/scene-ids.enum';
+import { NewSubjectKeyboard } from '../../constants/inline-keyboards';
 import { Subject } from '../../services';
 import { BotCommands } from '../../constants';
+import { CALLBACK_DATA } from '../../constants/enums';
 
 const updateMessage = (ctx: BotContext) => {
   editMessageByID(

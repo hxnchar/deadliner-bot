@@ -1,5 +1,5 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
-import { CALLBACK_DATA } from './callback-data.enum';
+import { CALLBACK_DATA } from '../enums/callback-data.enum';
 
 export const NotificationKeyboard: InlineKeyboardButton[][] = [
   [

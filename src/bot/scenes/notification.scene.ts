@@ -1,12 +1,13 @@
 import { Scenes } from 'telegraf';
 import { parse } from 'date-fns';
 import { BotContext, sendMessage, editMessageByID, messageToBin, cleanMessagesBin } from '../../helpers';
-import { BotReplies } from '../bot-replies.constant';
-import { SceneIDs } from './scene-ids.enum';
-import { NotificationKeyboard, CALLBACK_DATA } from '../inline-keyboards';
+import { BotReplies } from '../../constants';
+import { SceneIDs } from '../../constants/enums/scene-ids.enum';
+import { NotificationKeyboard } from '../../constants/inline-keyboards';
 import { Notification } from '../../services';
-import { BotCommands } from '../bot-commands.enum';
-import { DateTimeCommonFormat } from '../dateTime.format';
+import { BotCommands } from '../../constants/enums/bot-commands.enum';
+import { DateTimeCommonFormat } from '../../constants/dateTime.format';
+import { CALLBACK_DATA } from '../../constants/enums';
 
 const resetFlags = (ctx: BotContext) => {
   ctx.scene.session.notificationHeaderInput = false;

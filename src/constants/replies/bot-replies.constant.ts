@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
-import { Subject, Notification } from '../services';
+import { Subject, Notification } from '../../services';
 import { featuresList } from './bot-features.constant';
-import { DateTimeLongFormat } from './dateTime.format';
+import { DateTimeLongFormat } from '../dateTime.format';
 import { commandsString } from './described-commands.constant';
 
 const BotReplies = {

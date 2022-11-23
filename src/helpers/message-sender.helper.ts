@@ -1,4 +1,4 @@
-import { BotContext } from './bot-context.interface';
+import { BotContext } from '../bot/enviroment/bot-context.interface';
 import { escapeMessage } from './message-escaper.helper';
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 
