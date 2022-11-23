@@ -9,7 +9,7 @@ const BotReplies = {
   NEW_SUBJECT: (subject: Subject = new Subject()) =>
     `You're creating a new subject. Please, provide the following details:\n\n${subject.toString()}`,
   NOTIFICATION: (notification: Notification = new Notification()) =>
-    `You are about to create a new notification.\nIt will be sent at *${format(notification.date || Date.now(), DateTimeLongFormat)}*\nPreview:\n\n${notification.toString()}`,
+    `You are about to create a new notification.\nIt will be sent on *${format(notification.date || Date.now(), DateTimeLongFormat)}*\nPreview:\n\n${notification.toString()}`,
   NEW_SUBJECT_SAVE: 'Subject was saved.',
   NEW_SUBJECT_DISCARD:
     'Creation was canceled. It will be saved to the local storage till next restart.',

@@ -1,6 +1,6 @@
 import { Telegraf, Scenes, session } from 'telegraf';
 import { BOT_CONFIG } from './configs';
-import { BotCommands, commandsList, newSubjectScene, notificationScene, SceneIDs } from './constants';
+import { BotCommands, newSubjectScene, notificationScene, SceneIDs } from './constants';
 import { BotService } from './services';
 import { BotContext } from './helpers';
 
@@ -12,9 +12,8 @@ const stage = new Scenes.Stage<BotContext>(
 bot.use(session());
 bot.use(stage.middleware());
 
-bot.telegram.setMyCommands(commandsList);
-
-const botService = new BotService();
+const botService = new BotService(bot);
+botService.setup();
 
 bot.start((ctx) => botService.start(ctx));
 bot.help((ctx) => botService.help(ctx));
