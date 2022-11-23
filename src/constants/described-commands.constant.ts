@@ -21,6 +21,7 @@ const describedCommands: DescribedCommand[] = [
     'The basic command that you cannot avoid',
   ),
   new DescribedCommand(BotCommands.NEW_SUBJECT, 'Creates a new subject'),
+  new DescribedCommand(BotCommands.NOTIFICATION, 'Sends a notification to your classmates'),
   new DescribedCommand(BotCommands.HELP, 'Shows a list of available commands'),
 ];
 

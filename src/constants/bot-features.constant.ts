@@ -19,6 +19,7 @@ const BotFeatures: Feature[] = [
   new Feature(
     'Subscriptions🤩',
     'Now every user can subscribe to the subjects he needs. This means that now everyone will see only his personal list of deadlines',
+    'Also, implementing subscriptions means that everyone can see his personalized schedule. However, you need to subscribe to all of your subjects first',
   ),
   new Feature(
     'Improved UI💻',

@@ -14,22 +14,29 @@ const updateMessage = (ctx: BotContext) => {
   );
 };
 
+const resetFlags = (ctx: BotContext) => {
+  ctx.scene.session.subjectNameInput = false;
+}
+
 const newSubjectScene = new Scenes.BaseScene<BotContext>(SceneIDs.NEW_SUBJECT);
 
 newSubjectScene.enter(async (ctx) => {
+  resetFlags(ctx);
+
   const sentMessage =
     await sendMessage(ctx,
       BotReplies.NEW_SUBJECT(ctx.session.subject),
       NewSubjectKeyboard);
-  ctx.session.messageID = sentMessage.message_id;
-  ctx.session.chatID = sentMessage.chat.id;
 
-  ctx.scene.session.subjectNameInput = false;
   ctx.session.subject =
     ctx.session.subject === undefined ? new Subject() : ctx.session.subject;
+
+  ctx.session.messageID = sentMessage.message_id;
+  ctx.session.chatID = sentMessage.chat.id;
 });
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_CHANGE_NAME, async (ctx) => {
+  resetFlags(ctx);
   ctx.scene.session.subjectNameInput = true;
   const sentMessage = await sendMessage(ctx, 'Please, provide a subject name');
   messageToBin(ctx, sentMessage.message_id);
@@ -61,8 +68,9 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_UNDO, (ctx) => {
 });
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_RESET, (ctx) => {
+  resetFlags(ctx);
+  ctx.session.subject = new Subject();
   try {
-    ctx.session.subject = new Subject();
     updateMessage(ctx);
   } catch (e: any) {
     ctx.answerCbQuery(`${e.message}`);
