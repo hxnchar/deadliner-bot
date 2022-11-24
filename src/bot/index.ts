@@ -1,8 +1,9 @@
 import { Telegraf, Scenes, session } from 'telegraf';
-import { BOT_CONFIG } from '../configs';
-import { BotCommands, newSubjectScene, notificationScene, SceneIDs } from '../constants';
-import { BotService } from '../services';
-import { BotContext } from '../helpers';
+import { BOT_CONFIG } from 'configs';
+import { BotCommands, SceneIDs } from '../constants';
+import { BotService } from 'services';
+import { BotContext } from 'bot/enviroment';
+import { newSubjectScene, notificationScene } from 'bot/scenes';
 
 const bot = new Telegraf<BotContext>(BOT_CONFIG.token);
 

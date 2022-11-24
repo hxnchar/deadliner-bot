@@ -1,4 +1,4 @@
-import { BotContext } from '../bot/enviroment/bot-context.interface';
+import { BotContext } from 'bot/enviroment';
 
 const messageToBin = (ctx: BotContext, messageID?: number) => {
   const messageToDeleteID = messageID || ctx.message?.message_id;

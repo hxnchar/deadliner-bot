@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
-import { DateFormat, DateTimeLongFormat, TimeFormat } from '../../constants';
-import { Subject } from "../subject";
+import { DateTimeLongFormat } from '../../constants';
+import { Subject } from 'services';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 

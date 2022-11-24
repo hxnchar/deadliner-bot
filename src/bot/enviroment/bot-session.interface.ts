@@ -1,5 +1,5 @@
 import { Scenes } from 'telegraf';
-import { Subject, Notification } from '../services';
+import { Subject, Notification } from 'services';
 
 interface SceneSession extends Scenes.SceneSessionData {
   subjectNameInput: boolean;

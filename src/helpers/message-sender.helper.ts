@@ -1,6 +1,6 @@
-import { BotContext } from '../bot/enviroment/bot-context.interface';
-import { escapeMessage } from './message-escaper.helper';
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
+import { BotContext } from 'bot/enviroment';
+import { escapeMessage } from './message-escaper.helper';
 
 const sendMessage = (
   ctx: BotContext,
