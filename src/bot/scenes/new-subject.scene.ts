@@ -1,8 +1,8 @@
 import { Scenes } from 'telegraf';
 import { sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMessage } from 'helpers';
-import { BotReplies, SceneIDs, NewSubjectKeyboard, BotCommands, CALLBACK_DATA } from '../../constants';
+import { BotReplies, SceneIDs, NewSubjectKeyboard, BotCommands, CALLBACK_DATA } from 'consts';
 import { Subject } from 'services';
-import { BotContext } from 'bot/enviroment';
+import { BotContext } from 'bot';
 
 const updateMessage = (ctx: BotContext) => {
   editMessageByID(

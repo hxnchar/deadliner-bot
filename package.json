@@ -2,10 +2,10 @@
   "name": "project-starter",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/bot/bot.ts",
   "scripts": {
     "start": "npm run build && node build/index.js",
-    "start:dev": "nodemon --watch 'src/**/*' --ext 'ts,js' --exec 'ts-node ./src/bot/index.ts'",
+    "start:dev": "nodemon --watch 'src/**/*' --ext 'ts,js' --exec 'ts-node ./src/bot/bot.ts'",
     "build": "rimraf ./build && tsc",
     "eslint": "eslint src/**/*.ts --ignore-path .gitignore",
     "eslint:fix": "eslint src/**/*.ts --fix --ignore-path .gitignore",

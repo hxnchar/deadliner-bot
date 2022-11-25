@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf';
-import { BotContext } from 'bot/enviroment';
+import { BotContext } from 'bot';
 import { sendMessage } from 'helpers';
-import { BotReplies, commandsList } from '../constants';
+import { BotReplies, commandsList } from 'consts';
 import { Database } from 'database';
 
 class BotService {

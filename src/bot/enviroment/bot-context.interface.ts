@@ -1,5 +1,5 @@
 import { Context, Scenes } from 'telegraf';
-import { BotSession, SceneSession } from 'bot/enviroment';
+import { BotSession, SceneSession } from 'bot';
 
 interface BotContext extends Context {
   session: BotSession;
