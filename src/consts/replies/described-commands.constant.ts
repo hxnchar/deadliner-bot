@@ -1,5 +1,5 @@
 import { BotCommand } from 'telegraf/typings/core/types/typegram';
-import { BotCommands } from 'consts';
+import { BotCommands } from 'consts/enums';
 
 class DescribedCommand {
   command: string = '';
