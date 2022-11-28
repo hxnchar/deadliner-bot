@@ -1,7 +1,7 @@
 import { Scenes } from 'telegraf';
 import { parse } from 'date-fns';
 import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin } from 'helpers';
-import { BotReplies, SceneIDs, NotificationKeyboard, CALLBACK_DATA, DateTimeCommonFormat, BotCommands } from 'consts';
+import { BotReplies, SceneIDs, NotificationKeyboard, CALLBACK_DATA, DateTimeCommonFormat, BotCommands, PeekSubject } from 'consts';
 import { Notification } from 'services';
 import { BotContext } from 'bot'
 
@@ -109,6 +109,16 @@ notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
 notificationScene.action(CALLBACK_DATA.NOTIFICATION_DISCARD, (ctx) => {
   ctx.scene.leave();
 });
+
+notificationScene.action(
+  CALLBACK_DATA.NOTIFICATION_SET_SUBJECT,
+  async (ctx) => {
+    const sentMessage =
+      await sendMessage(ctx,
+        BotReplies.LINK_SUBJECT,
+        await PeekSubject());
+  }
+)
 
 notificationScene.action(CALLBACK_DATA.NOTIFICATION_UNDO, (ctx) => {
   try {

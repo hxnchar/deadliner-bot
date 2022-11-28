@@ -1,3 +1,3 @@
-export * from './bot.service';
+export * from './bot';
 export * from './subject';
 export * from './notification';

@@ -1,5 +1,5 @@
 enum DateFormat {
-  LONG = '(EEEE) dd.MM.yyyy',
+  LONG = 'EEEE dd.MM.yyyy',
   COMMON= 'dd.MM.yyyy',
 }
 

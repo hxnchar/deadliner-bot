@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts';
 import { Subject } from 'services';
+import NotificationModel from 'services/notification/notification.model';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
@@ -64,12 +65,14 @@ class Notification {
     header?: string,
     body?: string,
     date?: Date,
+    deadline?: Date,
     isRequired?: boolean,
     subject?: Subject,
     ) {
       this.header = header;
       this.body = body;
       this.date = date;
+      this.deadline = deadline;
       this.isRequired = isRequired;
       this.subject = subject;
   }
@@ -78,13 +81,45 @@ class Notification {
     return this.header === notification.header &&
       this.body === notification.body &&
       this.date === notification.date &&
+      this.deadline === notification.deadline &&
       this.isRequired === notification.isRequired &&
       this.subject === notification.subject;
+  }
+
+  convertToObject() {
+    if (typeof this.header === 'undefined') {
+      throw new Error('Please, provide header');
+    }
+    if (typeof this.body  === 'undefined') {
+      throw new Error('Please, provide body');
+    }
+    if (typeof this.date === 'undefined') {
+      throw new Error('Please, provide date');
+    }
+    if (typeof this.deadline  === 'undefined') {
+      throw new Error('Please, provide a deadline');
+    }
+    if (typeof this.isRequired === 'undefined') {
+      throw new Error('Please, provide if notification is required');
+    }
+    return {
+      header: this.header,
+      body: this.body,
+      date: this.date,
+      deadline: this.deadline,
+      isRequired: this.isRequired,
+      subject: this.subject || null,
+    };
+  }
+
+  async save() {
+    const notification = new NotificationModel(this.convertToObject());
+    await notification.save();
   }
 }
 
 Notification.prototype.toString = function notificationToString() {
-  const subject = this.subject? `*Subject:* ${this.subject}\n\n` : '';
+  const subject = this.subject? `*Subject:* ${this.subject.name}\n\n` : '';
   const required = this.isRequired ? '🔴' : '🟡';
   const formattedDeadline = this.deadline ?
    format(this.deadline, DateTimeLongFormat)

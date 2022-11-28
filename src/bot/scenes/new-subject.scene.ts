@@ -86,6 +86,15 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_REDO, (ctx) => {
   }
 });
 
+newSubjectScene.action(CALLBACK_DATA.SUBJECT_SAVE, async (ctx) => {
+  try {
+    await ctx.session.subject.save();
+    ctx.answerCbQuery('Subject was saved successfully');
+  } catch (e: any) {
+    ctx.answerCbQuery(`${e.message}`);
+  }
+});
+
 newSubjectScene.hears(BotCommands.NEW_SUBJECT, (ctx) => ctx.scene.reenter());
 
 newSubjectScene.on('text',  (ctx) => {
