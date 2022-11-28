@@ -1,2 +1,2 @@
-export * from './subject.class';
+export * from './subject.service';
 export * from './subject.model';

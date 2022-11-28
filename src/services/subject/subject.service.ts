@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import SubjectModel from 'services/subject/subject.model'
+
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
 class Subject {
