@@ -7,7 +7,7 @@ import { BotContext } from 'bot'
 
 const loadData = async (ctx: BotContext) => {
   const userID = ctx.message?.from.id;
-  const userFromDB = await User.loadFromDB(userID);
+  const userFromDB = await User.getByID(userID);
   ctx.session.user = await User.parse(userFromDB);
 }
 

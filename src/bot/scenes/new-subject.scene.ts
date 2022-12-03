@@ -1,7 +1,7 @@
 import { Scenes } from 'telegraf';
 import { sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMessage } from 'helpers';
 import { BotReplies, SceneIDs, NewSubjectKeyboard, BotCommands, CALLBACK_DATA } from 'consts';
-import { Subject } from 'services';
+import { Subject, User } from 'services';
 import { BotContext } from 'bot';
 
 const updateMessage = (ctx: BotContext) => {
@@ -88,10 +88,20 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_REDO, (ctx) => {
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_SAVE, async (ctx) => {
   try {
-    await ctx.session.subject.save();
+    const targetSubject = ctx.session.subject
+
+    await targetSubject.save();
     ctx.answerCbQuery('Subject was saved successfully');
+
+    if (targetSubject.isGeneral) {
+      await User.subscribeAll(targetSubject);
+      ctx.answerCbQuery('Subject was added to users list');
+    }
+
   } catch (e: any) {
     ctx.answerCbQuery(`${e.message}`);
+  } finally {
+    ctx.scene.leave();
   }
 });
 

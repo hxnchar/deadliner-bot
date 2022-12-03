@@ -50,23 +50,39 @@ class User {
     this._calendar = newCalendar;
   }
 
-  static loadFromDB = async (id: number | undefined): Promise<any> => {
+  static getAll = async (): Promise<any> => {
+    const users = await UserModel.find();
+    const parsedUsers = [];
+
+    for (const user of users) {
+      parsedUsers.push(await User.parse(user));
+    }
+
+    return parsedUsers;
+  }
+
+  static getByID = async (id: number | undefined): Promise<any> => {
     const userFromDB = (await UserModel.find({ id }))[0];
+
     if (!userFromDB) {
-      const newUser = await UserModel.create({
-        id,
-      })
+      const newUser = new User(id);
+      const userSubjects: Subject[] = [];
+      const generalSubjects =
+        (await Subject.getAll()).filter(subject => subject.isGeneral);
+      generalSubjects.forEach(subject => {
+        userSubjects.push(subject);
+      });
+      newUser.subjects = userSubjects;
       await newUser.save();
       return newUser;
     }
-    return userFromDB;
+
+    return this.parse(userFromDB);
   }
 
-  static async parse(object: IUser): Promise<User> {
+  static async parse(object: any): Promise<User> {
     const { id, name, subjects, calendar } = object;
-
     const user = new User(id, name);
-
     const parsedSubjects: Subject[] = [];
 
     for (const subject of subjects) {
@@ -75,8 +91,17 @@ class User {
     }
 
     user.subjects = parsedSubjects;
-    
     return user;
+  }
+
+  static async subscribeAll(subject: Subject) {
+    const users: User[] = await User.getAll();
+   
+    for (const user of users) {
+      user.subjects.push(subject);
+      await user.save();
+    }
+
   }
 
   async save() {
@@ -93,7 +118,6 @@ User.prototype.toString = function userToString() {
   //TODO set total amount of subjects by admin
   const FIXMEPLS = 3;
   const countSubjects = this.subjects.length;
-
   const generalSubjects = this.subjects.filter(subject => subject.isGeneral)
                                        .map(subject => subject.name),
         privateSubjects = this.subjects.filter(subject => !subject.isGeneral)
@@ -102,10 +126,8 @@ User.prototype.toString = function userToString() {
           : NO_SUBJECTS_MSG,
         privateSubjectsStringified = privateSubjects.length > 0 ? privateSubjects.join(',\n')
         : NO_SUBJECTS_MSG;
-
   const totalSubjectsRate = countSubjects === FIXMEPLS ? '✅'
     : countSubjects < FIXMEPLS ? '⚠️' : '🤨';
-
   return `*⚙️ Preferences*\n\n*${totalSubjectsRate} Total number of subjects:* ${countSubjects}/${FIXMEPLS}\n\n*👥 General subjects list:*\n${generalSubjectsStringified}\n\n*👤 Private subjects list:*\n${privateSubjectsStringified}`;
 };
 
