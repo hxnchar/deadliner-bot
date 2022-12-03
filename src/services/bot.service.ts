@@ -3,13 +3,14 @@ import { BotContext } from 'bot';
 import { sendMessage } from 'helpers';
 import { BotReplies, commandsList } from 'consts';
 import { Database } from 'database';
+import { DB_CONFIG } from 'configs';
 
 class BotService {
   database;
   target;
+  
   constructor(bot: Telegraf<BotContext>) {
-    const uri = process.env.DB_URI!;
-    this.database = new Database(uri);
+    this.database = new Database(DB_CONFIG.uri);
     this.target = bot;
   }
 

@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { Subject, Notification } from 'services';
+import { Subject, Notification, User } from 'services';
 import { commandsString } from 'consts/replies/described-commands.constant';
 import { featuresList } from 'consts/replies/bot-features.constant';
 import { DateTimeLongFormat } from 'consts';
@@ -12,10 +12,10 @@ const BotReplies = {
     const sendOn = notification.date ? `${format(notification.date, DateTimeLongFormat)}` : 'right now';
     return `You are about to create a new notification.\nIt will be sent ${notification.date ? 'on ' : ''}*${sendOn}*\nPreview:\n\n${notification.toString()}`;
   },
+  SETTINGS: (user: User = new User()) => user.toString(),
+  PEEK_PERSONAL: 'Pick subjects which you would like to subscribe to:',
   LINK_SUBJECT: 'Link a subject from the following list:',
   NEW_SUBJECT_SAVE: 'Subject was saved.',
-  NEW_SUBJECT_DISCARD:
-    'Creation was canceled. It will be saved to the local storage till next restart.',
   HELP: `Here is the list of avaiable commands:\n${commandsString}`,
 };
 

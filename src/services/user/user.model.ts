@@ -1,11 +1,13 @@
-import { UUID } from 'bson';
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types, Document } from 'mongoose';
+import SubjectModel from 'services/subject/subject.model';
 import { ModelName } from 'consts/enums';
+import SubjectSchema from 'services/subject/subject.schema';
 
-const User = new Schema({
-  _id: { 'type': String, 'unique': true, 'required': true },
-  name: { 'type': String, 'unique': false, 'required': true },
-  settingsID: { 'type': UUID, 'unique': true, 'required': false },
+const UserModel = new Schema({
+  id: { 'type': Number, 'unique': true, 'required': true },
+  name: { 'type': String, 'unique': false, 'required': false },
+  subjects: { 'type': [SubjectSchema], ref: SubjectModel },
+  calendar: { 'type': Types.ObjectId, 'unique': true, 'required': false },
 });
 
-export default model(ModelName.USER, User);
+export default model(ModelName.USER, UserModel)

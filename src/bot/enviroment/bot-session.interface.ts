@@ -1,5 +1,5 @@
 import { Scenes } from 'telegraf';
-import { Subject, Notification } from 'services';
+import { Subject, Notification, User } from 'services';
 
 interface SceneSession extends Scenes.SceneSessionData {
   subjectNameInput: boolean;
@@ -16,8 +16,10 @@ interface BotSession extends Scenes.SceneSession<SceneSession> {
   messageID: number | undefined;
   cleanUpMessages: number[];
 
+  subjectsFromDB: Subject[];
   subject: Subject;
   notification: Notification;
+  user: User;
 }
 
 export { BotSession, SceneSession };

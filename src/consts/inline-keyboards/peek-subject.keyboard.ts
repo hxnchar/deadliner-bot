@@ -1,5 +1,7 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
-import { Subject } from 'services/subject';
+import { BotContext } from 'bot';
+import { Subject } from 'services';
+import { CALLBACK_DATA } from 'consts/enums';
 
 const PeekSubject = async () => {
   let subjects = await Subject.getAll();
@@ -10,11 +12,37 @@ const PeekSubject = async () => {
     keyboard.push([
       {
         'text': subject.buttonText(),
-        'callback_data': `LINK_SUBJECTID_${subject.id}`,
+        'callback_data': `${CALLBACK_DATA.SUBJECT_LINK_TO_NOTIFICATION}_${subject.id}`,
       },
     ]);
   })
   return keyboard;
 }
 
-export { PeekSubject };
+const PeekPersonalSubject = async (
+  ctx: BotContext,
+  subscribedTo: Subject[]) => {
+    let subjects = await Subject.getAll();
+    subjects = subjects.filter(subject => !subject.isGeneral)
+                .sort((a, b) => a.name!.localeCompare(b.name!));          
+    ctx.session.subjectsFromDB = subjects;
+    const keyboard: InlineKeyboardButton[][] = [];
+    subjects.forEach(subject => {
+      const buttonText = `${Subject.listIncludes(subscribedTo, subject) ? '✅' : '❌'}${subject.buttonText()}`;
+      keyboard.push([{
+          'text': buttonText,
+          'callback_data': `${CALLBACK_DATA.SUBJECT_SWITCH_PERSONAL}_${subject.id}`,
+      }]);
+    });
+    
+    keyboard.push([
+      {
+        'text': '✅ Save',
+        'callback_data': CALLBACK_DATA.SUBJECT_SAVE_PERSONAL_LIST,
+      },
+    ])
+
+    return keyboard;
+}
+
+export { PeekSubject, PeekPersonalSubject };

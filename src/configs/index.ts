@@ -1,1 +1,2 @@
-export { BOT_CONFIG } from './bot.config';
+export * from './bot.config';
+export * from './database.config';

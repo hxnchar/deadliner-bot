@@ -1,158 +1,87 @@
 import { Scenes } from 'telegraf';
-import { parse } from 'date-fns';
-import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin } from 'helpers';
-import { BotReplies, SceneIDs, NotificationKeyboard, CALLBACK_DATA, DateTimeCommonFormat, BotCommands, PeekSubject } from 'consts';
-import { Notification } from 'services';
+import { callbackQuery } from "telegraf/filters";
+import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage } from 'helpers';
+import { BotReplies, SceneIDs, CALLBACK_DATA, DateTimeCommonFormat, BotCommands, SettingsKeyboard, PeekPersonalSubject} from 'consts';
+import { User, Subject } from 'services';
 import { BotContext } from 'bot'
 
-const resetFlags = (ctx: BotContext) => {
-  ctx.scene.session.notificationHeaderInput = false;
-  ctx.scene.session.notificationBodyInput = false;
-  ctx.scene.session.notificationDateInput = false;
-  ctx.scene.session.notificationDeadlineInput = false;
-  ctx.scene.session.notificationSubjectInput = false;
+const loadData = async (ctx: BotContext) => {
+  const userID = ctx.message?.from.id;
+  const userFromDB = await User.loadFromDB(userID);
+  ctx.session.user = User.parse(userFromDB);
 }
 
 const resetSession = (ctx: BotContext) => {
-  ctx.session.notification =
-    ctx.session.notification === undefined ?
-      new Notification() : ctx.session.notification;
-  resetFlags(ctx);
+  ctx.session.user = new User();
 }
 
-const setNotificationData = (ctx: BotContext, data: string): boolean => {
-  const headerInput = ctx.scene.session.notificationHeaderInput,
-        bodyInput = ctx.scene.session.notificationBodyInput,
-        dateInput = ctx.scene.session.notificationDateInput,
-        deadlintInput = ctx.scene.session.notificationDeadlineInput,
-        subjectInput = ctx.scene.session.notificationSubjectInput;
-  if (!ctx.message) {
-    return false;
-  }
-  if (headerInput) {
-    ctx.session.notification.header = data;
-    return true;
-  }
-  if (bodyInput) {
-    ctx.session.notification.body = data;
-    return true;
-  }
-  if (dateInput) {
-    ctx.session.notification.date =
-      parse(data, DateTimeCommonFormat, new Date());
-    return true;
-  }
-  if (deadlintInput) {
-    ctx.session.notification.deadline =
-      parse(data, DateTimeCommonFormat, new Date());;
-    return true;
-  }
-  
-  return false;
-}
-
-const updateMessage = (ctx: BotContext) => {
+const updatePersonalSubjectsMessage = async (ctx: BotContext) => {
   editMessageByID(
     ctx,
-    BotReplies.NOTIFICATION(ctx.session.notification),
-    NotificationKeyboard,
+    BotReplies.PEEK_PERSONAL,
+    await PeekPersonalSubject(ctx, ctx.session.user.subjects),
   );
-};
+}
 
-const notificationScene
-  = new Scenes.BaseScene<BotContext>(SceneIDs.NOTIFICATION);
+const updateSettingsMessage = async (ctx: BotContext) => {
+  editMessageByID(
+    ctx,
+    BotReplies.SETTINGS(ctx.session.user),
+    SettingsKeyboard,
+  );
+}
 
-notificationScene.enter(async (ctx) => {
-  resetSession(ctx);
+const settingsScene
+  = new Scenes.BaseScene<BotContext>(SceneIDs.SETTINGS);
+
+settingsScene.enter(async (ctx) => {
+  loadData(ctx);
 
   const sentMessage =
     await sendMessage(ctx,
-      BotReplies.NOTIFICATION(ctx.session.notification),
-      NotificationKeyboard);
+      BotReplies.SETTINGS(ctx.session.user),
+      SettingsKeyboard);
 
   ctx.session.messageID = sentMessage.message_id;
   ctx.session.chatID = sentMessage.chat.id;
 });
 
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_HEADER,
-  async (ctx) => {
-    resetFlags(ctx);
-    ctx.scene.session.notificationHeaderInput = true;
-    const sentMessage = await sendMessage(ctx, 'Please, provide a notification header');
-    messageToBin(ctx, sentMessage.message_id);
+settingsScene.hears(BotCommands.SETTINGS, (ctx) => ctx.scene.reenter());
+
+settingsScene.action(CALLBACK_DATA.SETTINGS_SUBJECTS, async (ctx) => {
+  updatePersonalSubjectsMessage(ctx);
+})
+
+settingsScene.action(CALLBACK_DATA.SUBJECT_SAVE_PERSONAL_LIST, (ctx) => {
+  updateSettingsMessage(ctx);
 });
 
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_BODY,
-  async (ctx) => {
-    resetFlags(ctx);
-    ctx.scene.session.notificationBodyInput = true;
-    const sentMessage = await sendMessage(ctx, 'Please, provide a notification body');
-    messageToBin(ctx, sentMessage.message_id);
-});
-
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DATE,
-  async (ctx) => {
-    resetFlags(ctx);
-    ctx.scene.session.notificationDateInput = true;
-    const sentMessage = await sendMessage(ctx, `Please, provide a notification date and time in a following way _${DateTimeCommonFormat}_. Leave it blank if you want to send it now.`);
-    messageToBin(ctx, sentMessage.message_id);
-});
-
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
-  async (ctx) => {
-    resetFlags(ctx);
-    ctx.scene.session.notificationDeadlineInput = true;
-    const sentMessage = await sendMessage(ctx, `Please, provide a notification deadline and time in a following way _${DateTimeCommonFormat}_`);
-    messageToBin(ctx, sentMessage.message_id);
-});
-
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_DISCARD, (ctx) => {
-  ctx.scene.leave();
-});
-
-notificationScene.action(
-  CALLBACK_DATA.NOTIFICATION_SET_SUBJECT,
-  async (ctx) => {
-    const sentMessage =
-      await sendMessage(ctx,
-        BotReplies.LINK_SUBJECT,
-        await PeekSubject());
-  }
-)
-
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_UNDO, (ctx) => {
-  try {
-    // const response = ctx.scene.session.subject.undo();
-    // if (response) {
-    //   updateMessage(ctx);
-    // }
-  } catch (e: any) {
-    ctx.answerCbQuery(`${e.message}`);
-  }
-});
-
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_REDO, (ctx) => {
-  try {
-    // const response = ctx.scene.session.subject.redo();
-    // if (response) {
-    //   updateMessage(ctx);
-    // }
-  } catch (e: any) {
-    ctx.answerCbQuery(`${e.message}`);
-  }
-});
-
-
-notificationScene.hears(BotCommands.NOTIFICATION, (ctx) => ctx.scene.reenter());
-
-notificationScene.on('text',  (ctx) => {
-  const messageText = ctx.message.text;
-  const dataChanged = setNotificationData(ctx, messageText);
-  if (dataChanged) {
-    messageToBin(ctx);
-    updateMessage(ctx);
-  }
+settingsScene.action(CALLBACK_DATA.SETTINGS_DISCARD, (ctx) => {
+  resetSession(ctx);
+  messageToBin(ctx);
   cleanMessagesBin(ctx);
 });
 
-export { notificationScene };
+settingsScene.action(CALLBACK_DATA.SETTINGS_SAVE, (ctx) => {
+  ctx.session.user.save();
+})
+
+settingsScene.on(callbackQuery('data'), async (ctx) => {
+  const query = ctx.callbackQuery.data;
+  if (query.startsWith(CALLBACK_DATA.SUBJECT_SWITCH_PERSONAL)) {
+    const subjectID = query.split(CALLBACK_DATA.SPLIT_SYMBOL).at(-1);
+    const subject = ctx.session.subjectsFromDB
+                      .filter(subject =>
+                        subject.id?.toString() === subjectID)[0];
+    const indexOfSubject = Subject.indexOf(ctx.session.user.subjects, subject);
+    if (indexOfSubject === -1) {
+      ctx.session.user.subjects.push(subject);
+    } else {
+      ctx.session.user.subjects.splice(indexOfSubject, 1);
+    }
+    
+    updatePersonalSubjectsMessage(ctx);
+  }
+})
+
+export { settingsScene };
