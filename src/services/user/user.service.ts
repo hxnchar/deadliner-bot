@@ -2,6 +2,7 @@ import UserModel from 'services/user/user.model';
 import IUser from './user.interface';
 import { Subject } from 'services/subject';
 import { Calendar } from 'services/calendar';
+import subjectModel from 'services/subject/subject.model';
 
 const NO_SUBJECTS_MSG = 'No subjects in this list yet';
 
@@ -61,17 +62,26 @@ class User {
     return userFromDB;
   }
 
-  static parse(object: IUser): User {
-    const { id, name, calendar } = object;
-    return new User(
-      id,
-      name
-    )
+  static async parse(object: IUser): Promise<User> {
+    const { id, name, subjects, calendar } = object;
+
+    const user = new User(id, name);
+
+    const parsedSubjects: Subject[] = [];
+
+    for (const subject of subjects) {
+      const fromDB = await subjectModel.findById(subject._id);
+      parsedSubjects.push(Subject.parse(fromDB));
+    }
+
+    user.subjects = parsedSubjects;
+    
+    return user;
   }
 
   async save() {
     const user = UserModel.findOne({ id: this.id });
-    await user.update({
+    await user.updateOne({
       name: this.name,
       subjects: this.subjects,
       calendar: this.calendar,

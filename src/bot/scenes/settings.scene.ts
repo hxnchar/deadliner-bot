@@ -1,14 +1,14 @@
 import { Scenes } from 'telegraf';
 import { callbackQuery } from "telegraf/filters";
-import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage } from 'helpers';
-import { BotReplies, SceneIDs, CALLBACK_DATA, DateTimeCommonFormat, BotCommands, SettingsKeyboard, PeekPersonalSubject} from 'consts';
+import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin } from 'helpers';
+import { BotReplies, SceneIDs, CALLBACK_DATA, BotCommands, SettingsKeyboard, PeekPersonalSubject } from 'consts';
 import { User, Subject } from 'services';
 import { BotContext } from 'bot'
 
 const loadData = async (ctx: BotContext) => {
   const userID = ctx.message?.from.id;
   const userFromDB = await User.loadFromDB(userID);
-  ctx.session.user = User.parse(userFromDB);
+  ctx.session.user = await User.parse(userFromDB);
 }
 
 const resetSession = (ctx: BotContext) => {
@@ -35,7 +35,7 @@ const settingsScene
   = new Scenes.BaseScene<BotContext>(SceneIDs.SETTINGS);
 
 settingsScene.enter(async (ctx) => {
-  loadData(ctx);
+  await loadData(ctx);
 
   const sentMessage =
     await sendMessage(ctx,

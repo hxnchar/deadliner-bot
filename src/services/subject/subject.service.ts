@@ -112,7 +112,7 @@ class Subject {
     return subjects;
   }
 
-  static parse(object: ISubject): Subject {
+  static parse(object: any): Subject {
     const { name, isGeneral, _id } = object;
     return new Subject(
       name,
