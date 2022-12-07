@@ -1,8 +1,8 @@
-import UserModel from 'services/user/user.model';
-import IUser from './user.interface';
+import { UserModel } from 'services/user/user.model';
+import { UserController } from 'services/user/user.controller';
 import { Subject } from 'services/subject';
 import { Calendar } from 'services/calendar';
-import subjectModel from 'services/subject/subject.model';
+import { SubjectModel } from 'services/subject/subject.model';
 
 const NO_SUBJECTS_MSG = 'No subjects in this list yet';
 
@@ -50,44 +50,16 @@ class User {
     this._calendar = newCalendar;
   }
 
-  static getAll = async (): Promise<any> => {
-    const users = await UserModel.find();
-    const parsedUsers = [];
-
-    for (const user of users) {
-      parsedUsers.push(await User.parse(user));
-    }
-
-    return parsedUsers;
-  }
-
-  static getByID = async (id: number | undefined): Promise<any> => {
-    const userFromDB = (await UserModel.find({ id }))[0];
-
-    if (!userFromDB) {
-      const newUser = new User(id);
-      const userSubjects: Subject[] = [];
-      const generalSubjects =
-        (await Subject.getAll()).filter(subject => subject.isGeneral);
-      generalSubjects.forEach(subject => {
-        userSubjects.push(subject);
-      });
-      newUser.subjects = userSubjects;
-      await newUser.save();
-      return newUser;
-    }
-
-    return this.parse(userFromDB);
-  }
-
   static async parse(object: any): Promise<User> {
     const { id, name, subjects, calendar } = object;
     const user = new User(id, name);
     const parsedSubjects: Subject[] = [];
 
     for (const subject of subjects) {
-      const fromDB = await subjectModel.findById(subject._id);
-      parsedSubjects.push(Subject.parse(fromDB));
+      const fromDB = await SubjectModel.findById(subject._id);
+      if (fromDB) {
+        parsedSubjects.push(Subject.parse(fromDB));
+      }
     }
 
     user.subjects = parsedSubjects;
@@ -95,13 +67,12 @@ class User {
   }
 
   static async subscribeAll(subject: Subject) {
-    const users: User[] = await User.getAll();
+    const users: User[] = await UserController.getAll();
    
     for (const user of users) {
       user.subjects.push(subject);
       await user.save();
     }
-
   }
 
   async save() {

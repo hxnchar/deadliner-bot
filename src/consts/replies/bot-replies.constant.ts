@@ -1,8 +1,6 @@
 import { format } from 'date-fns';
+import { DateTimeLongFormat, commandsString, featuresList } from 'consts';
 import { Subject, Notification, User } from 'services';
-import { commandsString } from 'consts/replies/described-commands.constant';
-import { featuresList } from 'consts/replies/bot-features.constant';
-import { DateTimeLongFormat } from 'consts';
 
 const BotReplies = {
   START: `Welcome to *Deadliner*.\n\nThis bot may help you with tracking your deadlines. It has several features that make him more useful than the last one.\n${featuresList}`,

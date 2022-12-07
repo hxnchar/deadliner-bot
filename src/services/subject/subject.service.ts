@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
-import SubjectModel from 'services/subject/subject.model'
-import ISubject from './subject.interface';
+import { SubjectModel } from 'services/subject/subject.model'
+import ISubject from 'services/subject/subject.interface';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
@@ -11,6 +11,10 @@ class Subject {
   // eslint-disable-next-line no-use-before-define
   static history: Subject[] = [];
   static cursor: number = 0;
+
+  set id(newID) {
+    this._id = newID;
+  }
 
   get id() {
     return this._id;
@@ -38,10 +42,9 @@ class Subject {
     this._isGeneral = newisGeneral;
   }
 
-  constructor(name?: string, isGeneral?: boolean, id?: Types.ObjectId) {
+  constructor(name?: string, isGeneral?: boolean) {
     this._name = name;
     this._isGeneral = isGeneral;
-    this._id = id;
   }
 
   undo(): boolean {
@@ -103,32 +106,23 @@ class Subject {
     return `${this.isGeneral ? '👥' : '👤'} ${this.name}`;
   }
 
-  static async getAll() {
-    const fetchedSubjects = await SubjectModel.find(),
-          subjects: Subject[] = [];
-    fetchedSubjects.forEach(subject => subjects.push(
-      this.parse(subject)
-    ))
-    return subjects;
-  }
-
-  static parse(object: any): Subject {
+  static parse(object: ISubject): Subject {
     const { name, isGeneral, _id } = object;
-    return new Subject(
-      name,
-      isGeneral,
-      _id,
-    )
+    const subject = new Subject(name, isGeneral);
+    subject.id = _id;
+    return subject;
   }
 
   static listIncludes(subjectsList: Subject[], subject: Subject): boolean {
     let result: boolean = false;
     const subjectStringified = subject.toString();
+
     subjectsList.forEach(subject => {
       if (subject.toString() === subjectStringified) {
         result = true;
       }
-    })
+    });
+    
     return result;
   }
 

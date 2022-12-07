@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts';
 import { Subject } from 'services';
-import NotificationModel from 'services/notification/notification.model';
+import { NotificationModel } from 'services/notification/notification.model';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
@@ -93,9 +93,6 @@ class Notification {
     if (typeof this.body  === 'undefined') {
       throw new Error('Please, provide body');
     }
-    if (typeof this.date === 'undefined') {
-      throw new Error('Please, provide date');
-    }
     if (typeof this.deadline  === 'undefined') {
       throw new Error('Please, provide a deadline');
     }
@@ -105,17 +102,13 @@ class Notification {
     return {
       header: this.header,
       body: this.body,
-      date: this.date,
+      date: this.date ?? Date.now(),
       deadline: this.deadline,
       isRequired: this.isRequired,
       subject: this.subject || null,
     };
   }
-
-  async save() {
-    const notification = new NotificationModel(this.convertToObject());
-    await notification.save();
-  }
+  
 }
 
 Notification.prototype.toString = function notificationToString() {

@@ -1,4 +1,3 @@
-import { Types } from 'mongoose';
 import { Calendar } from 'services/calendar';
 import { Subject } from 'services/subject';
 

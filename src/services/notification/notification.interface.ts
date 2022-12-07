@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { Subject } from 'services/subject'
 
 interface INotification {
   header: string,
@@ -6,7 +6,7 @@ interface INotification {
   date: Date,
   deadline: Date,
   isRequired: boolean,
-  subjectID: Types.ObjectId,
+  subject: Subject,
 }
 
 export default INotification;

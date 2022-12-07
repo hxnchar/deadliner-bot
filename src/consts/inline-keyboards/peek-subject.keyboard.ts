@@ -1,10 +1,10 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
-import { BotContext } from 'bot';
-import { Subject } from 'services';
 import { CALLBACK_DATA } from 'consts/enums';
+import { BotContext } from 'bot';
+import { Subject, SubjectController } from 'services';
 
 const PeekSubject = async () => {
-  let subjects = await Subject.getAll();
+  let subjects = await SubjectController.getAll();
   subjects = subjects.sort((a, b) => a.isGeneral && b.isGeneral? 0 :
       !a.isGeneral && b.isGeneral ? 1 : -1)
   const keyboard: InlineKeyboardButton[][] = [];
@@ -22,7 +22,7 @@ const PeekSubject = async () => {
 const PeekPersonalSubject = async (
   ctx: BotContext,
   subscribedTo: Subject[]) => {
-    let subjects = await Subject.getAll();
+    let subjects = await SubjectController.getAll();
     subjects = subjects.filter(subject => !subject.isGeneral)
                 .sort((a, b) => a.name!.localeCompare(b.name!));          
     ctx.session.subjectsFromDB = subjects;

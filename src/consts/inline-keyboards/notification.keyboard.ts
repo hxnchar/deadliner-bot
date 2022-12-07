@@ -38,22 +38,12 @@ export const NotificationKeyboard: InlineKeyboardButton[][] = [
   ],
   [
     {
-      'text': '↩️ Undo',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_UNDO,
+      'text': '🛑 Discard',
+      'callback_data': CALLBACK_DATA.NOTIFICATION_DISCARD,
     },
     {
       'text': '🔄 Reset',
       'callback_data': CALLBACK_DATA.NOTIFICATION_RESET,
-    },
-    {
-      'text': '↪️ Redo',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_REDO,
-    },
-  ],
-  [
-    {
-      'text': '🛑 Discard',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_DISCARD,
     },
     {
       'text': '✅ Save',

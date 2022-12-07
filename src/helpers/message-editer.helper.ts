@@ -2,7 +2,7 @@ import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { BotContext } from 'bot';
 import { escapeMessage } from 'helpers';
 
-const editMessageByID = (
+const editMessageByID = async (
   ctx: BotContext,
   newText: string,
   keyboard?: InlineKeyboardButton[][],

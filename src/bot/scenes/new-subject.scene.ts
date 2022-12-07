@@ -1,8 +1,9 @@
 import { Scenes } from 'telegraf';
-import { sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMessage } from 'helpers';
 import { BotReplies, SceneIDs, NewSubjectKeyboard, BotCommands, CALLBACK_DATA } from 'consts';
-import { Subject, User } from 'services';
 import { BotContext } from 'bot';
+import { Subject, User } from 'services';
+import { sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMessage } from 'helpers';
+
 
 const updateMessage = (ctx: BotContext) => {
   editMessageByID(
@@ -97,11 +98,9 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_SAVE, async (ctx) => {
       await User.subscribeAll(targetSubject);
       ctx.answerCbQuery('Subject was added to users list');
     }
-
+    ctx.scene.leave();
   } catch (e: any) {
     ctx.answerCbQuery(`${e.message}`);
-  } finally {
-    ctx.scene.leave();
   }
 });
 
@@ -126,6 +125,6 @@ newSubjectScene.leave(async (ctx) => {
       ctx.answerCbQuery(`${e.message}`);
     }
   }
-})
+});
 
 export { newSubjectScene };

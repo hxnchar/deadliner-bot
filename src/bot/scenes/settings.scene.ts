@@ -1,13 +1,14 @@
 import { Scenes } from 'telegraf';
-import { callbackQuery } from "telegraf/filters";
-import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin } from 'helpers';
+import { callbackQuery } from 'telegraf/filters';
 import { BotReplies, SceneIDs, CALLBACK_DATA, BotCommands, SettingsKeyboard, PeekPersonalSubject } from 'consts';
-import { User, Subject } from 'services';
-import { BotContext } from 'bot'
+import { BotContext } from 'bot';
+import { User, Subject, UserController } from 'services';
+import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin } from 'helpers';
+
 
 const loadData = async (ctx: BotContext) => {
   const userID = ctx.message?.from.id;
-  const userFromDB = await User.getByID(userID);
+  const userFromDB = await UserController.getByID(userID);
   ctx.session.user = await User.parse(userFromDB);
 }
 

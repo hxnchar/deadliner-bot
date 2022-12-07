@@ -1,9 +1,12 @@
 import { Scenes } from 'telegraf';
+import { callbackQuery } from 'telegraf/filters';
 import { parse } from 'date-fns';
-import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin } from 'helpers';
 import { BotReplies, SceneIDs, NotificationKeyboard, CALLBACK_DATA, DateTimeCommonFormat, BotCommands, PeekSubject } from 'consts';
-import { Notification } from 'services';
 import { BotContext } from 'bot'
+import { Notification, SubjectController } from 'services';
+import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage } from 'helpers';
+import NotificationController from 'services/notification/notification.controller';
+
 
 const resetFlags = (ctx: BotContext) => {
   ctx.scene.session.notificationHeaderInput = false;
@@ -51,8 +54,9 @@ const setNotificationData = (ctx: BotContext, data: string): boolean => {
   return false;
 }
 
-const updateMessage = (ctx: BotContext) => {
-  editMessageByID(
+const updateMessage = async (ctx: BotContext) => {
+  await cleanMessagesBin(ctx);
+  await editMessageByID(
     ctx,
     BotReplies.NOTIFICATION(ctx.session.notification),
     NotificationKeyboard,
@@ -117,42 +121,76 @@ notificationScene.action(
       await sendMessage(ctx,
         BotReplies.LINK_SUBJECT,
         await PeekSubject());
+    messageToBin(ctx, sentMessage.message_id);
   }
-)
+);
 
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_UNDO, (ctx) => {
-  try {
-    // const response = ctx.scene.session.subject.undo();
-    // if (response) {
-    //   updateMessage(ctx);
-    // }
-  } catch (e: any) {
-    ctx.answerCbQuery(`${e.message}`);
+notificationScene.action(
+  CALLBACK_DATA.NOTIFICATION_SET_REQUIRED,
+  async (ctx) => {
+    if (!ctx.session.notification.isRequired) {
+      ctx.session.notification.isRequired = true;
+      await updateMessage(ctx);
+    }
   }
-});
+);
 
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_REDO, (ctx) => {
-  try {
-    // const response = ctx.scene.session.subject.redo();
-    // if (response) {
-    //   updateMessage(ctx);
-    // }
-  } catch (e: any) {
-    ctx.answerCbQuery(`${e.message}`);
+notificationScene.action(
+  CALLBACK_DATA.NOTIFICATION_SAVE,
+  async (ctx) => {
+    try {
+      const targetNotification = ctx.session.notification;
+  
+      await NotificationController.save(targetNotification);
+      ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
+      ctx.scene.leave();
+    } catch (e: any) {
+      ctx.answerCbQuery(`${e.message}`);
+    }
   }
-});
+);
 
+notificationScene.action(
+  CALLBACK_DATA.NOTIFICATION_SET_DISPENSABLE,
+  async (ctx) => {
+    if (ctx.session.notification.isRequired) {
+      ctx.session.notification.isRequired = false;
+      await updateMessage(ctx);
+    }
+  }
+);
 
 notificationScene.hears(BotCommands.NOTIFICATION, (ctx) => ctx.scene.reenter());
 
-notificationScene.on('text',  (ctx) => {
+notificationScene.on(callbackQuery('data'), async (ctx) => {
+  const query = ctx.callbackQuery.data;
+  if (query.startsWith(CALLBACK_DATA.SUBJECT_LINK_TO_NOTIFICATION)) {
+    const subjectID = query.split(CALLBACK_DATA.SPLIT_SYMBOL).at(-1);
+    if (subjectID) {
+      const subject = await SubjectController.getByID(subjectID);
+      ctx.session.notification.subject = subject;
+    }
+  }
+  await updateMessage(ctx);
+});
+
+notificationScene.on('text', async (ctx) => {
   const messageText = ctx.message.text;
   const dataChanged = setNotificationData(ctx, messageText);
   if (dataChanged) {
     messageToBin(ctx);
-    updateMessage(ctx);
+    await updateMessage(ctx);
   }
-  cleanMessagesBin(ctx);
+});
+
+notificationScene.leave(async (ctx) => {
+  if (ctx.session.messageID) {
+    try {
+      deleteMessage(ctx, ctx.session.messageID);
+    } catch (e: any) {
+      ctx.answerCbQuery(`${e.message}`);
+    }
+  }
 });
 
 export { notificationScene };
