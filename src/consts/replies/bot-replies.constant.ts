@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
-import { DateTimeLongFormat, commandsString, featuresList } from 'consts';
+import { DateTimeLongFormat } from 'consts/dateTime.format';
+import { commandsString } from 'consts/replies/described-commands.constant';
+import { featuresList } from 'consts/replies/bot-features.constant';
 import { Subject, Notification, User } from 'services';
 
 const BotReplies = {

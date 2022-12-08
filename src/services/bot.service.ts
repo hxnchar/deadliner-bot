@@ -16,7 +16,7 @@ class BotService {
 
   async setup() {
     await this.database.connect();
-    this.target.telegram.setMyCommands(commandsList);
+    await this.target.telegram.setMyCommands(commandsList);
   }
 
   start(ctx: BotContext) {
