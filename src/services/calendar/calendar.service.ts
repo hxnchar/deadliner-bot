@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { CALENDAR_CONFIG } from 'configs/calendar.config';
+import { CALENDAR_CONFIG } from 'configs';
 
 class Calendar {
   _id: string | undefined;
