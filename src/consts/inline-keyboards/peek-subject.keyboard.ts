@@ -16,6 +16,16 @@ const PeekSubject = async () => {
       },
     ]);
   })
+  keyboard.push([
+    {
+      'text': '⛔️ Remove subject',
+      'callback_data': CALLBACK_DATA.NOTIFICATION_REMOVE_SUBJECT,
+    },
+    {
+      'text': '🛑 Discard',
+      'callback_data': CALLBACK_DATA.NOTIFICATION_DISCARD_SUBJECT,
+    },
+  ]);
   return keyboard;
 }
 

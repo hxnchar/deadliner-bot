@@ -6,7 +6,7 @@ interface INotification {
   date: Date,
   deadline: Date,
   isRequired: boolean,
-  subject: Subject,
+  subject?: Subject,
 }
 
 export default INotification;

@@ -160,6 +160,21 @@ notificationScene.action(
   }
 );
 
+notificationScene.action(
+  CALLBACK_DATA.NOTIFICATION_DISCARD_SUBJECT,
+  async (ctx) => {
+    await cleanMessagesBin(ctx);
+  }
+);
+
+notificationScene.action(
+  CALLBACK_DATA.NOTIFICATION_REMOVE_SUBJECT,
+  async (ctx) => {
+    ctx.session.notification.subject = undefined;
+    await updateMessage(ctx);
+  }
+);
+
 notificationScene.hears(BotCommands.NOTIFICATION, (ctx) => ctx.scene.reenter());
 
 notificationScene.on(callbackQuery('data'), async (ctx) => {
