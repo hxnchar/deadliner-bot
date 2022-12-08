@@ -168,6 +168,14 @@ notificationScene.action(
 );
 
 notificationScene.action(
+  CALLBACK_DATA.NOTIFICATION_RESET,
+  async (ctx) => {
+    ctx.session.notification = new Notification();
+    await updateMessage(ctx);
+  }
+);
+
+notificationScene.action(
   CALLBACK_DATA.NOTIFICATION_REMOVE_SUBJECT,
   async (ctx) => {
     ctx.session.notification.subject = undefined;
