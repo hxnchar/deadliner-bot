@@ -1,4 +1,4 @@
-import { Subject } from 'services/subject'
+import { Subject } from 'services/subject';
 
 interface INotification {
   header: string,

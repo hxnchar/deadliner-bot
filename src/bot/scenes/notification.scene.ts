@@ -146,6 +146,7 @@ notificationScene.action(
       const targetNotification = ctx.session.notification;
       await NotificationController.save(targetNotification);
       ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
+      ctx.session.notification = new Notification();
       ctx.scene.leave();
     } catch (e: any) {
       ctx.answerCbQuery(`${e.message}`);

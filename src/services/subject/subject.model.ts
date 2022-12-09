@@ -7,6 +7,6 @@ const SubjectSchema = new Schema({
   isGeneral: { 'type': Boolean, 'unique': false, 'required': true },
 });
 
-const SubjectModel = model<ISubject>(ModelName.SUBJECT, SubjectSchema)
+const SubjectModel = model<ISubject>(ModelName.SUBJECT, SubjectSchema);
 
 export { SubjectSchema, SubjectModel };

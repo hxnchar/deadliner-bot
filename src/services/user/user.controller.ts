@@ -1,8 +1,24 @@
 import { User } from 'services/user/user.service';
 import { UserModel } from 'services/user/user.model';
-import { Subject, SubjectController } from 'services/subject';
+import { SubjectController } from 'services/subject';
 
 const UserController = {
+
+  async save(user: User) {
+    const userExists = await UserModel.exists({ id: user.id });
+    if (userExists) {
+      const subjects =
+        user.subjects.map((subject) => subject.convertToObject());
+      await UserModel.findOneAndUpdate({ id: user.id }, {
+        name: user.name,
+        subjects,
+        calendar: user.calendar,
+      });
+      return;
+    }
+    const newUser = new UserModel(user.convertToObject());
+    await newUser.save();
+  },
 
   async getAll(): Promise<User[]> {
     const users = await UserModel.find();
@@ -16,25 +32,24 @@ const UserController = {
   },
 
   async getByID(id: number | undefined): Promise<User> {
-    const userFromDB = (await UserModel.find({ id }))[0];
+    const userExists = await UserModel.exists({ id });
 
-    if (!userFromDB) {
-      const newUser = new User(id);
-      const userSubjects: Subject[] = [];
-      const generalSubjects =
-        (await SubjectController.getAll()).filter(subject => subject.isGeneral);
-
-      generalSubjects.forEach(subject => {
-        userSubjects.push(subject);
-      });
-
-      newUser.subjects = userSubjects;
-      await newUser.save();
-      return newUser;
+    if (userExists) {
+      const fetchedUser = await UserModel.findOne({ id });
+      return User.parse(fetchedUser);
     }
 
-    return User.parse(userFromDB);
-  }
-}
+    return this.create(id);
+  },
+
+  async create(id: number | undefined): Promise<User> {
+    const user = new User(id);
+    const generalSubjects =
+      (await SubjectController.getAll()).filter((subject) => subject.isGeneral);
+    user.subjects = generalSubjects;
+    return user;
+  },
+
+};
 
 export { UserController };

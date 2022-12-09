@@ -10,6 +10,6 @@ const UserSchema = new Schema({
   calendar: { 'type': Types.ObjectId, 'unique': true, 'required': false },
 });
 
-const UserModel = model<IUser>(ModelName.USER, UserSchema)
+const UserModel = model<IUser>(ModelName.USER, UserSchema);
 
 export { UserSchema, UserModel };

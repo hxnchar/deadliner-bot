@@ -57,7 +57,7 @@ class Notification {
     return this._subject;
   }
 
-  set subject(newSubject) { 
+  set subject(newSubject) {
     this._subject = newSubject;
   }
 
@@ -68,13 +68,13 @@ class Notification {
     deadline?: Date,
     isRequired?: boolean,
     subject?: Subject,
-    ) {
-      this.header = header;
-      this.body = body;
-      this.date = date;
-      this.deadline = deadline;
-      this.isRequired = isRequired;
-      this.subject = subject;
+  ) {
+    this.header = header;
+    this.body = body;
+    this.date = date;
+    this.deadline = deadline;
+    this.isRequired = isRequired;
+    this.subject = subject;
   }
 
   isEqualTo(notification: Notification): boolean {
@@ -108,15 +108,15 @@ class Notification {
       subject: this.subject || null,
     };
   }
-  
+
 }
 
 Notification.prototype.toString = function notificationToString() {
-  const subject = this.subject? `*Subject:* ${this.subject.name}\n\n` : '';
+  const subject = this.subject ? `*Subject:* ${this.subject.name}\n\n` : '';
   const required = this.isRequired ? '🔴' : '🟡';
-  const formattedDeadline = this.deadline ?
-   format(this.deadline, DateTimeLongFormat)
-   : 'Without deadline';
+  const formattedDeadline = this.deadline
+    ? format(this.deadline, DateTimeLongFormat)
+    : 'Without deadline';
   return `*${required} ${this.header || UNDEFINED_MESSAGE}*\n${subject}*Due:* ${formattedDeadline}\n\n${this.body || UNDEFINED_MESSAGE}`;
 };
 

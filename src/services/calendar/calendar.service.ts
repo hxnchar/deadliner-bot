@@ -26,4 +26,4 @@ class Calendar {
   }
 }
 
-export { Calendar }
+export { Calendar };

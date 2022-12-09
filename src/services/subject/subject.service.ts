@@ -1,5 +1,4 @@
 import { Types } from 'mongoose';
-import { SubjectModel } from 'services/subject/subject.model'
 import ISubject from 'services/subject/subject.interface';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
@@ -87,11 +86,6 @@ class Subject {
     return this.name === subject.name && this.isGeneral === subject.isGeneral;
   }
 
-  async save() {
-    const subject = new SubjectModel(this.convertToObject());
-    await subject.save();
-  }
-
   convertToObject() {
     if (typeof this.name === 'undefined') {
       throw new Error('Please, provide name');
@@ -117,12 +111,12 @@ class Subject {
     let result: boolean = false;
     const subjectStringified = subject.toString();
 
-    subjectsList.forEach(subject => {
+    subjectsList.forEach((subject) => {
       if (subject.toString() === subjectStringified) {
         result = true;
       }
     });
-    
+
     return result;
   }
 
