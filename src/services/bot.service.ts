@@ -8,7 +8,7 @@ import { DB_CONFIG } from 'configs';
 class BotService {
   database;
   target;
-  
+
   constructor(bot: Telegraf<BotContext>) {
     this.database = new Database(DB_CONFIG.uri);
     this.target = bot;

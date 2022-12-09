@@ -15,7 +15,7 @@ const updateMessage = (ctx: BotContext) => {
 
 const resetFlags = (ctx: BotContext) => {
   ctx.scene.session.subjectNameInput = false;
-}
+};
 
 const newSubjectScene = new Scenes.BaseScene<BotContext>(SceneIDs.NEW_SUBJECT);
 
@@ -89,7 +89,7 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_REDO, (ctx) => {
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_SAVE, async (ctx) => {
   try {
-    const targetSubject = ctx.session.subject
+    const targetSubject = ctx.session.subject;
 
     await targetSubject.save();
     ctx.answerCbQuery('Subject was saved successfully');

@@ -20,4 +20,4 @@ class Database {
   }
 }
 
-export { Database }
+export { Database };

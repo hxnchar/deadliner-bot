@@ -1,14 +1,22 @@
 import { Telegraf, Scenes, session } from 'telegraf';
 import { BotCommands, SceneIDs } from 'consts';
 import { BOT_CONFIG } from 'configs';
-import { BotContext, newSubjectScene, notificationScene, settingsScene } from 'bot';
+import {
+  BotContext,
+  newSubjectScene,
+  notificationScene,
+  settingsScene,
+} from 'bot';
 import { BotService } from 'services';
 
 const bot = new Telegraf<BotContext>(BOT_CONFIG.token);
 
 const { enter } = Scenes.Stage;
-const stage = new Scenes.Stage<BotContext>(
-  [newSubjectScene, notificationScene, settingsScene]);
+const stage = new Scenes.Stage<BotContext>([
+  newSubjectScene,
+  notificationScene,
+  settingsScene,
+]);
 bot.use(session());
 bot.use(stage.middleware());
 

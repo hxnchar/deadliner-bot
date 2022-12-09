@@ -2,7 +2,7 @@ import { Scenes } from 'telegraf';
 import { callbackQuery } from 'telegraf/filters';
 import { parse } from 'date-fns';
 import { BotReplies, SceneIDs, NotificationKeyboard, CALLBACK_DATA, DateTimeCommonFormat, BotCommands, PeekSubject } from 'consts';
-import { BotContext } from 'bot'
+import { BotContext } from 'bot';
 import { Notification, SubjectController } from 'services';
 import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage } from 'helpers';
 import NotificationController from 'services/notification/notification.controller';
@@ -14,14 +14,14 @@ const resetFlags = (ctx: BotContext) => {
   ctx.scene.session.notificationDateInput = false;
   ctx.scene.session.notificationDeadlineInput = false;
   ctx.scene.session.notificationSubjectInput = false;
-}
+};
 
 const resetSession = (ctx: BotContext) => {
   ctx.session.notification =
-    ctx.session.notification === undefined ?
-      new Notification() : ctx.session.notification;
+    ctx.session.notification === undefined
+      ? new Notification() : ctx.session.notification;
   resetFlags(ctx);
-}
+};
 
 const setNotificationData = (ctx: BotContext, data: string): boolean => {
   const headerInput = ctx.scene.session.notificationHeaderInput,
@@ -47,12 +47,12 @@ const setNotificationData = (ctx: BotContext, data: string): boolean => {
   }
   if (deadlintInput) {
     ctx.session.notification.deadline =
-      parse(data, DateTimeCommonFormat, new Date());;
+      parse(data, DateTimeCommonFormat, new Date());
     return true;
   }
-  
+
   return false;
-}
+};
 
 const updateMessage = async (ctx: BotContext) => {
   await cleanMessagesBin(ctx);
@@ -63,8 +63,8 @@ const updateMessage = async (ctx: BotContext) => {
   );
 };
 
-const notificationScene
-  = new Scenes.BaseScene<BotContext>(SceneIDs.NOTIFICATION);
+const notificationScene =
+  new Scenes.BaseScene<BotContext>(SceneIDs.NOTIFICATION);
 
 notificationScene.enter(async (ctx) => {
   resetSession(ctx);
@@ -84,7 +84,8 @@ notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_HEADER,
     ctx.scene.session.notificationHeaderInput = true;
     const sentMessage = await sendMessage(ctx, 'Please, provide a notification header');
     messageToBin(ctx, sentMessage.message_id);
-});
+  },
+);
 
 notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_BODY,
   async (ctx) => {
@@ -92,7 +93,8 @@ notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_BODY,
     ctx.scene.session.notificationBodyInput = true;
     const sentMessage = await sendMessage(ctx, 'Please, provide a notification body');
     messageToBin(ctx, sentMessage.message_id);
-});
+  },
+);
 
 notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DATE,
   async (ctx) => {
@@ -100,7 +102,8 @@ notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DATE,
     ctx.scene.session.notificationDateInput = true;
     const sentMessage = await sendMessage(ctx, `Please, provide a notification date and time in a following way _${DateTimeCommonFormat}_. Leave it blank if you want to send it now.`);
     messageToBin(ctx, sentMessage.message_id);
-});
+  },
+);
 
 notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
   async (ctx) => {
@@ -108,7 +111,8 @@ notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
     ctx.scene.session.notificationDeadlineInput = true;
     const sentMessage = await sendMessage(ctx, `Please, provide a notification deadline and time in a following way _${DateTimeCommonFormat}_`);
     messageToBin(ctx, sentMessage.message_id);
-});
+  },
+);
 
 notificationScene.action(CALLBACK_DATA.NOTIFICATION_DISCARD, (ctx) => {
   ctx.scene.leave();
@@ -122,7 +126,7 @@ notificationScene.action(
         BotReplies.LINK_SUBJECT,
         await PeekSubject());
     messageToBin(ctx, sentMessage.message_id);
-  }
+  },
 );
 
 notificationScene.action(
@@ -132,7 +136,7 @@ notificationScene.action(
       ctx.session.notification.isRequired = true;
       await updateMessage(ctx);
     }
-  }
+  },
 );
 
 notificationScene.action(
@@ -140,14 +144,13 @@ notificationScene.action(
   async (ctx) => {
     try {
       const targetNotification = ctx.session.notification;
-  
       await NotificationController.save(targetNotification);
       ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
       ctx.scene.leave();
     } catch (e: any) {
       ctx.answerCbQuery(`${e.message}`);
     }
-  }
+  },
 );
 
 notificationScene.action(
@@ -157,14 +160,14 @@ notificationScene.action(
       ctx.session.notification.isRequired = false;
       await updateMessage(ctx);
     }
-  }
+  },
 );
 
 notificationScene.action(
   CALLBACK_DATA.NOTIFICATION_DISCARD_SUBJECT,
   async (ctx) => {
     await cleanMessagesBin(ctx);
-  }
+  },
 );
 
 notificationScene.action(
@@ -172,7 +175,7 @@ notificationScene.action(
   async (ctx) => {
     ctx.session.notification = new Notification();
     await updateMessage(ctx);
-  }
+  },
 );
 
 notificationScene.action(
@@ -180,7 +183,7 @@ notificationScene.action(
   async (ctx) => {
     ctx.session.notification.subject = undefined;
     await updateMessage(ctx);
-  }
+  },
 );
 
 notificationScene.hears(BotCommands.NOTIFICATION, (ctx) => ctx.scene.reenter());

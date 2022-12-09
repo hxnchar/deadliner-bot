@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { BotContext } from 'bot';
 import { escapeMessage } from 'helpers';
@@ -16,9 +17,9 @@ const editMessageByID = async (
       undefined,
       escapeMessage(newText),
       {
-        'parse_mode': 'MarkdownV2',
-        'reply_markup': {
-          'inline_keyboard': keyboard,
+        parse_mode: 'MarkdownV2',
+        reply_markup: {
+          inline_keyboard: keyboard,
         },
       },
     );
@@ -29,7 +30,7 @@ const editMessageByID = async (
     undefined,
     escapeMessage(newText),
     {
-      'parse_mode': 'MarkdownV2',
+      parse_mode: 'MarkdownV2',
     },
   );
 };

@@ -7,10 +7,10 @@ module.exports = {
   'parser': '@typescript-eslint/parser',
   'plugins': ['sonarjs', '@typescript-eslint'],
   'extends': [
+    'prettier',
     'eslint:recommended',
     'metarhia',
     'plugin:sonarjs/recommended',
-    'prettier',
   ],
   'overrides': [
   ],
