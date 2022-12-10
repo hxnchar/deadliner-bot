@@ -17,7 +17,7 @@ const resetSession = (ctx: BotContext) => {
 };
 
 const updatePersonalSubjectsMessage = async (ctx: BotContext) => {
-  editMessageByID(
+  await editMessageByID(
     ctx,
     BotReplies.PEEK_PERSONAL,
     await PeekPersonalSubject(ctx, ctx.session.user.subjects),

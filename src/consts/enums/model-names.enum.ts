@@ -3,4 +3,5 @@ export enum ModelName {
   NOTIFICATION = 'Notification',
   USER = 'User',
   CALENDAR = 'Calendar',
+  DEADLINE = 'Deadline',
 }

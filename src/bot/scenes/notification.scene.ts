@@ -27,8 +27,7 @@ const setNotificationData = (ctx: BotContext, data: string): boolean => {
   const headerInput = ctx.scene.session.notificationHeaderInput,
         bodyInput = ctx.scene.session.notificationBodyInput,
         dateInput = ctx.scene.session.notificationDateInput,
-        deadlintInput = ctx.scene.session.notificationDeadlineInput,
-        subjectInput = ctx.scene.session.notificationSubjectInput;
+        deadlintInput = ctx.scene.session.notificationDeadlineInput;
   if (!ctx.message) {
     return false;
   }
@@ -165,7 +164,7 @@ notificationScene.action(
 );
 
 notificationScene.action(
-  CALLBACK_DATA.NOTIFICATION_DISCARD_SUBJECT,
+  CALLBACK_DATA.SUBJECT_DISCARD,
   async (ctx) => {
     await cleanMessagesBin(ctx);
   },
@@ -180,7 +179,7 @@ notificationScene.action(
 );
 
 notificationScene.action(
-  CALLBACK_DATA.NOTIFICATION_REMOVE_SUBJECT,
+  CALLBACK_DATA.REMOVE_SUBJECT,
   async (ctx) => {
     ctx.session.notification.subject = undefined;
     await updateMessage(ctx);
@@ -191,7 +190,7 @@ notificationScene.hears(BotCommands.NOTIFICATION, (ctx) => ctx.scene.reenter());
 
 notificationScene.on(callbackQuery('data'), async (ctx) => {
   const query = ctx.callbackQuery.data;
-  if (query.startsWith(CALLBACK_DATA.SUBJECT_LINK_TO_NOTIFICATION)) {
+  if (query.startsWith(CALLBACK_DATA.LINK_SUBJECT)) {
     const subjectID = query.split(CALLBACK_DATA.SPLIT_SYMBOL).at(-1);
     if (subjectID) {
       const subject = await SubjectController.getByID(subjectID);

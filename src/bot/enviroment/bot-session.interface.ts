@@ -1,7 +1,11 @@
 import { Scenes } from 'telegraf';
 import { Subject, Notification, User } from 'services';
+import { Deadline } from 'services/deadline';
 
 interface SceneSession extends Scenes.SceneSessionData {
+  deadlineTaskInput: boolean;
+  deadlineDateInput: boolean;
+
   subjectNameInput: boolean;
 
   notificationHeaderInput: boolean;
@@ -20,6 +24,7 @@ interface BotSession extends Scenes.SceneSession<SceneSession> {
   subject: Subject;
   notification: Notification;
   user: User;
+  deadline: Deadline;
 }
 
 export { BotSession, SceneSession };

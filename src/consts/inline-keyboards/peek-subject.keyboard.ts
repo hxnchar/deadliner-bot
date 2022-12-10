@@ -12,18 +12,18 @@ const PeekSubject = async () => {
     keyboard.push([
       {
         'text': subject.buttonText(),
-        'callback_data': `${CALLBACK_DATA.SUBJECT_LINK_TO_NOTIFICATION}_${subject.id}`,
+        'callback_data': `${CALLBACK_DATA.LINK_SUBJECT}_${subject.id}`,
       },
     ]);
   });
   keyboard.push([
     {
       'text': '⛔️ Remove subject',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_REMOVE_SUBJECT,
+      'callback_data': CALLBACK_DATA.REMOVE_SUBJECT,
     },
     {
       'text': '🛑 Discard',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_DISCARD_SUBJECT,
+      'callback_data': CALLBACK_DATA.DISCARD_PEEK_SUBJECT,
     },
   ]);
   return keyboard;
