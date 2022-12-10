@@ -11,13 +11,12 @@ const TaskController = {
 
   async getAll() {
     const tasks = await TaskModel.find();
-    console.log(`tasks: ${tasks}`);
     const parsedTasks = [];
 
     for (const task of tasks) {
       parsedTasks.push(await Task.parse(task));
     }
-    console.log(`parsedTasks: ${parsedTasks}`);
+
     return parsedTasks;
   },
 
