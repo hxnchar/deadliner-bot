@@ -1,15 +1,15 @@
 import { Schema, model } from 'mongoose';
 import { ModelName } from 'consts/enums';
-import IDeadline from 'services/deadline/deadline.interface';
+import ITask from 'services/task/task.interface';
 import { SubjectSchema, SubjectModel } from 'services/subject';
 
-const DeadlineSchema = new Schema({
-  task: { 'type': String, 'unique': false, 'required': true },
+const TaskSchema = new Schema({
+  body: { 'type': String, 'unique': false, 'required': true },
   date: { 'type': Date, 'unique': false, 'required': true },
   subject: { 'type': SubjectSchema, ref: SubjectModel, 'unique': false, 'required': true },
 });
 
-const DeadlineModel =
-  model<IDeadline>(ModelName.DEADLINE, DeadlineSchema);
+const TaskModel =
+  model<ITask>(ModelName.TASK, TaskSchema);
 
-export { DeadlineSchema, DeadlineModel };
+export { TaskSchema, TaskModel };

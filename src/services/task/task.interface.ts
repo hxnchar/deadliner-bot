@@ -1,9 +1,9 @@
 import { Subject } from 'services/subject';
 
-interface IDeadline {
-  task: string
+interface ITask {
+  body: string
   date: Date,
   subject: Subject,
 }
 
-export default IDeadline;
+export default ITask;

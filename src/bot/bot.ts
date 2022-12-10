@@ -6,7 +6,7 @@ import {
   newSubjectScene,
   notificationScene,
   settingsScene,
-  deadlineScene,
+  taskScene,
 } from 'bot';
 import { BotService } from 'services';
 
@@ -17,7 +17,7 @@ const stage = new Scenes.Stage<BotContext>([
   newSubjectScene,
   notificationScene,
   settingsScene,
-  deadlineScene,
+  taskScene,
 ]);
 bot.use(session());
 bot.use(stage.middleware());
@@ -27,8 +27,9 @@ botService.setup();
 
 bot.start((ctx) => botService.start(ctx));
 bot.help((ctx) => botService.help(ctx));
+//bot.hears(BotCommands.TODOLIST, (ctx) => botService.todolist(ctx));
 bot.hears(BotCommands.NEW_SUBJECT, enter<BotContext>(SceneIDs.NEW_SUBJECT));
-bot.hears(BotCommands.NEW_DEADLINE, enter<BotContext>(SceneIDs.NEW_DEADLINE));
+bot.hears(BotCommands.NEW_DEADLINE, enter<BotContext>(SceneIDs.NEW_TASK));
 bot.hears(BotCommands.NOTIFICATION, enter<BotContext>(SceneIDs.NOTIFICATION));
 bot.hears(BotCommands.SETTINGS, enter<BotContext>(SceneIDs.SETTINGS));
 

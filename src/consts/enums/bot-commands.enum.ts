@@ -4,5 +4,7 @@ export enum BotCommands {
   NOTIFICATION = '/notification',
   SETTINGS = '/settings',
   NEW_DEADLINE = '/newdeadline',
+  TODO = '/todo',
+  TODOLIST = '/todolist',
   HELP = '/help',
 }

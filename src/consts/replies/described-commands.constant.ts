@@ -16,13 +16,12 @@ DescribedCommand.prototype.toString = function featureToString() {
 };
 
 const describedCommands: DescribedCommand[] = [
-  new DescribedCommand(
-    BotCommands.START,
-    'The basic command that you cannot avoid',
-  ),
+  new DescribedCommand(BotCommands.START, 'The basic command that you cannot avoid'),
   new DescribedCommand(BotCommands.NEW_SUBJECT, 'Creates a new subject'),
   new DescribedCommand(BotCommands.NOTIFICATION, 'Sends a notification to your classmates'),
   new DescribedCommand(BotCommands.NEW_DEADLINE, 'Creates a new deadline'),
+  new DescribedCommand(BotCommands.TODOLIST, 'Shows all of your deadlines and notifications'),
+  new DescribedCommand(BotCommands.TODO, 'Shows your deadlines and notifications one by one, sorted by date'),
   new DescribedCommand(BotCommands.SETTINGS, 'Change your preferences here'),
   new DescribedCommand(BotCommands.HELP, 'Shows a list of available commands'),
 ];

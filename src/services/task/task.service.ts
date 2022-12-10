@@ -4,17 +4,17 @@ import { Subject } from 'services';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
-class Deadline {
-  _task: string | undefined = '';
+class Task {
+  _body: string | undefined = '';
   _date: Date | undefined;
   _subject: Subject | undefined;
 
-  get task() {
-    return this._task;
+  get body() {
+    return this._body;
   }
 
-  set task(newTask) {
-    this._task = newTask;
+  set body(newBody) {
+    this._body = newBody;
   }
 
   get date() {
@@ -34,18 +34,18 @@ class Deadline {
   }
 
   constructor(
-    task?: string,
+    body?: string,
     date?: Date,
     subject?: Subject,
   ) {
-    this.task = task;
+    this.body = body;
     this.date = date;
     this.subject = subject;
   }
 
   convertToObject() {
-    if (typeof this.task === 'undefined') {
-      throw new Error('Please, provide task');
+    if (typeof this.body === 'undefined') {
+      throw new Error('Please, provide body');
     }
     if (typeof this.date === 'undefined') {
       throw new Error('Please, provide date');
@@ -54,7 +54,7 @@ class Deadline {
       throw new Error('Please, provide a subject');
     }
     return {
-      task: this.task,
+      body: this.body,
       date: this.date,
       subject: this.subject.convertToObject(),
     };
@@ -62,7 +62,7 @@ class Deadline {
 
 }
 
-Deadline.prototype.toString = function notificationToString() {
+Task.prototype.toString = function taskToString() {
   const subjectName = !this.subject ? UNDEFINED_MESSAGE
     : this.subject.isGeneral
       ? `👥${this.subject?.name}`
@@ -70,7 +70,7 @@ Deadline.prototype.toString = function notificationToString() {
   const formattedDate = this.date
     ? format(this.date, DateTimeLongFormat)
     : UNDEFINED_MESSAGE;
-  return `*[${formattedDate}]*\n${subjectName ?? UNDEFINED_MESSAGE}\n\n${this.task ?? UNDEFINED_MESSAGE}`;
+  return `*[${formattedDate}]*\n${subjectName ?? UNDEFINED_MESSAGE}\n\n${this.body ?? UNDEFINED_MESSAGE}`;
 };
 
-export { Deadline };
+export { Task };
