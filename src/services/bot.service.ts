@@ -4,6 +4,7 @@ import { sendMessage } from 'helpers';
 import { BotReplies, commandsList } from 'consts';
 import { Database } from 'database';
 import { DB_CONFIG } from 'configs';
+import { UserController } from './user';
 
 class BotService {
   database;
@@ -19,7 +20,14 @@ class BotService {
     await this.target.telegram.setMyCommands(commandsList);
   }
 
-  start(ctx: BotContext) {
+  async start(ctx: BotContext) {
+    const userID = ctx.from?.id,
+          username = ctx.from?.username;
+    const userExists = await UserController.exists(ctx.from?.id);
+    if (!userExists) {
+      const newUser = await UserController.create(userID, username);
+      await UserController.save(newUser);
+    }
     return sendMessage(ctx, BotReplies.START);
   }
 

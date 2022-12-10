@@ -1,6 +1,7 @@
 import { User } from 'services/user/user.service';
 import { UserModel } from 'services/user/user.model';
 import { SubjectController } from 'services/subject';
+import { BotContext } from 'bot/enviroment';
 
 const UserController = {
 
@@ -32,18 +33,24 @@ const UserController = {
   },
 
   async getByID(id: number | undefined): Promise<User> {
-    const userExists = await UserModel.exists({ id });
+    const userExists = await this.exists(id);
 
     if (userExists) {
-      const fetchedUser = await UserModel.findOne({ id });
-      return User.parse(fetchedUser);
+      const user = await UserModel.findOne({ id });
+      return User.parse(user);
     }
 
     return this.create(id);
   },
 
-  async create(id: number | undefined): Promise<User> {
-    const user = new User(id);
+  async exists(id: number | undefined): Promise<boolean> {
+    const userExists = await UserModel.find({ id });
+
+    return userExists.length > 0;
+  },
+
+  async create(id?: number | undefined, username?: string): Promise<User> {
+    const user = new User(id, username);
     const generalSubjects =
       (await SubjectController.getAll()).filter((subject) => subject.isGeneral);
     user.subjects = generalSubjects;
