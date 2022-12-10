@@ -58,8 +58,7 @@ settingsScene.action(CALLBACK_DATA.SUBJECT_SAVE_PERSONAL_LIST, (ctx) => {
 
 settingsScene.action(CALLBACK_DATA.SETTINGS_DISCARD, (ctx) => {
   resetSession(ctx);
-  messageToBin(ctx);
-  cleanMessagesBin(ctx);
+  ctx.scene.leave();
 });
 
 settingsScene.action(CALLBACK_DATA.SETTINGS_SAVE, (ctx) => {
