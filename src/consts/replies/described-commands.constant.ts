@@ -22,6 +22,7 @@ const describedCommands: DescribedCommand[] = [
   ),
   new DescribedCommand(BotCommands.NEW_SUBJECT, 'Creates a new subject'),
   new DescribedCommand(BotCommands.NOTIFICATION, 'Sends a notification to your classmates'),
+  new DescribedCommand(BotCommands.NEW_DEADLINE, 'Creates a new deadline'),
   new DescribedCommand(BotCommands.SETTINGS, 'Change your preferences here'),
   new DescribedCommand(BotCommands.HELP, 'Shows a list of available commands'),
 ];
