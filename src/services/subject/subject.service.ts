@@ -93,7 +93,7 @@ class Subject {
     if (typeof this.isGeneral  === 'undefined') {
       throw new Error('Please, provide if subject is general or not');
     }
-    return { name: this.name, isGeneral: this.isGeneral };
+    return { _id: this.id, name: this.name, isGeneral: this.isGeneral };
   }
 
   buttonText() {

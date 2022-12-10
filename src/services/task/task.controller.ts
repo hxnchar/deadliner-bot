@@ -9,7 +9,17 @@ const TaskController = {
     await taskModel.save();
   },
 
-  //async getAll(): Deadline
+  async getAll() {
+    const tasks = await TaskModel.find();
+    console.log(`tasks: ${tasks}`);
+    const parsedTasks = [];
+
+    for (const task of tasks) {
+      parsedTasks.push(await Task.parse(task));
+    }
+    console.log(`parsedTasks: ${parsedTasks}`);
+    return parsedTasks;
+  },
 
 };
 

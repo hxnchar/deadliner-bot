@@ -3,7 +3,7 @@ export enum BotCommands {
   NEW_SUBJECT = '/newsubject',
   NOTIFICATION = '/notification',
   SETTINGS = '/settings',
-  NEW_DEADLINE = '/newdeadline',
+  NEW_TASK = '/newtask',
   TODO = '/todo',
   TODOLIST = '/todolist',
   HELP = '/help',

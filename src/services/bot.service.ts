@@ -4,6 +4,9 @@ import { sendMessage } from 'helpers';
 import { BotReplies, commandsList } from 'consts';
 import { Database } from 'database';
 import { DB_CONFIG } from 'configs';
+import { Task, TaskController } from 'services/task';
+import { Notification } from 'services/notification';
+import NotificationController from './notification/notification.controller';
 import { UserController } from './user';
 
 class BotService {
@@ -35,9 +38,29 @@ class BotService {
     return sendMessage(ctx, BotReplies.HELP);
   }
 
-  // todolist(ctx: BotContext) {
-  //   const tasks = await DeadlineController.
-  // }
+  async todolist(ctx: BotContext) {
+    const tasks = await TaskController.getAll();
+    const notifications = await NotificationController.getAll();
+
+    let todolist: (Task | Notification)[] = [...tasks, ...notifications];
+
+    todolist = todolist.sort((a, b) => {
+      if (!a.date || !b.date || a.date === b.date) {
+        return 0;
+      }
+      if (a.date < b.date) {
+        return -1;
+      }
+      if (a.date > b.date) {
+        return 1;
+      }
+      return 0;
+    });
+
+    const message = todolist.map((todo) => todo.toString()).join('\n');
+
+    return sendMessage(ctx, message);
+  }
 
 }
 

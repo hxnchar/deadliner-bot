@@ -90,7 +90,7 @@ taskScene.action(
   },
 );
 
-taskScene.hears(BotCommands.NEW_DEADLINE, (ctx) => ctx.scene.reenter());
+taskScene.hears(BotCommands.NEW_TASK, (ctx) => ctx.scene.reenter());
 
 taskScene.on('text',  (ctx) => {
   const inputingBody = ctx.scene.session.taskBodyInput,

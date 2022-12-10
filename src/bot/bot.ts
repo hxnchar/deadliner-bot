@@ -27,9 +27,9 @@ botService.setup();
 
 bot.start((ctx) => botService.start(ctx));
 bot.help((ctx) => botService.help(ctx));
-//bot.hears(BotCommands.TODOLIST, (ctx) => botService.todolist(ctx));
+bot.hears(BotCommands.TODOLIST, async (ctx) => botService.todolist(ctx));
 bot.hears(BotCommands.NEW_SUBJECT, enter<BotContext>(SceneIDs.NEW_SUBJECT));
-bot.hears(BotCommands.NEW_DEADLINE, enter<BotContext>(SceneIDs.NEW_TASK));
+bot.hears(BotCommands.NEW_TASK, enter<BotContext>(SceneIDs.NEW_TASK));
 bot.hears(BotCommands.NOTIFICATION, enter<BotContext>(SceneIDs.NOTIFICATION));
 bot.hears(BotCommands.SETTINGS, enter<BotContext>(SceneIDs.SETTINGS));
 

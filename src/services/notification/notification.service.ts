@@ -1,17 +1,28 @@
+import { Types } from 'mongoose';
 import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts';
 import { Subject } from 'services';
 import { NotificationModel } from 'services/notification/notification.model';
+import INotification from './notification.interface';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
 class Notification {
+  _id: Types.ObjectId | undefined;
   _header: string | undefined = '';
   _body: string | undefined = '';
   _date: Date | undefined;
   _deadline: Date | undefined;
   _isRequired: boolean | undefined = false;
   _subject: Subject | undefined;
+
+  get id() {
+    return this._id;
+  }
+
+  set id(newID) {
+    this._id = newID;
+  }
 
   get header() {
     return this._header;
@@ -107,6 +118,20 @@ class Notification {
       isRequired: this.isRequired,
       subject: this.subject || null,
     };
+  }
+
+  static parse(object: INotification): Notification {
+    const { _id, header, body, date, deadline, isRequired, subject } = object;
+    const notification = new Notification(
+      header,
+      body,
+      date,
+      deadline,
+      isRequired,
+      subject,
+    );
+    notification.id = _id;
+    return notification;
   }
 
 }

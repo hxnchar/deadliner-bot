@@ -1,13 +1,23 @@
+import { Types } from 'mongoose';
 import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts';
-import { Subject } from 'services';
+import { Subject, SubjectController } from 'services';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
 class Task {
+  _id: Types.ObjectId | undefined;
   _body: string | undefined = '';
   _date: Date | undefined;
   _subject: Subject | undefined;
+
+  set id(newID) {
+    this._id = newID;
+  }
+
+  get id() {
+    return this._id;
+  }
 
   get body() {
     return this._body;
@@ -54,10 +64,22 @@ class Task {
       throw new Error('Please, provide a subject');
     }
     return {
+      _id: this.id,
       body: this.body,
       date: this.date,
       subject: this.subject.convertToObject(),
     };
+  }
+
+  static async parse(object: any): Promise<Task> {
+    const { id, body, date, subject } = object;
+    console.log(`subject._id ${subject._id}`);
+    const parsedSubject = await SubjectController.getByID(subject._id);
+    console.log(`parsedSubject: ${parsedSubject}`);
+    const task = new Task(body, date, parsedSubject);
+    task.id = id;
+    console.log(`task: ${task}`);
+    return task;
   }
 
 }
