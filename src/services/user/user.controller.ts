@@ -33,14 +33,13 @@ const UserController = {
   },
 
   async getByID(id: number | undefined): Promise<User> {
-    const userExists = await this.exists(id);
+    const user = await UserModel.findOne({ id });
 
-    if (userExists) {
-      const user = await UserModel.findOne({ id });
-      return User.parse(user);
+    if (!user) {
+      return this.create(id);
     }
 
-    return this.create(id);
+    return User.parse(user!);
   },
 
   async exists(id: number | undefined): Promise<boolean> {
