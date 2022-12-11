@@ -63,8 +63,8 @@ taskScene.action(CALLBACK_DATA.DEADLINE_SET_SUBJECT, async (ctx) => {
   await updatePeekSubjectMessage(ctx);
 });
 
-taskScene.action(CALLBACK_DATA.DEADLINE_DISCARD, (ctx) => {
-  ctx.scene.leave();
+taskScene.action(CALLBACK_DATA.DEADLINE_DISCARD, async (ctx) => {
+  await ctx.scene.leave();
 });
 
 taskScene.action(CALLBACK_DATA.DEADLINE_SAVE, async (ctx) => {
@@ -72,12 +72,12 @@ taskScene.action(CALLBACK_DATA.DEADLINE_SAVE, async (ctx) => {
     const targetTask = ctx.session.task;
 
     await TaskController.save(targetTask);
-    ctx.answerCbQuery('Task was saved successfully');
+    await ctx.answerCbQuery('Task was saved successfully');
 
     ctx.session.task = new Task();
-    ctx.scene.leave();
+    await ctx.scene.leave();
   } catch (e: any) {
-    ctx.answerCbQuery(`${e.message}`);
+    await ctx.answerCbQuery(`${e.message}`);
   }
 });
 
@@ -90,25 +90,25 @@ taskScene.action(
   },
 );
 
-taskScene.hears(BotCommands.NEW_TASK, (ctx) => ctx.scene.reenter());
+taskScene.hears(BotCommands.NEW_TASK, async (ctx) => ctx.scene.reenter());
 
-taskScene.on('text',  (ctx) => {
+taskScene.on('text', async (ctx) => {
   const inputingBody = ctx.scene.session.taskBodyInput,
         inputingDate = ctx.scene.session.taskDateInput;
   if (inputingBody) {
     ctx.session.task.body = ctx.message.text;
     ctx.scene.session.taskBodyInput = false;
     messageToBin(ctx);
-    updateTaskMessage(ctx);
+    await updateTaskMessage(ctx);
   }
   if (inputingDate) {
     ctx.session.task.date =
       parse(ctx.message.text, DateTimeCommonFormat, new Date());
     ctx.scene.session.taskDateInput = false;
     messageToBin(ctx);
-    updateTaskMessage(ctx);
+    await updateTaskMessage(ctx);
   }
-  cleanMessagesBin(ctx);
+  await cleanMessagesBin(ctx);
 });
 
 taskScene.on(callbackQuery('data'), async (ctx) => {
@@ -126,9 +126,9 @@ taskScene.on(callbackQuery('data'), async (ctx) => {
 taskScene.leave(async (ctx) => {
   if (ctx.session.messageID) {
     try {
-      deleteMessage(ctx, ctx.session.messageID);
+      await deleteMessage(ctx, ctx.session.messageID);
     } catch (e: any) {
-      ctx.answerCbQuery(`${e.message}`);
+      await ctx.answerCbQuery(`${e.message}`);
     }
   }
 });

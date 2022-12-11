@@ -113,8 +113,8 @@ notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
   },
 );
 
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_DISCARD, (ctx) => {
-  ctx.scene.leave();
+notificationScene.action(CALLBACK_DATA.NOTIFICATION_DISCARD, async (ctx) => {
+  await ctx.scene.leave();
 });
 
 notificationScene.action(
@@ -144,11 +144,11 @@ notificationScene.action(
     try {
       const targetNotification = ctx.session.notification;
       await NotificationController.save(targetNotification);
-      ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
+      await ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
       ctx.session.notification = new Notification();
-      ctx.scene.leave();
+      await ctx.scene.leave();
     } catch (e: any) {
-      ctx.answerCbQuery(`${e.message}`);
+      await ctx.answerCbQuery(`${e.message}`);
     }
   },
 );
@@ -186,7 +186,8 @@ notificationScene.action(
   },
 );
 
-notificationScene.hears(BotCommands.NOTIFICATION, (ctx) => ctx.scene.reenter());
+notificationScene.hears(BotCommands.NOTIFICATION,
+  async (ctx) => ctx.scene.reenter());
 
 notificationScene.on(callbackQuery('data'), async (ctx) => {
   const query = ctx.callbackQuery.data;
@@ -212,9 +213,9 @@ notificationScene.on('text', async (ctx) => {
 notificationScene.leave(async (ctx) => {
   if (ctx.session.messageID) {
     try {
-      deleteMessage(ctx, ctx.session.messageID);
+      await deleteMessage(ctx, ctx.session.messageID);
     } catch (e: any) {
-      ctx.answerCbQuery(`${e.message}`);
+      await ctx.answerCbQuery(`${e.message}`);
     }
   }
 });
