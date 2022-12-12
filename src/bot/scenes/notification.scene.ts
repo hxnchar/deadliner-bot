@@ -3,10 +3,8 @@ import { callbackQuery } from 'telegraf/filters';
 import { parse } from 'date-fns';
 import { BotReplies, SceneIDs, NotificationKeyboard, CALLBACK_DATA, DateTimeCommonFormat, BotCommands, PeekSubject } from 'consts';
 import { BotContext } from 'bot';
-import { Notification, SubjectController } from 'services';
+import { Notification, NotificationController, SubjectController } from 'services';
 import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage } from 'helpers';
-import NotificationController from 'services/notification/notification.controller';
-
 
 const resetFlags = (ctx: BotContext) => {
   ctx.scene.session.notificationHeaderInput = false;

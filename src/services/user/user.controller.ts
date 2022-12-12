@@ -6,18 +6,13 @@ import { BotContext } from 'bot/enviroment';
 const UserController = {
 
   async save(user: User) {
-    const userExists = await UserModel.exists({ id: user.id });
+    const userExists = await this.exists(user.id);
+    const userObject = user.convertToObject();
     if (userExists) {
-      const subjects =
-        user.subjects.map((subject) => subject.convertToObject());
-      await UserModel.findOneAndUpdate({ id: user.id }, {
-        name: user.name,
-        subjects,
-        calendar: user.calendar,
-      });
+      await UserModel.findOneAndUpdate({ id: user.id }, userObject);
       return;
     }
-    const newUser = new UserModel(user.convertToObject());
+    const newUser = new UserModel(userObject);
     await newUser.save();
   },
 

@@ -5,9 +5,8 @@ import { BotReplies, commandsList } from 'consts';
 import { Database } from 'database';
 import { DB_CONFIG } from 'configs';
 import { Task, TaskController } from 'services/task';
-import { Notification } from 'services/notification';
-import NotificationController from './notification/notification.controller';
-import { UserController } from './user';
+import { Notification, NotificationController } from 'services/notification';
+import { UserController } from 'services/user';
 
 class BotService {
   database;

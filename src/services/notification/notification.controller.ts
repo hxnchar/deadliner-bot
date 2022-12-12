@@ -18,4 +18,4 @@ const NotificationController = {
 
 };
 
-export default NotificationController;
+export { NotificationController };

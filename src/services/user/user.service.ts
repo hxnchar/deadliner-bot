@@ -1,6 +1,6 @@
 import { UserModel } from 'services/user/user.model';
 import { UserController } from 'services/user/user.controller';
-import { Subject } from 'services/subject';
+import { Subject, SubjectController } from 'services/subject';
 import { Calendar } from 'services/calendar';
 import { SubjectModel } from 'services/subject/subject.model';
 
@@ -66,7 +66,11 @@ class User {
     const parsedSubjects: Subject[] = [];
 
     for (const subject of subjects) {
-      parsedSubjects.push(Subject.parse(subject));
+      const fetchedSubject =
+        await SubjectController.getByID(subject._id?.toString());
+      if (fetchedSubject) {
+        parsedSubjects.push(fetchedSubject);
+      }
     }
 
     user.subjects = parsedSubjects;
