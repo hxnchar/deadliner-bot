@@ -1,10 +1,25 @@
 import { Scenes } from 'telegraf';
 import { callbackQuery } from 'telegraf/filters';
-import { BotReplies, SceneIDs, CALLBACK_DATA, BotCommands, SettingsKeyboard, PeekPersonalSubject } from 'consts';
+import { BotReplies, SceneIDs, CALLBACK_DATA, BotCommands, SettingsKeyboard, PeekPersonalSubject, LanguageKeyboard, Language } from 'consts';
 import { BotContext } from 'bot';
 import { User, Subject, UserController } from 'services';
 import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage } from 'helpers';
 
+const setLanguage = (ctx: BotContext, language: string) => {
+  let userLanguage: Language = Language.en;
+  switch (language) {
+    case 'ua':
+      userLanguage = Language.ua;
+      break;
+    case 'en':
+      userLanguage = Language.en;
+      break;
+    default:
+      userLanguage = Language.en;
+      break;
+  }
+  ctx.session.user.language = userLanguage;
+};
 
 const loadData = async (ctx: BotContext) => {
   const userID = ctx.message?.from.id;
@@ -28,7 +43,15 @@ const updateSettingsMessage = async (ctx: BotContext) => {
   editMessageByID(
     ctx,
     BotReplies.SETTINGS(ctx.session.user),
-    SettingsKeyboard,
+    SettingsKeyboard(ctx),
+  );
+};
+
+const updateLanguageMessage = async (ctx: BotContext) => {
+  await editMessageByID(
+    ctx,
+    BotReplies.PEEK_LANGUAGE,
+    LanguageKeyboard,
   );
 };
 
@@ -40,34 +63,39 @@ settingsScene.enter(async (ctx) => {
   const sentMessage =
     await sendMessage(ctx,
       BotReplies.SETTINGS(ctx.session.user),
-      SettingsKeyboard);
+      SettingsKeyboard(ctx));
 
   ctx.session.messageID = sentMessage.message_id;
   ctx.session.chatID = sentMessage.chat.id;
 });
 
-settingsScene.hears(BotCommands.SETTINGS, (ctx) => ctx.scene.reenter());
+settingsScene.hears(
+  BotCommands.SETTINGS, async (ctx) => ctx.scene.reenter());
 
 settingsScene.action(CALLBACK_DATA.SETTINGS_SUBJECTS, async (ctx) => {
-  updatePersonalSubjectsMessage(ctx);
+  await updatePersonalSubjectsMessage(ctx);
 });
 
-settingsScene.action(CALLBACK_DATA.SUBJECT_SAVE_PERSONAL_LIST, (ctx) => {
-  updateSettingsMessage(ctx);
+settingsScene.action(CALLBACK_DATA.SETTINGS_LANGUAGE, async (ctx) => {
+  await updateLanguageMessage(ctx);
 });
 
-settingsScene.action(CALLBACK_DATA.SETTINGS_DISCARD, (ctx) => {
+settingsScene.action(CALLBACK_DATA.SUBJECT_SAVE_PERSONAL_LIST, async (ctx) => {
+  await updateSettingsMessage(ctx);
+});
+
+settingsScene.action(CALLBACK_DATA.SETTINGS_DISCARD, async (ctx) => {
   resetSession(ctx);
-  ctx.scene.leave();
+  await ctx.scene.leave();
 });
 
-settingsScene.action(CALLBACK_DATA.SETTINGS_SAVE, (ctx) => {
+settingsScene.action(CALLBACK_DATA.SETTINGS_SAVE, async (ctx) => {
   try {
-    UserController.save(ctx.session.user);
-    ctx.answerCbQuery('Settings updated successfully');
-    ctx.scene.leave();
+    await UserController.save(ctx.session.user);
+    await ctx.answerCbQuery('Settings updated successfully');
+    await ctx.scene.leave();
   } catch (e: any) {
-    ctx.answerCbQuery(`${e.message}`);
+    await ctx.answerCbQuery(`${e.message}`);
   }
 });
 
@@ -85,7 +113,15 @@ settingsScene.on(callbackQuery('data'), async (ctx) => {
       ctx.session.user.subjects.splice(indexOfSubject, 1);
     }
 
-    updatePersonalSubjectsMessage(ctx);
+    await updatePersonalSubjectsMessage(ctx);
+  }
+  if (query.startsWith(CALLBACK_DATA.SETTINGS_SET_LANGUAGE)) {
+    const language = query.split(CALLBACK_DATA.SPLIT_SYMBOL).at(-1);
+    if (!language) {
+      return;
+    }
+    setLanguage(ctx, language);
+    await updateSettingsMessage(ctx);
   }
 });
 

@@ -17,6 +17,7 @@ const BotReplies = {
   },
   SETTINGS: (user: User = new User()) => user.toString(),
   PEEK_PERSONAL: 'Pick subjects which you would like to subscribe to:',
+  PEEK_LANGUAGE: 'Pick your language interface:',
   LINK_SUBJECT: 'Link a subject from the following list:',
   NEW_SUBJECT_SAVE: 'Subject was saved.',
   HELP: `Here is the list of avaiable commands:\n${commandsString}`,

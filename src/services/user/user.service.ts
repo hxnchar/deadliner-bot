@@ -2,7 +2,8 @@ import { UserModel } from 'services/user/user.model';
 import { UserController } from 'services/user/user.controller';
 import { Subject, SubjectController } from 'services/subject';
 import { Calendar } from 'services/calendar';
-import { SubjectModel } from 'services/subject/subject.model';
+import { Language } from 'consts/enums';
+import IUser from './user.interface';
 
 const NO_SUBJECTS_MSG = 'No subjects in this list yet';
 
@@ -11,6 +12,7 @@ class User {
   _name: string | undefined = '';
   _subjects: Subject[];
   _calendar: Calendar | undefined;
+  _language: Language = Language.en;
 
   constructor(id?: number, name?: string) {
     this._id = id;
@@ -50,6 +52,14 @@ class User {
     this._calendar = newCalendar;
   }
 
+  get language() {
+    return this._language;
+  }
+
+  set language(newLanguage) {
+    this._language = newLanguage;
+  }
+
   convertToObject() {
     const subjects = this.subjects.map((subject) => subject.convertToObject());
     return {
@@ -57,11 +67,12 @@ class User {
       name: this.name,
       subjects,
       calendar: this.calendar,
+      language: this.language,
     };
   }
 
-  static async parse(object: any): Promise<User> {
-    const { id, name, subjects, calendar } = object;
+  static async parse(object: IUser): Promise<User> {
+    const { id, name, subjects, calendar, language } = object;
     const user = new User(id, name);
     const parsedSubjects: Subject[] = [];
 
@@ -74,6 +85,8 @@ class User {
     }
 
     user.subjects = parsedSubjects;
+    user.language = language;
+
     return user;
   }
 

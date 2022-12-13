@@ -10,7 +10,7 @@ const updateTaskMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
     BotReplies.NEW_TASK(ctx.session.task),
-    NewTaskKeyboard,
+    NewTaskKeyboard(ctx),
   );
 };
 
@@ -18,7 +18,7 @@ const updatePeekSubjectMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
     BotReplies.PEEK_PERSONAL,
-    await PeekSubject(),
+    await PeekSubject(ctx),
   );
 };
 
@@ -27,15 +27,15 @@ const resetFlags = (ctx: BotContext) => {
   ctx.scene.session.taskDateInput = false;
 };
 
-const taskScene = new Scenes.BaseScene<BotContext>(SceneIDs.NEW_TASK);
+const newTaskScene = new Scenes.BaseScene<BotContext>(SceneIDs.NEW_TASK);
 
-taskScene.enter(async (ctx) => {
+newTaskScene.enter(async (ctx) => {
   resetFlags(ctx);
 
   const sentMessage =
     await sendMessage(ctx,
       BotReplies.NEW_TASK(ctx.session.task),
-      NewTaskKeyboard);
+      NewTaskKeyboard(ctx));
 
   ctx.session.task =
     ctx.session.task === undefined ? new Task() : ctx.session.task;
@@ -44,30 +44,30 @@ taskScene.enter(async (ctx) => {
   ctx.session.chatID = sentMessage.chat.id;
 });
 
-taskScene.action(CALLBACK_DATA.DEADLINE_CHANGE_TASK, async (ctx) => {
+newTaskScene.action(CALLBACK_DATA.DEADLINE_CHANGE_TASK, async (ctx) => {
   resetFlags(ctx);
   ctx.scene.session.taskBodyInput = true;
   const sentMessage = await sendMessage(ctx, 'Please, provide body');
   messageToBin(ctx, sentMessage.message_id);
 });
 
-taskScene.action(CALLBACK_DATA.DEADLINE_CHANGE_DATE, async (ctx) => {
+newTaskScene.action(CALLBACK_DATA.DEADLINE_CHANGE_DATE, async (ctx) => {
   resetFlags(ctx);
   ctx.scene.session.taskDateInput = true;
   const sentMessage = await sendMessage(ctx, `Please, provide a deadline date and time in a following way _${DateTimeCommonFormat}_`);
   messageToBin(ctx, sentMessage.message_id);
 });
 
-taskScene.action(CALLBACK_DATA.DEADLINE_SET_SUBJECT, async (ctx) => {
+newTaskScene.action(CALLBACK_DATA.DEADLINE_SET_SUBJECT, async (ctx) => {
   resetFlags(ctx);
   await updatePeekSubjectMessage(ctx);
 });
 
-taskScene.action(CALLBACK_DATA.DEADLINE_DISCARD, async (ctx) => {
+newTaskScene.action(CALLBACK_DATA.DEADLINE_DISCARD, async (ctx) => {
   await ctx.scene.leave();
 });
 
-taskScene.action(CALLBACK_DATA.DEADLINE_SAVE, async (ctx) => {
+newTaskScene.action(CALLBACK_DATA.DEADLINE_SAVE, async (ctx) => {
   try {
     const targetTask = ctx.session.task;
 
@@ -82,7 +82,7 @@ taskScene.action(CALLBACK_DATA.DEADLINE_SAVE, async (ctx) => {
 });
 
 
-taskScene.action(
+newTaskScene.action(
   CALLBACK_DATA.REMOVE_SUBJECT,
   async (ctx) => {
     ctx.session.task.subject = undefined;
@@ -90,9 +90,9 @@ taskScene.action(
   },
 );
 
-taskScene.hears(BotCommands.NEW_TASK, async (ctx) => ctx.scene.reenter());
+newTaskScene.hears(BotCommands.NEW_TASK, async (ctx) => ctx.scene.reenter());
 
-taskScene.on('text', async (ctx) => {
+newTaskScene.on('text', async (ctx) => {
   const inputingBody = ctx.scene.session.taskBodyInput,
         inputingDate = ctx.scene.session.taskDateInput;
   if (inputingBody) {
@@ -111,7 +111,7 @@ taskScene.on('text', async (ctx) => {
   await cleanMessagesBin(ctx);
 });
 
-taskScene.on(callbackQuery('data'), async (ctx) => {
+newTaskScene.on(callbackQuery('data'), async (ctx) => {
   const query = ctx.callbackQuery.data;
   if (query.startsWith(CALLBACK_DATA.LINK_SUBJECT)) {
     const subjectID = query.split(CALLBACK_DATA.SPLIT_SYMBOL).at(-1);
@@ -123,7 +123,7 @@ taskScene.on(callbackQuery('data'), async (ctx) => {
   await updateTaskMessage(ctx);
 });
 
-taskScene.leave(async (ctx) => {
+newTaskScene.leave(async (ctx) => {
   if (ctx.session.messageID) {
     try {
       await deleteMessage(ctx, ctx.session.messageID);
@@ -133,4 +133,4 @@ taskScene.leave(async (ctx) => {
   }
 });
 
-export { taskScene };
+export { newTaskScene };

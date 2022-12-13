@@ -1,9 +1,13 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { CALLBACK_DATA } from 'consts/enums';
+import { LangData } from 'consts';
+import { getLanguage } from 'helpers';
 import { BotContext } from 'bot';
 import { Subject, SubjectController } from 'services';
 
-const PeekSubject = async () => {
+const PeekSubject = async (ctx: BotContext) => {
+  const LANGUAGE = getLanguage(ctx);
+
   let subjects = await SubjectController.getAll();
   subjects = subjects.sort((a, b) => a.isGeneral && b.isGeneral ? 0
     : !a.isGeneral && b.isGeneral ? 1 : -1);
@@ -18,11 +22,11 @@ const PeekSubject = async () => {
   });
   keyboard.push([
     {
-      'text': '⛔️ Remove subject',
+      'text': LangData[LANGUAGE]['remove-subject'],
       'callback_data': CALLBACK_DATA.REMOVE_SUBJECT,
     },
     {
-      'text': '🛑 Discard',
+      'text': LangData[LANGUAGE]['discard'],
       'callback_data': CALLBACK_DATA.DISCARD_PEEK_SUBJECT,
     },
   ]);
@@ -32,6 +36,9 @@ const PeekSubject = async () => {
 const PeekPersonalSubject = async (
   ctx: BotContext,
   subscribedTo: Subject[]) => {
+
+  const LANGUAGE = getLanguage(ctx);
+
   let subjects = await SubjectController.getAll();
   subjects =
     subjects.filter((subject) => !subject.isGeneral)
@@ -48,7 +55,7 @@ const PeekPersonalSubject = async (
 
   keyboard.push([
     {
-      'text': '✅ Save',
+      'text': LangData[LANGUAGE]['save'],
       'callback_data': CALLBACK_DATA.SUBJECT_SAVE_PERSONAL_LIST,
     },
   ]);

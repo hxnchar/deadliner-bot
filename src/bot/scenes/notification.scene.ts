@@ -56,7 +56,7 @@ const updateMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
     BotReplies.NOTIFICATION(ctx.session.notification),
-    NotificationKeyboard,
+    NotificationKeyboard(ctx),
   );
 };
 
@@ -69,7 +69,7 @@ notificationScene.enter(async (ctx) => {
   const sentMessage =
     await sendMessage(ctx,
       BotReplies.NOTIFICATION(ctx.session.notification),
-      NotificationKeyboard);
+      NotificationKeyboard(ctx));
 
   ctx.session.messageID = sentMessage.message_id;
   ctx.session.chatID = sentMessage.chat.id;
@@ -121,7 +121,7 @@ notificationScene.action(
     const sentMessage =
       await sendMessage(ctx,
         BotReplies.LINK_SUBJECT,
-        await PeekSubject());
+        await PeekSubject(ctx));
     messageToBin(ctx, sentMessage.message_id);
   },
 );

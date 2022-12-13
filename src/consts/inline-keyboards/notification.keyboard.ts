@@ -1,53 +1,61 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { CALLBACK_DATA } from 'consts/enums';
+import { LangData } from 'consts';
+import { getLanguage } from 'helpers';
+import { BotContext } from 'bot';
 
-export const NotificationKeyboard: InlineKeyboardButton[][] = [
-  [
-    {
-      'text': '✏️ Header',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_CHANGE_HEADER,
-    },
-    {
-      'text': '📖 Body',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_CHANGE_BODY,
-    },
-  ],
-  [
-    {
-      'text': '🔴 Required',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_SET_REQUIRED,
-    },
-    {
-      'text': '🟡 Dispensable',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_SET_DISPENSABLE,
-    },
-  ],
-  [
-    {
-      'text': '📅 Send ON',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_CHANGE_DATE,
-    },
-    {
-      'text': '🔗 Subject',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_SET_SUBJECT,
-    },
-    {
-      'text': '📅 Deadline',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
-    },
-  ],
-  [
-    {
-      'text': '🛑 Discard',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_DISCARD,
-    },
-    {
-      'text': '🔄 Reset',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_RESET,
-    },
-    {
-      'text': '✅ Save',
-      'callback_data': CALLBACK_DATA.NOTIFICATION_SAVE,
-    },
-  ],
-];
+export const NotificationKeyboard =
+  (ctx: BotContext): InlineKeyboardButton[][] => {
+    const LANGUAGE = getLanguage(ctx);
+
+    return [
+      [
+        {
+          'text': LangData[LANGUAGE]['header'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_CHANGE_HEADER,
+        },
+        {
+          'text': LangData[LANGUAGE]['body'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_CHANGE_BODY,
+        },
+      ],
+      [
+        {
+          'text': LangData[LANGUAGE]['required'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_SET_REQUIRED,
+        },
+        {
+          'text': LangData[LANGUAGE]['dispensable'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_SET_DISPENSABLE,
+        },
+      ],
+      [
+        {
+          'text': LangData[LANGUAGE]['send-on'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_CHANGE_DATE,
+        },
+        {
+          'text': LangData[LANGUAGE]['link-subject'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_SET_SUBJECT,
+        },
+        {
+          'text': LangData[LANGUAGE]['deadline'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
+        },
+      ],
+      [
+        {
+          'text': LangData[LANGUAGE]['discard'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_DISCARD,
+        },
+        {
+          'text': LangData[LANGUAGE]['reset'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_RESET,
+        },
+        {
+          'text': LangData[LANGUAGE]['save'],
+          'callback_data': CALLBACK_DATA.NOTIFICATION_SAVE,
+        },
+      ],
+    ];
+  };
