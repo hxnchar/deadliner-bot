@@ -6,7 +6,7 @@ import {
   newSubjectScene,
   notificationScene,
   settingsScene,
-  taskScene,
+  newTaskScene,
 } from 'bot';
 import { BotService } from 'services';
 
@@ -17,7 +17,7 @@ const stage = new Scenes.Stage<BotContext>([
   newSubjectScene,
   notificationScene,
   settingsScene,
-  taskScene,
+  newTaskScene,
 ]);
 bot.use(session());
 bot.use(stage.middleware());
