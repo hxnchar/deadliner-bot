@@ -1,5 +1,5 @@
-import { Task } from 'services/task/task.service';
-import { TaskModel } from 'services/task/task.model';
+import { Task } from 'services/task/service';
+import { TaskModel } from 'services/task/model';
 
 const TaskController = {
 

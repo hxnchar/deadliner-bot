@@ -1,5 +1,5 @@
-import { SubjectModel } from 'services/subject/subject.model';
-import { Subject } from 'services/subject/subject.service';
+import { SubjectModel } from 'services/subject/model';
+import { Subject } from 'services/subject/service';
 import { Types } from 'mongoose';
 
 const SubjectController = {

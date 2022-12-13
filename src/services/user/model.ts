@@ -1,7 +1,7 @@
 import { Schema, model, Types } from 'mongoose';
-import { SubjectModel, SubjectSchema } from 'services/subject/subject.model';
+import { SubjectModel, SubjectSchema } from 'services/subject/model';
 import { ModelName } from 'consts/enums';
-import IUser from 'services/user/user.interface';
+import { IUser } from 'services/user/interface';
 
 const UserSchema = new Schema({
   id: { 'type': Number, 'unique': true, 'required': true },

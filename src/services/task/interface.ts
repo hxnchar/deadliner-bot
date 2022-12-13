@@ -6,4 +6,4 @@ interface ITask {
   subject: Subject,
 }
 
-export default ITask;
+export { ITask };

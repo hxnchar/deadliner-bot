@@ -1,5 +1,5 @@
-import { Notification } from 'services/notification/notification.service';
-import { NotificationModel } from 'services/notification/notification.model';
+import { Notification } from 'services/notification/service';
+import { NotificationModel } from 'services/notification/model';
 
 const NotificationController = {
 

@@ -1,9 +1,9 @@
-import { UserModel } from 'services/user/user.model';
-import { UserController } from 'services/user/user.controller';
+import { UserModel } from 'services/user/model';
+import { UserController } from 'services/user/controller';
 import { Subject, SubjectController } from 'services/subject';
 import { Calendar } from 'services/calendar';
 import { Language } from 'consts/enums';
-import IUser from './user.interface';
+import { IUser } from 'services/user/interface';
 
 const NO_SUBJECTS_MSG = 'No subjects in this list yet';
 

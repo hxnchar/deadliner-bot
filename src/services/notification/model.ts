@@ -1,6 +1,6 @@
 import { Schema, model, Types } from 'mongoose';
 import { ModelName } from 'consts/enums';
-import INotification from 'services/notification/notification.interface';
+import { INotification } from 'services/notification/interface';
 
 const NotificationSchema = new Schema({
   header: { 'type': String, 'unique': false, 'required': true },

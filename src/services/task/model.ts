@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { ModelName } from 'consts/enums';
-import ITask from 'services/task/task.interface';
+import { ITask } from 'services/task/interface';
 import { SubjectSchema, SubjectModel } from 'services/subject';
 
 const TaskSchema = new Schema({

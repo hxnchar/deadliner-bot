@@ -1,5 +1,5 @@
-import { User } from 'services/user/user.service';
-import { UserModel } from 'services/user/user.model';
+import { User } from 'services/user/service';
+import { UserModel } from 'services/user/model';
 import { SubjectController } from 'services/subject';
 import { BotContext } from 'bot/enviroment';
 

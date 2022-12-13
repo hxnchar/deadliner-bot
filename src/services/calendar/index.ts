@@ -1,3 +1,3 @@
-export * from './calendar.service';
-export * from './calendar.model';
-export * from './calendar.interface';
+export * from './service';
+export * from './model';
+export * from './interface';

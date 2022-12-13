@@ -2,8 +2,8 @@ import { Types } from 'mongoose';
 import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts';
 import { Subject } from 'services';
-import { NotificationModel } from 'services/notification/notification.model';
-import INotification from './notification.interface';
+import { NotificationModel } from 'services/notification/model';
+import { INotification } from './interface';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 

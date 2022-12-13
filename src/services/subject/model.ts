@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { ModelName } from 'consts/enums';
-import ISubject from 'services/subject/subject.interface';
+import { ISubject } from 'services/subject/interface';
 
 const SubjectSchema = new Schema({
   name: { 'type': String, 'unique': true, 'required': true },

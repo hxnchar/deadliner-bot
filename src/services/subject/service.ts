@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import ISubject from 'services/subject/subject.interface';
+import { ISubject } from 'services/subject/interface';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 

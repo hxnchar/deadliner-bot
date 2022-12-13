@@ -10,4 +10,4 @@ interface IUser {
   language: Language,
 }
 
-export default IUser;
+export { IUser };

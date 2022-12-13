@@ -11,4 +11,4 @@ interface INotification {
   subject?: Subject,
 }
 
-export default INotification;
+export { INotification };
