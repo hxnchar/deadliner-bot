@@ -139,15 +139,11 @@ notificationScene.action(
 notificationScene.action(
   CALLBACK_DATA.NOTIFICATION_SAVE,
   async (ctx) => {
-    try {
-      const targetNotification = ctx.session.notification;
-      await NotificationController.save(targetNotification);
-      await ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
-      ctx.session.notification = new Notification();
-      await ctx.scene.leave();
-    } catch (e: any) {
-      await ctx.answerCbQuery(`${e.message}`);
-    }
+    const targetNotification = ctx.session.notification;
+    await NotificationController.save(targetNotification);
+    await ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
+    ctx.session.notification = new Notification();
+    await ctx.scene.leave();
   },
 );
 
@@ -210,11 +206,7 @@ notificationScene.on('text', async (ctx) => {
 
 notificationScene.leave(async (ctx) => {
   if (ctx.session.messageID) {
-    try {
-      await deleteMessage(ctx, ctx.session.messageID);
-    } catch (e: any) {
-      await ctx.answerCbQuery(`${e.message}`);
-    }
+    await deleteMessage(ctx, ctx.session.messageID);
   }
 });
 

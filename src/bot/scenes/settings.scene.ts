@@ -127,11 +127,7 @@ settingsScene.on(callbackQuery('data'), async (ctx) => {
 
 settingsScene.leave(async (ctx) => {
   if (ctx.session.messageID) {
-    try {
-      deleteMessage(ctx, ctx.session.messageID);
-    } catch (e: any) {
-      ctx.answerCbQuery(`${e.message}`);
-    }
+    await deleteMessage(ctx, ctx.session.messageID);
   }
 });
 

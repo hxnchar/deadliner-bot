@@ -56,58 +56,38 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_DISCARD, async (ctx) => {
 });
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_UNDO, async (ctx) => {
-  try {
-    const response = ctx.session.subject.undo();
-    if (response) {
-      await updateMessage(ctx);
-    }
-  } catch (e: any) {
-    await ctx.answerCbQuery(`${e.message}`);
-  }
+  ctx.session.subject.undo();
+  await updateMessage(ctx);
 });
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_RESET, async (ctx) => {
   resetFlags(ctx);
   ctx.session.subject = new Subject();
-  try {
-    await updateMessage(ctx);
-  } catch (e: any) {
-    await ctx.answerCbQuery(`${e.message}`);
-  }
+  await updateMessage(ctx);
 });
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_REDO, async (ctx) => {
-  try {
-    const response = ctx.session.subject.redo();
-    if (response) {
-      await updateMessage(ctx);
-    }
-  } catch (e: any) {
-    await ctx.answerCbQuery(`${e.message}`);
-  }
+  ctx.session.subject.redo();
+  await updateMessage(ctx);
 });
 
 newSubjectScene.action(CALLBACK_DATA.SUBJECT_SAVE, async (ctx) => {
-  try {
-    const targetSubject = ctx.session.subject;
+  const targetSubject = ctx.session.subject;
 
-    await SubjectController.save(targetSubject);
-    await ctx.answerCbQuery('Subject was saved successfully');
+  await SubjectController.save(targetSubject);
+  await ctx.answerCbQuery('Subject was saved successfully');
 
-    if (targetSubject.isGeneral) {
-      const users = await UserController.getAll();
+  if (targetSubject.isGeneral) {
+    const users = await UserController.getAll();
 
-      for (const user of users) {
-        await User.subscribeUserTo(user, targetSubject);
-      }
-
-      await ctx.answerCbQuery('Subject was added to each user');
+    for (const user of users) {
+      await User.subscribeUserTo(user, targetSubject);
     }
-    ctx.session.subject = new Subject();
-    await ctx.scene.leave();
-  } catch (e: any) {
-    await ctx.answerCbQuery(`${e.message}`);
+
+    await ctx.answerCbQuery('Subject was added to each user');
   }
+  ctx.session.subject = new Subject();
+  await ctx.scene.leave();
 });
 
 newSubjectScene.hears(BotCommands.NEW_SUBJECT,
@@ -126,11 +106,7 @@ newSubjectScene.on('text', async (ctx) => {
 
 newSubjectScene.leave(async (ctx) => {
   if (ctx.session.messageID) {
-    try {
-      await deleteMessage(ctx, ctx.session.messageID);
-    } catch (e: any) {
-      await ctx.answerCbQuery(`${e.message}`);
-    }
+    await deleteMessage(ctx, ctx.session.messageID);
   }
 });
 

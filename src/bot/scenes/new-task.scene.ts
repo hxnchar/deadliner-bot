@@ -68,17 +68,13 @@ newTaskScene.action(CALLBACK_DATA.DEADLINE_DISCARD, async (ctx) => {
 });
 
 newTaskScene.action(CALLBACK_DATA.DEADLINE_SAVE, async (ctx) => {
-  try {
-    const targetTask = ctx.session.task;
+  const targetTask = ctx.session.task;
 
-    await TaskController.save(targetTask);
-    await ctx.answerCbQuery('Task was saved successfully');
+  await TaskController.save(targetTask);
+  await ctx.answerCbQuery('Task was saved successfully');
 
-    ctx.session.task = new Task();
-    await ctx.scene.leave();
-  } catch (e: any) {
-    await ctx.answerCbQuery(`${e.message}`);
-  }
+  ctx.session.task = new Task();
+  await ctx.scene.leave();
 });
 
 
@@ -125,11 +121,7 @@ newTaskScene.on(callbackQuery('data'), async (ctx) => {
 
 newTaskScene.leave(async (ctx) => {
   if (ctx.session.messageID) {
-    try {
-      await deleteMessage(ctx, ctx.session.messageID);
-    } catch (e: any) {
-      await ctx.answerCbQuery(`${e.message}`);
-    }
+    await deleteMessage(ctx, ctx.session.messageID);
   }
 });
 
