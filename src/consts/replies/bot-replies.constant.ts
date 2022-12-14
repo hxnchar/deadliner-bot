@@ -1,12 +1,12 @@
 import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts/dateTime.format';
 import { commandsString } from 'consts/replies/described-commands.constant';
-import { featuresList } from 'consts/replies/bot-features.constant';
+import { featuresToString } from 'consts/replies/bot-features.constant';
 import { Subject, Notification, User } from 'services';
 import { Task } from 'services/task';
 
 const BotReplies = {
-  START: `Welcome to *Deadliner*.\n\nThis bot may help you with tracking your deadlines. It has several features that make him more useful than the last one.\n${featuresList}`,
+  START: () => `Welcome to *Deadliner*.\n\nThis bot may help you with tracking your deadlines. It has several features that make him more useful than the last one.\n${featuresToString()}`,
   NEW_SUBJECT: (subject: Subject = new Subject()) =>
     `You're creating a new subject. Please, provide the following details:\n\n${subject.toString()}`,
   NEW_TASK: (task: Task = new Task()) =>

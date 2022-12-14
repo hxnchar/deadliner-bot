@@ -17,6 +17,21 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'non-general': '🟡 Non-general',
     'task': '✏️ Task',
 
+    //Bot features
+    'subscriptions-feature': 'Subscriptions🤩',
+    'subscriptions-feature-data': 'Now every user can subscribe to the subjects he needs. This means that now everyone will see only his personal list of deadlines',
+    'subscriptions-feature-hint': 'Also, implementing subscriptions means that everyone can see his personalized schedule. However, you need to subscribe to all of your subjects first',
+    'ui-feature': 'Improved UI💻',
+    'ui-feature-data': 'Use buttons instead of inline commands. Now interface is a bit more pretty and convenient. Tick completed tasks and track what else you have to do',
+    'notifications-feature': 'Notifications📲',
+    'notifications-feature-data': 'A particularly useful feature for group leaders. Now there is no need to pin your message in the chat or tag everyone. You can simply add notification (scheduled or not) and everyone will receive it',
+    'view-deadlines-feature': 'View your deadlines👀',
+    'view-deadlines-feature-data': 'View your deadlines in a list or flip them through',
+    'google-calendar-feature': 'Google Calendar📆',
+    'google-calendar-feature-data': 'Do not miss your deadlines with the Google Calendar synchronization',
+    'google-calendar-feature-hint': 'You`ll be asked for some additional information',
+
+    //General buttons
     'discard': '🛑 Discard',
     'save': '✅ Save',
     'reset': '🔄 Reset',
@@ -41,6 +56,21 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'non-general': '🟡 Вибірковий',
     'task': '✏️ Завдання',
 
+    //Bot features
+    'subscriptions-feature': 'Підписки🤩',
+    'subscriptions-feature-data': 'Тепер кожен може підписатися на необхідні йому предмети. Також це значить, що тепер кожен буде бачити лише свої власні дедлайни',
+    'subscriptions-feature-hint': 'Також, реалізація цієї функції зробить можливим відображення особистого розкладу, проте для цього спершу потрібно підписатися на усі необхідні предмети',
+    'ui-feature': 'Покращений UI💻',
+    'ui-feature-data': 'Використовуйте кнопки замість однострокових команд. Тепер інтерфейс трохи приємніший та зручний. Відмічайте виконані дедлайни та відстежуйте, що ще необхідно зробити',
+    'notifications-feature': 'Сповіщенні📲',
+    'notifications-feature-data': 'Особливо корисна фішка для старост. Тепер немає необхідності пінити повідомлення та тегати усю групу в чаті. Можна просто додати сповіщення (заплановане чи ні) і його отримає кожен',
+    'view-deadlines-feature': 'Переглядайте свої дедлайни👀',
+    'view-deadlines-feature-data': 'Переглядайте дедлайни у вигляді списку, або перегортуючи',
+    'google-calendar-feature': 'Google Calendar📆',
+    'google-calendar-feature-data': 'Не пропускай дедлайни завдяки синхронізації з Google Calendar',
+    'google-calendar-feature-hint': 'Для цього потрібно буде надати деяку додаткову інформацію',
+
+    //General buttons
     'discard': '🛑 Відмінити',
     'save': '✅ Зберегти',
     'reset': '🔄 Скинути',
