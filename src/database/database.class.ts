@@ -11,6 +11,7 @@ class Database {
 
   async connect() {
     await mongoose.connect(this.uri);
+    mongoose.set('strictQuery', false);
     this.isConnected = true;
   }
 
