@@ -1,6 +1,7 @@
-const LangData = {
-  en: {
+const LangData: { [lang_key: string]: { [value: string]: string }; } = {
+  'en': {
     'language-name': '🏴󠁧󠁢󠁥󠁮󠁧󠁿 English',
+    'language-code': 'en',
     'subject-list': '📝 Subject list',
     'calendar': '📅 Calendar',
     'remove-subject': '⛔️ Remove subject',
@@ -22,8 +23,9 @@ const LangData = {
     'undo': '↩️ Undo',
     'redo': '↪️ Redo',
   },
-  ua: {
+  'ua': {
     'language-name': '🇺🇦 Українська',
+    'language-code': 'ua',
     'subject-list': '📝 Перелік предметів',
     'calendar': '📅 Календар',
     'remove-subject': '⛔️ Вилучити предмет',

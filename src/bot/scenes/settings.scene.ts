@@ -51,7 +51,7 @@ const updateLanguageMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
     BotReplies.PEEK_LANGUAGE,
-    LanguageKeyboard,
+    LanguageKeyboard(),
   );
 };
 
