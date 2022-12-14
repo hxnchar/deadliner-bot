@@ -2,6 +2,7 @@ import { Telegraf } from 'telegraf';
 import { BotContext } from 'bot';
 import { sendMessage } from 'helpers';
 import { BotReplies, commandsList } from 'consts';
+import { Language } from 'consts/enums';
 import { Database } from 'database';
 import { DB_CONFIG } from 'configs';
 import { Task, TaskController } from 'services/task';
@@ -9,17 +10,26 @@ import { Notification, NotificationController } from 'services/notification';
 import { UserController } from 'services/user';
 
 class BotService {
-  database;
-  target;
+  _database;
+  _target;
+  static _language: Language = Language.en;
+
+  static get language() {
+    return BotService._language;
+  }
+
+  static set language(newLanguage: Language) {
+    BotService._language = newLanguage;
+  }
 
   constructor(bot: Telegraf<BotContext>) {
-    this.database = new Database(DB_CONFIG.uri);
-    this.target = bot;
+    this._database = new Database(DB_CONFIG.uri);
+    this._target = bot;
   }
 
   async setup() {
-    await this.database.connect();
-    await this.target.telegram.setMyCommands(commandsList);
+    await this._database.connect();
+    await this._target.telegram.setMyCommands(commandsList);
   }
 
   async start(ctx: BotContext) {

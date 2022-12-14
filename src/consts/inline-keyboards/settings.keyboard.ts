@@ -1,11 +1,10 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { CALLBACK_DATA } from 'consts/enums';
 import { LangData } from 'consts';
-import { getLanguage } from 'helpers';
-import { BotContext } from 'bot';
+import { BotService } from 'services';
 
-export const SettingsKeyboard = (ctx: BotContext): InlineKeyboardButton[][] => {
-  const LANGUAGE = getLanguage(ctx);
+export const SettingsKeyboard = (): InlineKeyboardButton[][] => {
+  const LANGUAGE = BotService.language;
 
   return [
     [

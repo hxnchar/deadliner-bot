@@ -9,7 +9,7 @@ import {
   newTaskScene,
 } from 'bot';
 import { BotService } from 'services';
-import { errorMiddleware } from '../middlewares';
+import { errorMiddleware, languageMiddleware } from 'middlewares';
 
 const bot = new Telegraf<BotContext>(BOT_CONFIG.token);
 
@@ -22,7 +22,7 @@ const stage = new Scenes.Stage<BotContext>([
 ]);
 bot.use(session());
 bot.use(stage.middleware());
-
+bot.use(languageMiddleware);
 bot.catch(errorMiddleware);
 
 const botService = new BotService(bot);

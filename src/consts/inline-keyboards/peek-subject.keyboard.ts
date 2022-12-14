@@ -1,12 +1,11 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { CALLBACK_DATA } from 'consts/enums';
 import { LangData } from 'consts';
-import { getLanguage } from 'helpers';
 import { BotContext } from 'bot';
-import { Subject, SubjectController } from 'services';
+import { BotService, Subject, SubjectController } from 'services';
 
-const PeekSubject = async (ctx: BotContext) => {
-  const LANGUAGE = getLanguage(ctx);
+const PeekSubject = async () => {
+  const LANGUAGE = BotService.language;
 
   let subjects = await SubjectController.getAll();
   subjects = subjects.sort((a, b) => a.isGeneral && b.isGeneral ? 0
@@ -37,7 +36,7 @@ const PeekPersonalSubject = async (
   ctx: BotContext,
   subscribedTo: Subject[]) => {
 
-  const LANGUAGE = getLanguage(ctx);
+  const LANGUAGE = BotService.language;
 
   let subjects = await SubjectController.getAll();
   subjects =

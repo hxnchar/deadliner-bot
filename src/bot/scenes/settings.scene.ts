@@ -43,7 +43,7 @@ const updateSettingsMessage = async (ctx: BotContext) => {
   editMessageByID(
     ctx,
     BotReplies.SETTINGS(ctx.session.user),
-    SettingsKeyboard(ctx),
+    SettingsKeyboard(),
   );
 };
 
@@ -63,7 +63,7 @@ settingsScene.enter(async (ctx) => {
   const sentMessage =
     await sendMessage(ctx,
       BotReplies.SETTINGS(ctx.session.user),
-      SettingsKeyboard(ctx));
+      SettingsKeyboard());
 
   ctx.session.messageID = sentMessage.message_id;
   ctx.session.chatID = sentMessage.chat.id;

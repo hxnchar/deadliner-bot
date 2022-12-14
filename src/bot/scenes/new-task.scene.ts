@@ -10,7 +10,7 @@ const updateTaskMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
     BotReplies.NEW_TASK(ctx.session.task),
-    NewTaskKeyboard(ctx),
+    NewTaskKeyboard(),
   );
 };
 
@@ -18,7 +18,7 @@ const updatePeekSubjectMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
     BotReplies.PEEK_PERSONAL,
-    await PeekSubject(ctx),
+    await PeekSubject(),
   );
 };
 
@@ -35,7 +35,7 @@ newTaskScene.enter(async (ctx) => {
   const sentMessage =
     await sendMessage(ctx,
       BotReplies.NEW_TASK(ctx.session.task),
-      NewTaskKeyboard(ctx));
+      NewTaskKeyboard());
 
   ctx.session.task =
     ctx.session.task === undefined ? new Task() : ctx.session.task;

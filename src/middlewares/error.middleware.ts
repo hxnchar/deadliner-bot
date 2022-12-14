@@ -1,7 +1,8 @@
-import { BotContext } from 'bot/index.js';
+import { BotContext } from 'bot';
+import { sendMessage } from 'helpers/message-sender.helper';
 
 async function errorMiddleware(err: any, ctx: BotContext) {
-  await ctx.answerCbQuery(`Error occurred: ${err.message}`);
+  await sendMessage(ctx, `Error occurred: ${err.message}`);
 }
 
 export { errorMiddleware };

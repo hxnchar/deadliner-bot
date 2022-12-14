@@ -9,7 +9,7 @@ const updateMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
     BotReplies.NEW_SUBJECT(ctx.session.subject),
-    NewSubjectKeyboard(ctx),
+    NewSubjectKeyboard(),
   );
 };
 
@@ -25,7 +25,7 @@ newSubjectScene.enter(async (ctx) => {
   const sentMessage =
     await sendMessage(ctx,
       BotReplies.NEW_SUBJECT(ctx.session.subject),
-      NewSubjectKeyboard(ctx));
+      NewSubjectKeyboard());
 
   ctx.session.subject =
     ctx.session.subject === undefined ? new Subject() : ctx.session.subject;
