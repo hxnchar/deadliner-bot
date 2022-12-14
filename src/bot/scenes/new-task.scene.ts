@@ -9,7 +9,7 @@ import { sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMes
 const updateTaskMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
-    BotReplies.NEW_TASK(ctx.session.task),
+    BotReplies().NEW_TASK(ctx.session.task),
     NewTaskKeyboard(),
   );
 };
@@ -17,7 +17,7 @@ const updateTaskMessage = async (ctx: BotContext) => {
 const updatePeekSubjectMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
-    BotReplies.PEEK_PERSONAL,
+    BotReplies().PEEK_PERSONAL(),
     await PeekSubject(),
   );
 };
@@ -34,7 +34,7 @@ newTaskScene.enter(async (ctx) => {
 
   const sentMessage =
     await sendMessage(ctx,
-      BotReplies.NEW_TASK(ctx.session.task),
+      BotReplies().NEW_TASK(ctx.session.task),
       NewTaskKeyboard());
 
   ctx.session.task =

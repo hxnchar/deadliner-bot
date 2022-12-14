@@ -55,7 +55,7 @@ const updateMessage = async (ctx: BotContext) => {
   await cleanMessagesBin(ctx);
   await editMessageByID(
     ctx,
-    BotReplies.NOTIFICATION(ctx.session.notification),
+    BotReplies().NOTIFICATION(ctx.session.notification),
     NotificationKeyboard(),
   );
 };
@@ -68,7 +68,7 @@ notificationScene.enter(async (ctx) => {
 
   const sentMessage =
     await sendMessage(ctx,
-      BotReplies.NOTIFICATION(ctx.session.notification),
+      BotReplies().NOTIFICATION(ctx.session.notification),
       NotificationKeyboard());
 
   ctx.session.messageID = sentMessage.message_id;
@@ -120,7 +120,7 @@ notificationScene.action(
   async (ctx) => {
     const sentMessage =
       await sendMessage(ctx,
-        BotReplies.LINK_SUBJECT,
+        BotReplies().LINK_SUBJECT(),
         await PeekSubject());
     messageToBin(ctx, sentMessage.message_id);
   },

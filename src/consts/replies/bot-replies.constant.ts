@@ -2,25 +2,28 @@ import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts/dateTime.format';
 import { commandsString } from 'consts/replies/described-commands.constant';
 import { featuresToString } from 'consts/replies/bot-features.constant';
-import { Subject, Notification, User } from 'services';
-import { Task } from 'services/task';
+import { Subject, Notification, User, Task, BotService } from 'services';
+import { LangData } from 'consts/langdata.constant';
 
-const BotReplies = {
-  START: () => `Welcome to *Deadliner*.\n\nThis bot may help you with tracking your deadlines. It has several features that make him more useful than the last one.\n${featuresToString()}`,
-  NEW_SUBJECT: (subject: Subject = new Subject()) =>
-    `You're creating a new subject. Please, provide the following details:\n\n${subject.toString()}`,
-  NEW_TASK: (task: Task = new Task()) =>
-    `You're creating a new deadline. Please, provide the following details:\n\n${task.toString()}`,
-  NOTIFICATION: (notification: Notification = new Notification()) => {
-    const sendOn = notification.date ? `${format(notification.date, DateTimeLongFormat)}` : 'right now';
-    return `You are about to create a new notification.\nIt will be sent ${notification.date ? 'on ' : ''}*${sendOn}*\nPreview:\n\n${notification.toString()}`;
-  },
-  SETTINGS: (user: User = new User()) => user.toString(),
-  PEEK_PERSONAL: 'Pick subjects which you would like to subscribe to:',
-  PEEK_LANGUAGE: 'Pick your language interface:',
-  LINK_SUBJECT: 'Link a subject from the following list:',
-  NEW_SUBJECT_SAVE: 'Subject was saved.',
-  HELP: `Here is the list of avaiable commands:\n${commandsString}`,
+const BotReplies = () => {
+  const LANG = BotService.language;
+
+  return {
+    START: () => `${LangData[LANG]['command-start-header']} *Deadliner*.\n\n${LangData[LANG]['command-start-body']}\n${featuresToString()}`,
+    NEW_SUBJECT: (subject: Subject = new Subject()) =>
+      `${LangData[LANG]['command-new-subject-body']}:\n\n${subject.toString()}`,
+    NEW_TASK: (task: Task = new Task()) =>
+      `${LangData[LANG]['command-new-task-body']}:\n\n${task.toString()}`,
+    NOTIFICATION: (notification: Notification = new Notification()) => {
+      const sendOn = notification.date ? `${format(notification.date, DateTimeLongFormat)}` : 'right now';
+      return `${LangData[LANG]['command-new-notification-body']}\n${LangData[LANG]['will-be-sent']}: ${sendOn}*\n${LangData[LANG]['preview']}:\n\n${notification.toString()}`;
+    },
+    SETTINGS: (user: User = new User()) => user.toString(),
+    PEEK_PERSONAL: () => `${LangData[LANG]['command-peek-personal']}:`,
+    PEEK_LANGUAGE: () => `${LangData[LANG]['command-peek-language']}:`,
+    LINK_SUBJECT: () => `${LangData[LANG]['command-link-subject']}:`,
+    HELP: () => `${LangData[LANG]['command-help']}:\n${commandsString}`,
+  };
 };
 
 export { BotReplies };

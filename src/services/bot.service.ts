@@ -40,11 +40,11 @@ class BotService {
       const newUser = await UserController.create(userID, username);
       await UserController.save(newUser);
     }
-    return sendMessage(ctx, BotReplies.START());
+    return sendMessage(ctx, BotReplies().START());
   }
 
   help(ctx: BotContext) {
-    return sendMessage(ctx, BotReplies.HELP);
+    return sendMessage(ctx, BotReplies().HELP());
   }
 
   async todolist(ctx: BotContext) {

@@ -34,7 +34,7 @@ const resetSession = (ctx: BotContext) => {
 const updatePersonalSubjectsMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
-    BotReplies.PEEK_PERSONAL,
+    BotReplies().PEEK_PERSONAL(),
     await PeekPersonalSubject(ctx, ctx.session.user.subjects),
   );
 };
@@ -42,7 +42,7 @@ const updatePersonalSubjectsMessage = async (ctx: BotContext) => {
 const updateSettingsMessage = async (ctx: BotContext) => {
   editMessageByID(
     ctx,
-    BotReplies.SETTINGS(ctx.session.user),
+    BotReplies().SETTINGS(ctx.session.user),
     SettingsKeyboard(),
   );
 };
@@ -50,7 +50,7 @@ const updateSettingsMessage = async (ctx: BotContext) => {
 const updateLanguageMessage = async (ctx: BotContext) => {
   await editMessageByID(
     ctx,
-    BotReplies.PEEK_LANGUAGE,
+    BotReplies().PEEK_LANGUAGE(),
     LanguageKeyboard(),
   );
 };
@@ -62,7 +62,7 @@ settingsScene.enter(async (ctx) => {
 
   const sentMessage =
     await sendMessage(ctx,
-      BotReplies.SETTINGS(ctx.session.user),
+      BotReplies().SETTINGS(ctx.session.user),
       SettingsKeyboard());
 
   ctx.session.messageID = sentMessage.message_id;
