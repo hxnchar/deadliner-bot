@@ -43,6 +43,16 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'command-link-subject': 'Link a subject from the following list',
     'command-help': 'Here is the list of avaiable commands',
 
+    //Bot commands
+    'bot-command-start': 'The basic command that you cannot avoid',
+    'bot-command-new-subject': 'Creates a new subject',
+    'bot-command-notification': 'Sends a notification to your classmates',
+    'bot-command-new-task': 'Creates a new deadline',
+    'bot-command-todolist': 'Shows all of your deadlines and notifications',
+    'bot-command-todo': 'Shows your deadlines and notifications one by one, sorted by date',
+    'bot-command-settings': 'Change your preferences here',
+    'bot-command-help': 'Shows a list of available commands',
+
     //General buttons
     'discard': '🛑 Discard',
     'save': '✅ Save',
@@ -93,6 +103,16 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'command-peek-language': 'Обери свою мову інтерфейсу',
     'command-link-subject': 'Під\'єднай предмет із списку нижче',
     'command-help': 'Перелік доступних команд',
+
+    //Bot commands
+    'bot-command-start': 'Основна команда, яку ви не можете уникнути',
+    'bot-command-new-subject': 'Створює новий предмет',
+    'bot-command-notification': 'Надсилає сповіщення твоїм однокласникам',
+    'bot-command-new-task': 'Створює новий дедлайн',
+    'bot-command-todolist': 'Показує список усіх дедлайнів',
+    'bot-command-todo': 'Показує усі дедлайни один за одним, сортировано по датам',
+    'bot-command-settings': 'Змінює налаштування',
+    'bot-command-help': 'Показує список доступних команд',
 
     //General buttons
     'discard': '🛑 Відмінити',

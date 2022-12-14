@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts/dateTime.format';
-import { commandsString } from 'consts/replies/described-commands.constant';
+import { commandsToString } from 'consts/replies/described-commands.constant';
 import { featuresToString } from 'consts/replies/bot-features.constant';
 import { Subject, Notification, User, Task, BotService } from 'services';
 import { LangData } from 'consts/langdata.constant';
@@ -22,7 +22,7 @@ const BotReplies = () => {
     PEEK_PERSONAL: () => `${LangData[LANG]['command-peek-personal']}:`,
     PEEK_LANGUAGE: () => `${LangData[LANG]['command-peek-language']}:`,
     LINK_SUBJECT: () => `${LangData[LANG]['command-link-subject']}:`,
-    HELP: () => `${LangData[LANG]['command-help']}:\n${commandsString}`,
+    HELP: () => `${LangData[LANG]['command-help']}:\n${commandsToString()}`,
   };
 };
 

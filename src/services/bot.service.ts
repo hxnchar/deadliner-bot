@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf';
 import { BotContext } from 'bot';
 import { sendMessage } from 'helpers';
-import { BotReplies, commandsList } from 'consts';
+import { BotReplies, commandsToList } from 'consts';
 import { Language } from 'consts/enums';
 import { Database } from 'database';
 import { DB_CONFIG } from 'configs';
@@ -29,7 +29,7 @@ class BotService {
 
   async setup() {
     await this._database.connect();
-    await this._target.telegram.setMyCommands(commandsList);
+    await this._target.telegram.setMyCommands(commandsToList());
   }
 
   async start(ctx: BotContext) {

@@ -1,5 +1,7 @@
 import { BotCommand } from 'telegraf/typings/core/types/typegram';
 import { BotCommands } from 'consts/enums';
+import { BotService } from 'services/bot.service';
+import { LangData } from 'consts/langdata.constant';
 
 class DescribedCommand {
   command: string = '';
@@ -15,25 +17,31 @@ DescribedCommand.prototype.toString = function featureToString() {
   return `${this.command} — ${this.description}`;
 };
 
-const describedCommands: DescribedCommand[] = [
-  new DescribedCommand(BotCommands.START, 'The basic command that you cannot avoid'),
-  new DescribedCommand(BotCommands.NEW_SUBJECT, 'Creates a new subject'),
-  new DescribedCommand(BotCommands.NOTIFICATION, 'Sends a notification to your classmates'),
-  new DescribedCommand(BotCommands.NEW_TASK, 'Creates a new deadline'),
-  new DescribedCommand(BotCommands.TODOLIST, 'Shows all of your deadlines and notifications'),
-  new DescribedCommand(BotCommands.TODO, 'Shows your deadlines and notifications one by one, sorted by date'),
-  new DescribedCommand(BotCommands.SETTINGS, 'Change your preferences here'),
-  new DescribedCommand(BotCommands.HELP, 'Shows a list of available commands'),
-];
+const describedCommands = (): DescribedCommand[] => {
+  const LANG = BotService.language;
 
-const commandsToString = (commands: DescribedCommand[]): string => {
+  return [
+    new DescribedCommand(BotCommands.START, LangData[LANG]['bot-command-start']),
+    new DescribedCommand(BotCommands.NEW_SUBJECT, LangData[LANG]['bot-command-new-subject']),
+    new DescribedCommand(BotCommands.NOTIFICATION, LangData[LANG]['bot-command-notification']),
+    new DescribedCommand(BotCommands.NEW_TASK, LangData[LANG]['bot-command-new-task']),
+    new DescribedCommand(BotCommands.TODOLIST, LangData[LANG]['bot-command-todolist']),
+    new DescribedCommand(BotCommands.TODO, LangData[LANG]['bot-command-todo']),
+    new DescribedCommand(BotCommands.SETTINGS, LangData[LANG]['bot-command-settings']),
+    new DescribedCommand(BotCommands.HELP, LangData[LANG]['bot-command-help']),
+  ];
+};
+
+const commandsToString = (): string => {
+  const commands = describedCommands();
   const stringifiedCommands: string[] = commands.map(
     (command) => `\n${command.toString()}`,
   );
   return stringifiedCommands.join('\n');
 };
 
-const commandsToList = (commands: DescribedCommand[]): BotCommand[] => {
+const commandsToList = (): BotCommand[] => {
+  const commands = describedCommands();
   const commandsList: BotCommand[] = [];
   commands.forEach((command) =>
     commandsList.push({
@@ -43,7 +51,4 @@ const commandsToList = (commands: DescribedCommand[]): BotCommand[] => {
   return commandsList;
 };
 
-const commandsString = commandsToString(describedCommands);
-const commandsList = commandsToList(describedCommands);
-
-export { commandsString, commandsList };
+export { commandsToString, commandsToList };
