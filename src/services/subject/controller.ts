@@ -20,16 +20,16 @@ const SubjectController = {
     return subjects;
   },
 
-  async getByID(id: string | undefined): Promise<Subject | undefined> {
+  async getByID(id: string): Promise<Subject | undefined> {
     //TODO implement find by id
     // const fetchedSubject =
     //   (await SubjectModel.findById(id));
-    if (!id) {
-      return undefined;
-    }
     const fetchedSubject =
       (await SubjectModel.find({ _id: new Types.ObjectId(id) }))[0];
-    return Subject.parse(fetchedSubject);
+    if (fetchedSubject) {
+      return Subject.parse(fetchedSubject);
+    }
+    return undefined;
   },
 
 };

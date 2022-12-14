@@ -75,12 +75,13 @@ class User {
     const { id, name, subjects, calendar, language } = object;
     const user = new User(id, name);
     const parsedSubjects: Subject[] = [];
-
     for (const subject of subjects) {
-      const fetchedSubject =
-        await SubjectController.getByID(subject._id?.toString());
-      if (fetchedSubject) {
-        parsedSubjects.push(fetchedSubject);
+      if (subject._id) {
+        const fetchedSubject =
+          await SubjectController.getByID(subject._id?.toString());
+        if (fetchedSubject) {
+          parsedSubjects.push(fetchedSubject);
+        }
       }
     }
 
