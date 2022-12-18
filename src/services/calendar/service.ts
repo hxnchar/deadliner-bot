@@ -1,14 +1,18 @@
 import { google } from 'googleapis';
 import { CALENDAR_CONFIG } from 'configs';
+import { BotService, ICalendar } from '..';
+import { LangData } from 'consts/langdata.constant';
+import { Types } from 'mongoose';
 
 class Calendar {
-  _id: string | undefined;
-  target;
-  auth: any;
+  _id: Types.ObjectId | undefined;
+  _calendarID: string | undefined;
+  _target;
+  _auth: any;
 
-  constructor(id?: string) {
-    this._id = id;
-    this.target = google.calendar({ version: 'v3' });
+  constructor(calendarID?: string) {
+    this.calendarID = calendarID;
+    this._target = google.calendar({ version: 'v3' });
   }
 
   get id() {
@@ -17,13 +21,39 @@ class Calendar {
 
   set id(newID) {
     this._id = newID;
-    this.auth = new google.auth.JWT(
-      newID,
+  }
+
+  get calendarID() {
+    return this._calendarID;
+  }
+
+  set calendarID(newCalendarID) {
+    this._calendarID = newCalendarID;
+    this._auth = new google.auth.JWT(
+      newCalendarID,
       undefined,
-      CALENDAR_CONFIG.key,
-      'https://www.googleapis.com/auth/calendar',
+      CALENDAR_CONFIG.private_key_id,
+      'https://www.googleapis.com/_auth/calendar',
     );
   }
+
+  convertToObject() {
+    return {
+      _id: this.id,
+      calendarID: this.calendarID,
+    };
+  }
+
+  static parse(calendarObject: ICalendar) {
+    const calendar = new Calendar(calendarObject.calendarID);
+    calendar.id = calendarObject._id;
+    return calendar;
+  }
 }
+
+Calendar.prototype.toString = function calendarToString() {
+  const LANG = BotService.language;
+  return `*${LangData[LANG]['calendar-id']}*: ${this.calendarID ?? LangData[LANG]['not-defined']}`;
+};
 
 export { Calendar };

@@ -1,9 +1,12 @@
 import { UserModel } from 'services/user/model';
 import { UserController } from 'services/user/controller';
 import { Subject, SubjectController } from 'services/subject';
-import { Calendar } from 'services/calendar';
+import { Calendar, CalendarController } from 'services/calendar';
 import { Language } from 'consts/enums';
 import { IUser } from 'services/user/interface';
+import { BotService } from '..';
+import { LangData } from 'consts';
+import { Reminder } from 'services/reminder/service';
 
 const NO_SUBJECTS_MSG = 'No subjects in this list yet';
 
@@ -13,6 +16,7 @@ class User {
   _subjects: Subject[];
   _calendar: Calendar | undefined;
   _language: Language = Language.en;
+  _reminders: Reminder[] = [];
 
   constructor(id?: number, name?: string) {
     this._id = id;
@@ -60,13 +64,33 @@ class User {
     this._language = newLanguage;
   }
 
+  get reminders() {
+    return this._reminders;
+  }
+
+  set reminders(newRemindes) {
+    this._reminders = newRemindes;
+  }
+
+  get generalSubjects() {
+    return this.subjects.filter((subject) => subject.isGeneral);
+  }
+
+  get privateSubjects() {
+    return this.subjects.filter((subject) => !subject.isGeneral);
+  }
+
   convertToObject() {
     const subjects = this.subjects.map((subject) => subject.convertToObject());
+    const reminders =
+      this.reminders.map((reminder) => reminder.convertToObject());
+    const calendar = this.calendar?.convertToObject();
     return {
       id: this.id,
       name: this.name,
       subjects,
-      calendar: this.calendar,
+      calendar,
+      reminders,
       language: this.language,
     };
   }
@@ -74,6 +98,10 @@ class User {
   static async parse(object: IUser): Promise<User> {
     const { id, name, subjects, calendar, language } = object;
     const user = new User(id, name);
+
+    const parsedCalendar =
+      await CalendarController.getByID(calendar?._id?.toString());
+
     const parsedSubjects: Subject[] = [];
     for (const subject of subjects) {
       if (subject._id) {
@@ -87,6 +115,7 @@ class User {
 
     user.subjects = parsedSubjects;
     user.language = language;
+    user.calendar = parsedCalendar;
 
     return user;
   }
@@ -98,22 +127,29 @@ class User {
 }
 
 User.prototype.toString = function userToString() {
+  const LANG = BotService.language;
+
   //TODO set total amount of subjects by admin
   const FIXMEPLS = 3;
+
   const countSubjects = this.subjects.length;
-  const generalSubjects =
-    this.subjects.filter((subject) => subject.isGeneral)
-      .map((subject) => subject.name),
-        privateSubjects =
-          this.subjects.filter((subject) => !subject.isGeneral)
-            .map((subject) => subject.name);
-  const generalSubjectsStringified = generalSubjects.length > 0 ? generalSubjects.join(',\n')
-          : NO_SUBJECTS_MSG,
-        privateSubjectsStringified = privateSubjects.length > 0 ? privateSubjects.join(',\n')
-          : NO_SUBJECTS_MSG;
-  const totalSubjectsRate = countSubjects === FIXMEPLS ? '✅'
-    : countSubjects < FIXMEPLS ? '⚠️' : '🤨';
-  return `*⚙️ Preferences*\n\n*${totalSubjectsRate} Total number of subjects:* ${countSubjects}/${FIXMEPLS}\n\n*👥 General subjects list:*\n${generalSubjectsStringified}\n\n*👤 Private subjects list:*\n${privateSubjectsStringified}`;
+  const generalSubjects = this.generalSubjects.map((subject) => subject.name);
+  const privateSubjects = this.privateSubjects.map((subject) => subject.name);
+
+  const generalSubjectsStringified = generalSubjects.length > 0
+    ? generalSubjects.join(',\n') : NO_SUBJECTS_MSG;
+  const privateSubjectsStringified = privateSubjects.length > 0
+    ? privateSubjects.join(',\n') : NO_SUBJECTS_MSG;
+
+  const totalSubjectsRate = countSubjects === FIXMEPLS
+    ? '✅' : countSubjects < FIXMEPLS
+      ? '⚠️' : '🤨';
+
+  const calendarTuned = this.calendar
+    ? LangData[LANG]['calenadar-tuned'] : LangData[LANG]['calenadar-not-tuned'];
+
+  const reminders = Reminder.stringify(this.reminders);
+  return `*⚙️ Preferences*\n\n*${totalSubjectsRate} Total number of subjects:* ${countSubjects}/${FIXMEPLS}\n\n*👥 General subjects list:*\n${generalSubjectsStringified}\n\n*👤 Private subjects list:*\n${privateSubjectsStringified}\n\nCalendar: ${calendarTuned}\n\nReminders: ${reminders}`;
 };
 
 export { User };

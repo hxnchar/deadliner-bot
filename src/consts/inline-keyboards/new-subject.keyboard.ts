@@ -5,46 +5,46 @@ import { BotService } from 'services';
 
 export const NewSubjectKeyboard =
   (): InlineKeyboardButton[][] => {
-    const LANGUAGE = BotService.language;
+    const LANG = BotService.language;
 
     return [
       [
         {
-          'text': LangData[LANGUAGE]['name'],
+          'text': LangData[LANG]['name'],
           'callback_data': CALLBACK_DATA.SUBJECT_CHANGE_NAME,
         },
       ],
       [
         {
-          'text': LangData[LANGUAGE]['general'],
+          'text': LangData[LANG]['general'],
           'callback_data': CALLBACK_DATA.SUBJECT_MAKE_GENERAL,
         },
         {
-          'text': LangData[LANGUAGE]['non-general'],
+          'text': LangData[LANG]['non-general'],
           'callback_data': CALLBACK_DATA.SUBJECT_MAKE_NON_GENERAL,
         },
       ],
       [
         {
-          'text': LangData[LANGUAGE]['undo'],
+          'text': LangData[LANG]['undo'],
           'callback_data': CALLBACK_DATA.SUBJECT_UNDO,
         },
         {
-          'text': LangData[LANGUAGE]['reset'],
+          'text': LangData[LANG]['reset'],
           'callback_data': CALLBACK_DATA.SUBJECT_RESET,
         },
         {
-          'text': LangData[LANGUAGE]['redo'],
+          'text': LangData[LANG]['redo'],
           'callback_data': CALLBACK_DATA.SUBJECT_REDO,
         },
       ],
       [
         {
-          'text': LangData[LANGUAGE]['discard'],
+          'text': LangData[LANG]['discard'],
           'callback_data': CALLBACK_DATA.SUBJECT_DISCARD,
         },
         {
-          'text': LangData[LANGUAGE]['save'],
+          'text': LangData[LANG]['save'],
           'callback_data': CALLBACK_DATA.SUBJECT_SAVE,
         },
       ],

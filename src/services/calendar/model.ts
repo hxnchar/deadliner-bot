@@ -1,8 +1,11 @@
 import { Schema, model } from 'mongoose';
 import { ModelName } from 'consts/enums';
+import { ICalendar } from './interface';
 
-const CalendarModel = new Schema({
-  id: String,
+const CalendarSchema = new Schema({
+  calendarID: String,
 });
 
-export default model(ModelName.CALENDAR, CalendarModel);
+const CalendarModel = model<ICalendar>(ModelName.CALENDAR, CalendarSchema);
+
+export { CalendarSchema, CalendarModel };

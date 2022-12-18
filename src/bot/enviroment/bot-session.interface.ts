@@ -12,6 +12,8 @@ interface SceneSession extends Scenes.SceneSessionData {
   notificationDateInput: boolean;
   notificationSubjectInput: boolean;
   notificationDeadlineInput: boolean;
+
+  calendarIDinput: boolean;
 }
 
 interface BotSession extends Scenes.SceneSession<SceneSession> {

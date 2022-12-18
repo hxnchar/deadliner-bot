@@ -1,9 +1,9 @@
 import { Scenes } from 'telegraf';
 import { callbackQuery } from 'telegraf/filters';
-import { BotReplies, SceneIDs, CALLBACK_DATA, BotCommands, SettingsKeyboard, PeekPersonalSubject, LanguageKeyboard, Language } from 'consts';
+import { BotReplies, SceneIDs, CALLBACK_DATA, BotCommands, SettingsKeyboard, PeekPersonalSubject, LanguageKeyboard, CalendarKeyboard, Language } from 'consts';
 import { BotContext } from 'bot';
-import { User, Subject, UserController } from 'services';
-import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage } from 'helpers';
+import { User, Subject, UserController, Calendar, CalendarController, CalendarModel } from 'services';
+import { sendMessage, editMessageByID, deleteMessage, messageToBin, cleanMessagesBin } from 'helpers';
 
 const setLanguage = (ctx: BotContext, language: string) => {
   let userLanguage: Language = Language.en;
@@ -55,6 +55,14 @@ const updateLanguageMessage = async (ctx: BotContext) => {
   );
 };
 
+const updateCalendarMessage = async (ctx: BotContext) => {
+  await editMessageByID(
+    ctx,
+    BotReplies().TUNE_CALENDAR(ctx.session.user.calendar),
+    CalendarKeyboard(),
+  );
+};
+
 const settingsScene = new Scenes.BaseScene<BotContext>(SceneIDs.SETTINGS);
 
 settingsScene.enter(async (ctx) => {
@@ -90,13 +98,45 @@ settingsScene.action(CALLBACK_DATA.SETTINGS_DISCARD, async (ctx) => {
 });
 
 settingsScene.action(CALLBACK_DATA.SETTINGS_SAVE, async (ctx) => {
-  try {
-    await UserController.save(ctx.session.user);
-    await ctx.answerCbQuery('Settings updated successfully');
-    await ctx.scene.leave();
-  } catch (e: any) {
-    await ctx.answerCbQuery(`${e.message}`);
+  await UserController.save(ctx.session.user);
+  await ctx.answerCbQuery('Settings updated successfully');
+  await ctx.scene.leave();
+});
+
+settingsScene.action(CALLBACK_DATA.SETTINGS_CALENDAR, async (ctx) => {
+  await updateCalendarMessage(ctx);
+});
+
+settingsScene.action(CALLBACK_DATA.SETTINGS_SET_CALENDAR_ID, async (ctx) => {
+  ctx.scene.session.calendarIDinput = true;
+  const sentMessage = await sendMessage(ctx, 'Please, provide yout calendar ID');
+  messageToBin(ctx, sentMessage.message_id);
+});
+
+settingsScene.action(CALLBACK_DATA.SETTINGS_CALENDAR_SAVE, async (ctx) => {
+  if (ctx.session.user.calendar) {
+    const calendarModel =
+      new CalendarModel(ctx.session.user.calendar.convertToObject());
+    await calendarModel.save();
+    ctx.session.user.calendar = Calendar.parse(calendarModel);
   }
+  await updateSettingsMessage(ctx);
+});
+
+settingsScene.on('text', async (ctx) => {
+  messageToBin(ctx);
+
+  if (ctx.scene.session.calendarIDinput) {
+    const calendarID = ctx.message.text;
+    if (ctx.session.user.calendar) {
+      ctx.session.user.calendar.calendarID = calendarID;
+    } else {
+      ctx.session.user.calendar = new Calendar(calendarID);
+    }
+    await updateCalendarMessage(ctx);
+  }
+
+  await cleanMessagesBin(ctx);
 });
 
 settingsScene.on(callbackQuery('data'), async (ctx) => {

@@ -1,5 +1,8 @@
+import { Types } from 'mongoose';
+
 interface ICalendar {
-  id: string,
+  _id: Types.ObjectId,
+  calendarID: string,
 }
 
 export { ICalendar };

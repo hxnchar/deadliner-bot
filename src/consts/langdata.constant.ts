@@ -16,6 +16,10 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'general': '🟢 General',
     'non-general': '🟡 Non-general',
     'task': '✏️ Task',
+    'calendar-id': '🌐 Calendar ID',
+    'calenadar-tuned': '✅ Calendar tuned',
+    'calenadar-not-tuned': '❌ Calendar not tuned',
+    'reminders': 'Your reminders:',
 
     //Bot features
     'subscriptions-feature': 'Subscriptions🤩',
@@ -42,6 +46,9 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'command-peek-language': 'Pick your language interface',
     'command-link-subject': 'Link a subject from the following list',
     'command-help': 'Here is the list of avaiable commands',
+    'command-tune-calendar': 'Please, provide following information for tune Google Calendar',
+
+    'not-defined': 'Not provided',
 
     //Bot commands
     'bot-command-start': 'The basic command that you cannot avoid',
@@ -77,6 +84,10 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'general': '🟢 Загальний',
     'non-general': '🟡 Вибірковий',
     'task': '✏️ Завдання',
+    'calendar-id': '🌐 ID календаря',
+    'calenadar-tuned': '✅ Календар налаштовано',
+    'calenadar-not-tuned': '❌ Календар не налаштовано',
+    'reminders': 'Твої нагадування:',
 
     //Bot features
     'subscriptions-feature': 'Підписки🤩',
@@ -103,6 +114,9 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'command-peek-language': 'Обери свою мову інтерфейсу',
     'command-link-subject': 'Під\'єднай предмет із списку нижче',
     'command-help': 'Перелік доступних команд',
+    'command-tune-calendar': 'Будь ласка, надайте наступні дані для доступу до Google Calendar',
+
+    'not-defined': 'Не вказано',
 
     //Bot commands
     'bot-command-start': 'Основна команда, яку ви не можете уникнути',
