@@ -4,3 +4,5 @@ export * from './notification';
 export * from './calendar';
 export * from './bot.service';
 export * from './task';
+export * from './reminder';
+export * from './event';
