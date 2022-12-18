@@ -1,4 +1,3 @@
-import { UserModel } from 'services/user/model';
 import { UserController } from 'services/user/controller';
 import { Subject, SubjectController } from 'services/subject';
 import { Calendar, CalendarController } from 'services/calendar';

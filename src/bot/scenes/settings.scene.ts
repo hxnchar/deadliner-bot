@@ -2,7 +2,7 @@ import { Scenes } from 'telegraf';
 import { callbackQuery } from 'telegraf/filters';
 import { BotReplies, SceneIDs, CALLBACK_DATA, BotCommands, SettingsKeyboard, PeekPersonalSubject, LanguageKeyboard, CalendarKeyboard, Language } from 'consts';
 import { BotContext } from 'bot';
-import { User, Subject, UserController, Calendar, CalendarController, CalendarModel } from 'services';
+import { User, Subject, UserController, Calendar, CalendarModel } from 'services';
 import { sendMessage, editMessageByID, deleteMessage, messageToBin, cleanMessagesBin } from 'helpers';
 
 const setLanguage = (ctx: BotContext, language: string) => {

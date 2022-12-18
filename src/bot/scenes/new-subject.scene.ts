@@ -1,9 +1,8 @@
 import { Scenes } from 'telegraf';
 import { BotReplies, SceneIDs, NewSubjectKeyboard, BotCommands, CALLBACK_DATA } from 'consts';
 import { BotContext } from 'bot';
-import { Subject, SubjectController, SubjectModel, User, UserController } from 'services';
+import { Subject, SubjectController, User, UserController } from 'services';
 import { sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMessage } from 'helpers';
-
 
 const updateMessage = async (ctx: BotContext) => {
   await editMessageByID(
