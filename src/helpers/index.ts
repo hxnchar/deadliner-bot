@@ -4,3 +4,4 @@ export * from './message-editer.helper';
 export * from './message-cleaner.helper';
 export * from './uuid-generator.helper';
 export * from './context.helper';
+export * from './edit-or-send.helper';

@@ -7,6 +7,9 @@ import {
   notificationScene,
   settingsScene,
   newTaskScene,
+  calendarSubScene,
+  languageSubScene,
+  subjectsSubScene,
 } from 'bot';
 import { BotService } from 'services';
 import { errorMiddleware, languageMiddleware } from 'middlewares';
@@ -19,6 +22,9 @@ const stage = new Scenes.Stage<BotContext>([
   notificationScene,
   settingsScene,
   newTaskScene,
+  calendarSubScene,
+  languageSubScene,
+  subjectsSubScene,
 ]);
 bot.use(session());
 bot.use(stage.middleware());

@@ -10,13 +10,14 @@ const messageToBin = (ctx: BotContext, messageID?: number) => {
   }
 };
 
-const deleteMessage = async (ctx: BotContext, messageID: number) => {
-  const chatID = ctx.chat?.id;
-  if (!chatID) {
-    throw Error('This message does not exist');
-  }
-  return ctx.telegram.deleteMessage(chatID, messageID);
-};
+const deleteMessage =
+  async (ctx: BotContext, messageID: number | undefined) => {
+    const chatID = ctx.chat?.id;
+    if (!chatID || !messageID) {
+      throw Error('This message does not exist');
+    }
+    return ctx.telegram.deleteMessage(chatID, messageID);
+  };
 
 const cleanMessagesBin = async (ctx: BotContext, messages?: number[]) => {
   const messagesToDelete = messages ? messages : ctx.session.cleanUpMessages;
