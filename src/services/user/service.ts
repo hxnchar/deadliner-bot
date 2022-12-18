@@ -3,9 +3,9 @@ import { Subject, SubjectController } from 'services/subject';
 import { Calendar, CalendarController } from 'services/calendar';
 import { Language } from 'consts/enums';
 import { IUser } from 'services/user/interface';
-import { BotService } from '..';
+import { BotService } from 'services/bot.service';
 import { LangData } from 'consts';
-import { Reminder } from 'services/reminder/service';
+import { Reminder } from 'services/reminder';
 
 const NO_SUBJECTS_MSG = 'No subjects in this list yet';
 

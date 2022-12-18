@@ -1,7 +1,6 @@
 import { Calendar } from 'services/calendar/service';
 import { CalendarModel } from 'services/calendar/model';
-import { Event } from 'services/event/service';
-import { IEvent } from 'services/event/interface';
+import { IEvent } from 'services/event';
 
 const CalendarController = {
 
