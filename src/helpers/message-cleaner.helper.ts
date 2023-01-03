@@ -1,4 +1,5 @@
 import { BotContext } from 'bot';
+import { resetTargetMessage } from 'helpers/context.helper';
 
 const messageToBin = (ctx: BotContext, messageID?: number) => {
   const messageToDeleteID = messageID || ctx.message?.message_id;
@@ -19,6 +20,16 @@ const deleteMessage =
     return ctx.telegram.deleteMessage(chatID, messageID);
   };
 
+const deleteTargetMessage =
+  async (ctx: BotContext) => {
+    const messageID = ctx.session.messageID,
+          chatID = ctx.session.chatID;
+    if (chatID && messageID) {
+      await ctx.telegram.deleteMessage(chatID, messageID);
+    }
+    resetTargetMessage(ctx);
+  };
+
 const cleanMessagesBin = async (ctx: BotContext, messages?: number[]) => {
   const messagesToDelete = messages ? messages : ctx.session.cleanUpMessages;
   if (!messagesToDelete) {
@@ -36,4 +47,4 @@ const cleanMessagesBin = async (ctx: BotContext, messages?: number[]) => {
   ctx.session.cleanUpMessages = [];
 };
 
-export { messageToBin, deleteMessage, cleanMessagesBin };
+export { messageToBin, deleteMessage, cleanMessagesBin, deleteTargetMessage };
