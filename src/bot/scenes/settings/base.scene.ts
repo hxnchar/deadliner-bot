@@ -7,11 +7,6 @@ import { editOrSend, deleteTargetMessage } from 'helpers';
 const settingsMainScene = new Scenes.BaseScene<BotContext>(SceneIDs.SETTINGS);
 
 settingsMainScene.enter(async (ctx) => {
-  // console.log(ctx.message);
-  // console.log('enter settings');
-  // console.log(ctx.scene.current);
-  // console.log('\n\n\n====\n\n\n');
-  console.log(SettingsKeyboard());
   await editOrSend(ctx,
     BotReplies().SETTINGS(ctx.session.user),
     SettingsKeyboard());
@@ -25,10 +20,6 @@ settingsMainScene.action(CALLBACK_DATA.SETTINGS_SUBJECTS, async (ctx) => {
 });
 
 settingsMainScene.action(CALLBACK_DATA.SETTINGS_LANGUAGE, async (ctx) => {
-  // console.log('before leave settings');
-  // console.log(ctx.scene.current);
-  // console.log('\n\n\n====\n\n\n');
-  console.log('entering the language scene');
   await ctx.scene.enter(SceneIDs.EDIT_LANGUAGE);
 });
 

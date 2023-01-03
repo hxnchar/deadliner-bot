@@ -34,9 +34,6 @@ const languageSubScene =
   new Scenes.BaseScene<BotContext>(SceneIDs.EDIT_LANGUAGE);
 
 languageSubScene.enter(async (ctx) => {
-  // console.log('entering lang');
-  // console.log(ctx.scene.current);
-  // console.log('\n\n\n====\n\n\n');
   await updateTargetMessage(ctx);
 });
 
