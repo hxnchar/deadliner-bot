@@ -15,7 +15,7 @@ const updateTargetMessage = async (ctx: BotContext) => {
 };
 
 const setLanguage = (ctx: BotContext, language: string) => {
-  let userLanguage: Language = Language.en;
+  let userLanguage: Language;
   switch (language) {
     case 'ua':
       userLanguage = Language.ua;
@@ -38,7 +38,7 @@ languageSubScene.enter(async (ctx) => {
 });
 
 languageSubScene.action(CALLBACK_DATA.LANGUAGE_DISCARD, async (ctx) => {
-  await ctx.scene.leave();
+  await ctx.scene.enter(SceneIDs.SETTINGS);
 });
 
 languageSubScene.on(callbackQuery('data'), async (ctx) => {
@@ -49,7 +49,7 @@ languageSubScene.on(callbackQuery('data'), async (ctx) => {
       return;
     }
     setLanguage(ctx, language);
-    await ctx.scene.leave();
+    await ctx.scene.enter(SceneIDs.SETTINGS);
   }
 });
 
