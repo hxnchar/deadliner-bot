@@ -1,8 +1,10 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { CALLBACK_DATA } from 'consts/enums';
 import { LangData } from 'consts';
+import { BotService } from 'services/bot.service';
 
 export const LanguageKeyboard = (): InlineKeyboardButton[][] => {
+  const LANG = BotService.language;
   const keyboard: InlineKeyboardButton[][] = [];
   const langKeys = Object.keys(LangData);
   langKeys.forEach((key) => {
@@ -15,5 +17,11 @@ export const LanguageKeyboard = (): InlineKeyboardButton[][] => {
       },
     ]);
   });
+  keyboard.push([
+    {
+      'text': LangData[LANG]['discard'],
+      'callback_data': `${CALLBACK_DATA.LANGUAGE_DISCARD}`,
+    },
+  ]);
   return keyboard;
 };
