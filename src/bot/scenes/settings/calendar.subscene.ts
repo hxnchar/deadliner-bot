@@ -1,9 +1,10 @@
 import { Scenes } from 'telegraf';
-import { callbackQuery } from 'telegraf/filters';
-import { BotReplies, SceneIDs, CALLBACK_DATA, CalendarKeyboard, Language } from 'consts';
+import { BotReplies, SceneIDs, CALLBACK_DATA, CalendarKeyboard } from 'consts';
 import { BotContext } from 'bot';
-import { editMessageByID, cleanMessagesBin, messageToBin, sendMessage, editOrSend } from 'helpers';
-import { Calendar, CalendarModel } from 'services';
+import { cleanMessagesBin, messageToBin, sendMessage, editOrSend } from 'helpers';
+import { Calendar, CalendarController } from 'services';
+
+const { enter } = Scenes.Stage;
 
 const updateTargetMessage = async (ctx: BotContext) => {
   await editOrSend(
@@ -27,33 +28,35 @@ calendarSubScene.action(CALLBACK_DATA.SETTINGS_SET_CALENDAR_ID, async (ctx) => {
 });
 
 calendarSubScene.action(CALLBACK_DATA.SETTINGS_CALENDAR_SAVE, async (ctx) => {
-  if (ctx.session.user.calendar) {
-    const calendarModel =
-      new CalendarModel(ctx.session.user.calendar.convertToObject());
-    await calendarModel.save();
-    ctx.session.user.calendar = Calendar.parse(calendarModel);
+  if (ctx.session.calendar) {
+    const calendar = ctx.session.calendar;
+    const calendarModel = await CalendarController.save(calendar);
+    if (calendarModel) {
+      ctx.session.user.calendar = Calendar.parse(calendarModel);
+    }
+    ctx.session.calendar = undefined;
   }
-  await updateTargetMessage(ctx);
+  await ctx.scene.enter(SceneIDs.SETTINGS);
 });
 
 calendarSubScene.on('text', async (ctx) => {
   messageToBin(ctx);
 
   if (ctx.scene.session.calendarIDinput) {
+    ctx.scene.session.calendarIDinput = false;
     const calendarID = ctx.message.text;
-    if (ctx.session.user.calendar) {
-      ctx.session.user.calendar.calendarID = calendarID;
+    if (ctx.session.calendar) {
+      ctx.session.calendar.calendarID = calendarID;
     } else {
       ctx.session.user.calendar = new Calendar(calendarID);
     }
     await updateTargetMessage(ctx);
   }
-
   await cleanMessagesBin(ctx);
 });
 
 calendarSubScene.leave(async (ctx) => {
-  ctx.scene.enter(SceneIDs.SETTINGS);
+  enter<BotContext>(SceneIDs.SETTINGS);
 });
 
 export { calendarSubScene };

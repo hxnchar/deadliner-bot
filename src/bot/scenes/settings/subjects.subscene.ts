@@ -3,7 +3,9 @@ import { callbackQuery } from 'telegraf/filters';
 import { BotReplies, SceneIDs, CALLBACK_DATA, PeekPersonalSubject } from 'consts';
 import { BotContext } from 'bot';
 import { Subject } from 'services';
-import { editMessageByID, editOrSend } from 'helpers';
+import { editOrSend } from 'helpers';
+
+const { enter } = Scenes.Stage;
 
 const updateTargetMessage = async (ctx: BotContext) => {
   await editOrSend(
@@ -22,7 +24,7 @@ subjectsSubScene.enter(async (ctx) => {
 
 subjectsSubScene.action(
   CALLBACK_DATA.SUBJECT_SAVE_PERSONAL_LIST, async (ctx) => {
-    ctx.scene.enter(SceneIDs.SETTINGS);
+    await ctx.scene.enter(SceneIDs.SETTINGS);
   });
 
 subjectsSubScene.on(callbackQuery('data'), async (ctx) => {
@@ -44,7 +46,7 @@ subjectsSubScene.on(callbackQuery('data'), async (ctx) => {
 });
 
 subjectsSubScene.leave(async (ctx) => {
-  ctx.scene.enter(SceneIDs.SETTINGS);
+  enter<BotContext>(SceneIDs.SETTINGS);
 });
 
 export { subjectsSubScene };
