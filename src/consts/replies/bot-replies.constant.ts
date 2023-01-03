@@ -16,7 +16,7 @@ const BotReplies = () => {
       `${LangData[LANG]['command-new-task-body']}:\n\n${task.toString()}`,
     NOTIFICATION: (notification: Notification = new Notification()) => {
       const sendOn = notification.date ? `${format(notification.date, DateTimeLongFormat)}` : 'right now';
-      return `${LangData[LANG]['command-new-notification-body']}\n${LangData[LANG]['will-be-sent']}: ${sendOn}*\n${LangData[LANG]['preview']}:\n\n${notification.toString()}`;
+      return `${LangData[LANG]['command-new-notification-body']}\n${LangData[LANG]['will-be-sent']}: *${sendOn}*\n${LangData[LANG]['preview']}:\n\n${notification.toString()}`;
     },
     SETTINGS: (user: User = new User()) => user.toString(),
     REMINDERS: (user: User = new User()) => `${LangData[LANG]['reminders']}:`,
