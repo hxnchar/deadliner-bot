@@ -17,7 +17,7 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'non-general': '🟡 Non-general',
     'task': '✏️ Task',
     'calendar-id': '🌐 Calendar ID',
-    'calenadar-tuned': '✅ Calendar tuned',
+    'calenadar-tuned': '✅ Calendar is ready',
     'calenadar-not-tuned': '❌ Calendar not tuned',
     'reminders': 'Your reminders:',
 
@@ -85,7 +85,7 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'non-general': '🟡 Вибірковий',
     'task': '✏️ Завдання',
     'calendar-id': '🌐 ID календаря',
-    'calenadar-tuned': '✅ Календар налаштовано',
+    'calenadar-tuned': '✅ Календар готовий',
     'calenadar-not-tuned': '❌ Календар не налаштовано',
     'reminders': 'Твої нагадування:',
 
