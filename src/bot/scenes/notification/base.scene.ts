@@ -1,10 +1,9 @@
 import { Scenes } from 'telegraf';
-import { callbackQuery } from 'telegraf/filters';
 import { parse } from 'date-fns';
 import { BotReplies, SceneIDs, NotificationKeyboard, CALLBACK_DATA, DateTimeCommonFormat, BotCommands, PeekSubject } from 'consts';
 import { BotContext } from 'bot';
-import { Notification, NotificationController, SubjectController } from 'services';
-import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage } from 'helpers';
+import { Notification, NotificationController } from 'services';
+import { sendMessage, editMessageByID, messageToBin, cleanMessagesBin, deleteMessage, deleteTargetMessage, editOrSend } from 'helpers';
 
 const resetFlags = (ctx: BotContext) => {
   ctx.scene.session.notificationHeaderInput = false;
@@ -66,13 +65,9 @@ const notificationScene =
 notificationScene.enter(async (ctx) => {
   resetSession(ctx);
 
-  const sentMessage =
-    await sendMessage(ctx,
-      BotReplies().NOTIFICATION(ctx.session.notification),
-      NotificationKeyboard());
-
-  ctx.session.messageID = sentMessage.message_id;
-  ctx.session.chatID = sentMessage.chat.id;
+  await editOrSend(ctx,
+    BotReplies().NOTIFICATION(ctx.session.notification),
+    NotificationKeyboard());
 });
 
 notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_HEADER,
@@ -112,17 +107,14 @@ notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
 );
 
 notificationScene.action(CALLBACK_DATA.NOTIFICATION_DISCARD, async (ctx) => {
+  await deleteTargetMessage(ctx);
   await ctx.scene.leave();
 });
 
 notificationScene.action(
   CALLBACK_DATA.NOTIFICATION_SET_SUBJECT,
   async (ctx) => {
-    const sentMessage =
-      await sendMessage(ctx,
-        BotReplies().LINK_SUBJECT(),
-        await PeekSubject());
-    messageToBin(ctx, sentMessage.message_id);
+    await ctx.scene.enter(SceneIDs.NOTIFICATION_SUBJECT);
   },
 );
 
@@ -143,6 +135,7 @@ notificationScene.action(
     await NotificationController.save(targetNotification);
     await ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
     ctx.session.notification = new Notification();
+    await deleteTargetMessage(ctx);
     await ctx.scene.leave();
   },
 );
@@ -158,13 +151,6 @@ notificationScene.action(
 );
 
 notificationScene.action(
-  CALLBACK_DATA.SUBJECT_DISCARD,
-  async (ctx) => {
-    await cleanMessagesBin(ctx);
-  },
-);
-
-notificationScene.action(
   CALLBACK_DATA.NOTIFICATION_RESET,
   async (ctx) => {
     ctx.session.notification = new Notification();
@@ -172,28 +158,8 @@ notificationScene.action(
   },
 );
 
-notificationScene.action(
-  CALLBACK_DATA.REMOVE_SUBJECT,
-  async (ctx) => {
-    ctx.session.notification.subject = undefined;
-    await updateMessage(ctx);
-  },
-);
-
 notificationScene.hears(BotCommands.NOTIFICATION,
   async (ctx) => ctx.scene.reenter());
-
-notificationScene.on(callbackQuery('data'), async (ctx) => {
-  const query = ctx.callbackQuery.data;
-  if (query.startsWith(CALLBACK_DATA.LINK_SUBJECT)) {
-    const subjectID = query.split(CALLBACK_DATA.SPLIT_SYMBOL).at(-1);
-    if (subjectID) {
-      const subject = await SubjectController.getByID(subjectID);
-      ctx.session.notification.subject = subject;
-    }
-  }
-  await updateMessage(ctx);
-});
 
 notificationScene.on('text', async (ctx) => {
   const messageText = ctx.message.text;
@@ -201,12 +167,6 @@ notificationScene.on('text', async (ctx) => {
   if (dataChanged) {
     messageToBin(ctx);
     await updateMessage(ctx);
-  }
-});
-
-notificationScene.leave(async (ctx) => {
-  if (ctx.session.messageID) {
-    await deleteMessage(ctx, ctx.session.messageID);
   }
 });
 
