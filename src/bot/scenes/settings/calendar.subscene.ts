@@ -15,7 +15,7 @@ const updateTargetMessage = async (ctx: BotContext) => {
 };
 
 const calendarSubScene =
-  new Scenes.BaseScene<BotContext>(SceneIDs.EDIT_CALENDAR);
+  new Scenes.BaseScene<BotContext>(SceneIDs.SETTINGS_CALENDAR);
 
 calendarSubScene.enter(async (ctx) => {
   await updateTargetMessage(ctx);

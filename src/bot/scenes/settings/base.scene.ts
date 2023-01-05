@@ -20,11 +20,11 @@ settingsMainScene.action(CALLBACK_DATA.SETTINGS_SUBJECTS, async (ctx) => {
 });
 
 settingsMainScene.action(CALLBACK_DATA.SETTINGS_LANGUAGE, async (ctx) => {
-  await ctx.scene.enter(SceneIDs.EDIT_LANGUAGE);
+  await ctx.scene.enter(SceneIDs.SETTINGS_LANGUAGE);
 });
 
 settingsMainScene.action(CALLBACK_DATA.SETTINGS_CALENDAR, async (ctx) => {
-  await ctx.scene.enter(SceneIDs.EDIT_CALENDAR);
+  await ctx.scene.enter(SceneIDs.SETTINGS_CALENDAR);
 });
 
 settingsMainScene.action(CALLBACK_DATA.SETTINGS_DISCARD, async (ctx) => {

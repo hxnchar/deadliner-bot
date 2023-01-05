@@ -31,7 +31,7 @@ const setLanguage = (ctx: BotContext, language: string) => {
 };
 
 const languageSubScene =
-  new Scenes.BaseScene<BotContext>(SceneIDs.EDIT_LANGUAGE);
+  new Scenes.BaseScene<BotContext>(SceneIDs.SETTINGS_LANGUAGE);
 
 languageSubScene.enter(async (ctx) => {
   await updateTargetMessage(ctx);
