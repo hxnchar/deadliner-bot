@@ -45,15 +45,15 @@ export const NotificationKeyboard =
       [
         {
           'text': LangData[LANGUAGE]['discard'],
-          'callback_data': CALLBACK_DATA.NOTIFICATION_DISCARD,
+          'callback_data': CALLBACK_DATA.DISCARD,
         },
         {
           'text': LangData[LANGUAGE]['reset'],
-          'callback_data': CALLBACK_DATA.NOTIFICATION_RESET,
+          'callback_data': CALLBACK_DATA.RESET,
         },
         {
           'text': LangData[LANGUAGE]['save'],
-          'callback_data': CALLBACK_DATA.NOTIFICATION_SAVE,
+          'callback_data': CALLBACK_DATA.SAVE,
         },
       ],
     ];

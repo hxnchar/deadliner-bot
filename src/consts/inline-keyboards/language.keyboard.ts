@@ -20,7 +20,7 @@ export const LanguageKeyboard = (): InlineKeyboardButton[][] => {
   keyboard.push([
     {
       'text': LangData[LANG]['discard'],
-      'callback_data': `${CALLBACK_DATA.LANGUAGE_DISCARD}`,
+      'callback_data': `${CALLBACK_DATA.DISCARD}`,
     },
   ]);
   return keyboard;

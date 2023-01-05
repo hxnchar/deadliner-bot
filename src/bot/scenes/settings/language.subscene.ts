@@ -37,7 +37,7 @@ languageSubScene.enter(async (ctx) => {
   await updateTargetMessage(ctx);
 });
 
-languageSubScene.action(CALLBACK_DATA.LANGUAGE_DISCARD, async (ctx) => {
+languageSubScene.action(CALLBACK_DATA.DISCARD, async (ctx) => {
   await ctx.scene.enter(SceneIDs.SETTINGS);
 });
 

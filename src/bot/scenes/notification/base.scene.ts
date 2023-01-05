@@ -106,7 +106,7 @@ notificationScene.action(CALLBACK_DATA.NOTIFICATION_CHANGE_DEADLINE,
   },
 );
 
-notificationScene.action(CALLBACK_DATA.NOTIFICATION_DISCARD, async (ctx) => {
+notificationScene.action(CALLBACK_DATA.DISCARD, async (ctx) => {
   await deleteTargetMessage(ctx);
   await ctx.scene.leave();
 });
@@ -129,7 +129,7 @@ notificationScene.action(
 );
 
 notificationScene.action(
-  CALLBACK_DATA.NOTIFICATION_SAVE,
+  CALLBACK_DATA.SAVE,
   async (ctx) => {
     const targetNotification = ctx.session.notification;
     await NotificationController.save(targetNotification);
@@ -151,7 +151,7 @@ notificationScene.action(
 );
 
 notificationScene.action(
-  CALLBACK_DATA.NOTIFICATION_RESET,
+  CALLBACK_DATA.RESET,
   async (ctx) => {
     ctx.session.notification = new Notification();
     await updateMessage(ctx);

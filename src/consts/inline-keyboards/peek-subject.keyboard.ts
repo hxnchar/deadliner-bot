@@ -26,7 +26,7 @@ const PeekSubject = async () => {
     },
     {
       'text': LangData[LANGUAGE]['discard'],
-      'callback_data': CALLBACK_DATA.DISCARD_PEEK_SUBJECT,
+      'callback_data': CALLBACK_DATA.DISCARD,
     },
   ]);
   return keyboard;

@@ -27,7 +27,7 @@ calendarSubScene.action(CALLBACK_DATA.SETTINGS_SET_CALENDAR_ID, async (ctx) => {
   messageToBin(ctx, sentMessage.message_id);
 });
 
-calendarSubScene.action(CALLBACK_DATA.SETTINGS_CALENDAR_SAVE, async (ctx) => {
+calendarSubScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
   const userCalendar = ctx.session.user.calendar;
   if (userCalendar) {
     const calendarModel = await CalendarController.save(userCalendar);

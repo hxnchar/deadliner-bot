@@ -63,11 +63,11 @@ newTaskScene.action(CALLBACK_DATA.DEADLINE_SET_SUBJECT, async (ctx) => {
   await updatePeekSubjectMessage(ctx);
 });
 
-newTaskScene.action(CALLBACK_DATA.DEADLINE_DISCARD, async (ctx) => {
+newTaskScene.action(CALLBACK_DATA.DISCARD, async (ctx) => {
   await ctx.scene.leave();
 });
 
-newTaskScene.action(CALLBACK_DATA.DEADLINE_SAVE, async (ctx) => {
+newTaskScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
   const targetTask = ctx.session.task;
 
   await TaskController.save(targetTask);

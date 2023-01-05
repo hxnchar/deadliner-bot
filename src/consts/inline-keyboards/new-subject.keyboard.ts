@@ -31,7 +31,7 @@ export const NewSubjectKeyboard =
         },
         {
           'text': LangData[LANG]['reset'],
-          'callback_data': CALLBACK_DATA.SUBJECT_RESET,
+          'callback_data': CALLBACK_DATA.RESET,
         },
         {
           'text': LangData[LANG]['redo'],
@@ -41,11 +41,11 @@ export const NewSubjectKeyboard =
       [
         {
           'text': LangData[LANG]['discard'],
-          'callback_data': CALLBACK_DATA.SUBJECT_DISCARD,
+          'callback_data': CALLBACK_DATA.DISCARD,
         },
         {
           'text': LangData[LANG]['save'],
-          'callback_data': CALLBACK_DATA.SUBJECT_SAVE,
+          'callback_data': CALLBACK_DATA.SAVE,
         },
       ],
     ];

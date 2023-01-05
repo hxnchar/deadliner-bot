@@ -26,11 +26,11 @@ export const SettingsKeyboard = (): InlineKeyboardButton[][] => {
     [
       {
         'text': LangData[LANGUAGE]['discard'],
-        'callback_data': CALLBACK_DATA.SETTINGS_DISCARD,
+        'callback_data': CALLBACK_DATA.DISCARD,
       },
       {
         'text': LangData[LANGUAGE]['save'],
-        'callback_data': CALLBACK_DATA.SETTINGS_SAVE,
+        'callback_data': CALLBACK_DATA.SAVE,
       },
     ],
   ];

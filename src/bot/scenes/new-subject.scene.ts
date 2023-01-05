@@ -50,7 +50,7 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_MAKE_NON_GENERAL, async (ctx) => {
   await updateMessage(ctx);
 });
 
-newSubjectScene.action(CALLBACK_DATA.SUBJECT_DISCARD, async (ctx) => {
+newSubjectScene.action(CALLBACK_DATA.DISCARD, async (ctx) => {
   await ctx.scene.leave();
 });
 
@@ -59,7 +59,7 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_UNDO, async (ctx) => {
   await updateMessage(ctx);
 });
 
-newSubjectScene.action(CALLBACK_DATA.SUBJECT_RESET, async (ctx) => {
+newSubjectScene.action(CALLBACK_DATA.RESET, async (ctx) => {
   resetFlags(ctx);
   ctx.session.subject = new Subject();
   await updateMessage(ctx);
@@ -70,7 +70,7 @@ newSubjectScene.action(CALLBACK_DATA.SUBJECT_REDO, async (ctx) => {
   await updateMessage(ctx);
 });
 
-newSubjectScene.action(CALLBACK_DATA.SUBJECT_SAVE, async (ctx) => {
+newSubjectScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
   const targetSubject = ctx.session.subject;
 
   await SubjectController.save(targetSubject);

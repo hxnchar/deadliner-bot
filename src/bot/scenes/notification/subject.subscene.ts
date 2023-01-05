@@ -17,7 +17,7 @@ subjectSubScene.enter(async (ctx) => {
 });
 
 subjectSubScene.action(
-  CALLBACK_DATA.SUBJECT_DISCARD,
+  CALLBACK_DATA.DISCARD,
   async (ctx) => {
     await cleanMessagesBin(ctx);
   },

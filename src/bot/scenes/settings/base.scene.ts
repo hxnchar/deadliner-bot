@@ -27,12 +27,12 @@ settingsMainScene.action(CALLBACK_DATA.SETTINGS_CALENDAR, async (ctx) => {
   await ctx.scene.enter(SceneIDs.SETTINGS_CALENDAR);
 });
 
-settingsMainScene.action(CALLBACK_DATA.SETTINGS_DISCARD, async (ctx) => {
+settingsMainScene.action(CALLBACK_DATA.DISCARD, async (ctx) => {
   await deleteTargetMessage(ctx);
   await ctx.scene.leave();
 });
 
-settingsMainScene.action(CALLBACK_DATA.SETTINGS_SAVE, async (ctx) => {
+settingsMainScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
   await UserController.save(ctx.session.user);
   await ctx.answerCbQuery('Settings updated successfully');
   await deleteTargetMessage(ctx);
