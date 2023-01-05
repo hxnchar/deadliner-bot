@@ -28,13 +28,12 @@ calendarSubScene.action(CALLBACK_DATA.SETTINGS_SET_CALENDAR_ID, async (ctx) => {
 });
 
 calendarSubScene.action(CALLBACK_DATA.SETTINGS_CALENDAR_SAVE, async (ctx) => {
-  if (ctx.session.calendar) {
-    const calendar = ctx.session.calendar;
-    const calendarModel = await CalendarController.save(calendar);
+  const userCalendar = ctx.session.user.calendar;
+  if (userCalendar) {
+    const calendarModel = await CalendarController.save(userCalendar);
     if (calendarModel) {
       ctx.session.user.calendar = Calendar.parse(calendarModel);
     }
-    ctx.session.calendar = undefined;
   }
   await ctx.scene.enter(SceneIDs.SETTINGS);
 });
@@ -45,8 +44,8 @@ calendarSubScene.on('text', async (ctx) => {
   if (ctx.scene.session.calendarIDinput) {
     ctx.scene.session.calendarIDinput = false;
     const calendarID = ctx.message.text;
-    if (ctx.session.calendar) {
-      ctx.session.calendar.calendarID = calendarID;
+    if (ctx.session.user.calendar) {
+      ctx.session.user.calendar.calendarID = calendarID;
     } else {
       ctx.session.user.calendar = new Calendar(calendarID);
     }
