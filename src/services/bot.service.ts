@@ -1,4 +1,4 @@
-import { Telegraf } from 'telegraf';
+import { Telegraf, Scenes } from 'telegraf';
 import { BotContext } from 'bot';
 import { sendMessage } from 'helpers';
 import { BotReplies, commandsToList } from 'consts';
@@ -7,7 +7,7 @@ import { Database } from 'database';
 import { DB_CONFIG } from 'configs';
 import { Task, TaskController } from 'services/task';
 import { Notification, NotificationController } from 'services/notification';
-import { UserController } from 'services/user';
+const { enter } = Scenes.Stage;
 
 class BotService {
   _database;
@@ -32,19 +32,20 @@ class BotService {
     await this._target.telegram.setMyCommands(commandsToList());
   }
 
-  async start(ctx: BotContext) {
-    const userID = ctx.from?.id,
-          username = ctx.from?.username;
-    const userExists = await UserController.exists(ctx.from?.id);
-    if (!userExists) {
-      const newUser = await UserController.create(userID, username);
-      await UserController.save(newUser);
-    }
+  static start(ctx: BotContext) {
     return sendMessage(ctx, BotReplies().START());
   }
 
-  help(ctx: BotContext) {
+  static help(ctx: BotContext) {
     return sendMessage(ctx, BotReplies().HELP());
+  }
+
+  static enterScene(sceneID: string) {
+    return enter<BotContext>(sceneID);
+  }
+
+  static async leaveScene(ctx: BotContext) {
+    await ctx.scene.leave();
   }
 
   async todolist(ctx: BotContext) {

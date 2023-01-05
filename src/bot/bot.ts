@@ -17,7 +17,6 @@ import { errorMiddleware, languageMiddleware } from 'middlewares';
 
 const bot = new Telegraf<BotContext>(BOT_CONFIG.token);
 
-const { enter } = Scenes.Stage;
 const stage = new Scenes.Stage<BotContext>([
   newSubjectScene,
   notificationScene,
@@ -31,18 +30,19 @@ const stage = new Scenes.Stage<BotContext>([
 bot.use(session());
 bot.use(stage.middleware());
 bot.use(languageMiddleware);
-bot.catch(errorMiddleware);
+//bot.catch(errorMiddleware);
 
 const botService = new BotService(bot);
 botService.setup();
 
-bot.start((ctx) => botService.start(ctx));
-bot.help((ctx) => botService.help(ctx));
+bot.start((ctx) => BotService.start(ctx));
+bot.help((ctx) => BotService.help(ctx));
 bot.hears(BotCommands.TODOLIST, async (ctx) => botService.todolist(ctx));
-bot.hears(BotCommands.NEW_SUBJECT, enter<BotContext>(SceneIDs.NEW_SUBJECT));
-bot.hears(BotCommands.NEW_TASK, enter<BotContext>(SceneIDs.NEW_TASK));
-bot.hears(BotCommands.NOTIFICATION, enter<BotContext>(SceneIDs.NOTIFICATION));
-bot.hears(BotCommands.SETTINGS, enter<BotContext>(SceneIDs.SETTINGS));
+bot.hears(BotCommands.NEW_SUBJECT, BotService.enterScene(SceneIDs.NEW_SUBJECT));
+bot.hears(BotCommands.NEW_TASK, BotService.enterScene(SceneIDs.NEW_TASK));
+bot.hears(BotCommands.NOTIFICATION,
+  BotService.enterScene(SceneIDs.NOTIFICATION));
+bot.hears(BotCommands.SETTINGS, BotService.enterScene(SceneIDs.SETTINGS));
 
 bot.launch();
 
