@@ -73,12 +73,11 @@ class Task {
 
   static async parse(object: any): Promise<Task> {
     const { id, body, date, subject } = object;
-    console.log(`subject._id ${subject._id}`);
+
     const parsedSubject = await SubjectController.getByID(subject._id);
-    console.log(`parsedSubject: ${parsedSubject}`);
     const task = new Task(body, date, parsedSubject);
     task.id = id;
-    console.log(`task: ${task}`);
+
     return task;
   }
 
@@ -92,6 +91,7 @@ Task.prototype.toString = function taskToString() {
   const formattedDate = this.date
     ? format(this.date, DateTimeLongFormat)
     : UNDEFINED_MESSAGE;
+
   return `*[${formattedDate}]*\n${subjectName ?? UNDEFINED_MESSAGE}\n\n${this.body ?? UNDEFINED_MESSAGE}`;
 };
 

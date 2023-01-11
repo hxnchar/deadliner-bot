@@ -4,20 +4,19 @@ import { TaskModel } from 'services/task/model';
 const TaskController = {
 
   async save(task: Task) {
-    const taskModel =
-      new TaskModel(task.convertToObject());
-    await taskModel.save();
+    const model = new TaskModel(task.convertToObject());
+    await model.save();
   },
 
   async getAll() {
-    const tasks = await TaskModel.find();
-    const parsedTasks = [];
+    const models = await TaskModel.find(),
+          tasks = [];
 
-    for (const task of tasks) {
-      parsedTasks.push(await Task.parse(task));
+    for (const model of models) {
+      tasks.push(await Task.parse(model));
     }
 
-    return parsedTasks;
+    return tasks;
   },
 
 };
