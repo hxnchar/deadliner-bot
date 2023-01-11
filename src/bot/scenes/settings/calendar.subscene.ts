@@ -27,6 +27,11 @@ calendarSubScene.action(CALLBACK_DATA.SETTINGS_SET_CALENDAR_ID, async (ctx) => {
   messageToBin(ctx, sentMessage.message_id);
 });
 
+calendarSubScene.action(CALLBACK_DATA.DISCARD, async (ctx) => {
+  ctx.session.user.calendar = undefined;
+  await ctx.scene.enter(SceneIDs.SETTINGS);
+});
+
 calendarSubScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
   const userCalendar = ctx.session.user.calendar;
   if (userCalendar) {
