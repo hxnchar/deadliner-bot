@@ -1,5 +1,5 @@
 import { Duration, formatDuration, parseISO } from 'date-fns';
-import { parse } from 'iso8601-duration';
+import * as duration from 'duration-fns';
 import { IOffset, IOffsetItem } from 'services/offset/interface';
 import { LangData } from 'consts';
 import { BotService } from 'services/bot.service';
@@ -31,7 +31,7 @@ class Offset implements IOffset {
   }
 
   get duration() {
-    const duration : Duration = {};
+    const duration: Duration = {};
 
     Object.keys(this.target)
       .map((key) => {
@@ -52,6 +52,14 @@ class Offset implements IOffset {
 
   getValue(key: string) {
     return this.target[key as keyof typeof this.target].value;
+  }
+
+  get stringified() {
+    return `• ${this.formatDuration()}`;
+  }
+
+  get totalSeconds() {
+    return duration.toSeconds(this.duration);
   }
 
   setTarget(newTarget: IOffset['target']) {
@@ -105,8 +113,8 @@ class Offset implements IOffset {
     return formatDuration(this.duration);
   }
 
-  static parse(iso8601: string) {
-    const durationObject = parse(iso8601);
+  static parse(ISOstring: string) {
+    const durationObject = duration.parse(ISOstring);
     const offset = new Offset();
 
     for (const [key, value] of Object.entries(durationObject)) {

@@ -91,9 +91,8 @@ class Reminder implements IReminder {
       if (!offsets) continue;
 
       result.push(`\n*${LangData[LANG][reminderType]}*\n${offsets
-        .map((offset) =>
-          `• ${offset.formatDuration()}`,
-        ).join(',\n')}`);
+        .sort((a, b) => a.totalSeconds - b.totalSeconds)
+        .map((offset) => offset.stringified).join(',\n')}`);
     }
     return result.join('\n');
   }
