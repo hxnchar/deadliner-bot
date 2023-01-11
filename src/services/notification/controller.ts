@@ -4,9 +4,8 @@ import { NotificationModel } from 'services/notification/model';
 const NotificationController = {
 
   async save(notification: Notification) {
-    const notificationModel =
-      new NotificationModel(notification.convertToObject());
-    await notificationModel.save();
+    const model = new NotificationModel(notification.convertToObject());
+    await model.save();
   },
 
   async getAll() {

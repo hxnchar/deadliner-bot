@@ -121,6 +121,7 @@ class Notification {
 
   static parse(object: INotification): Notification {
     const { _id, header, body, date, deadline, isRequired, subject } = object;
+
     const notification = new Notification(
       header,
       body,
@@ -130,6 +131,7 @@ class Notification {
       subject,
     );
     notification.id = _id;
+
     return notification;
   }
 
@@ -141,6 +143,7 @@ Notification.prototype.toString = function notificationToString() {
   const formattedDeadline = this.deadline
     ? format(this.deadline, DateTimeLongFormat)
     : 'Without deadline';
+
   return `*${required} ${this.header || UNDEFINED_MESSAGE}*\n${subject}*Due:* ${formattedDeadline}\n\n${this.body || UNDEFINED_MESSAGE}`;
 };
 
