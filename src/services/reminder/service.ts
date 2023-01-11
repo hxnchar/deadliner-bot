@@ -63,32 +63,33 @@ class Reminder implements IReminder {
   }
 
   static convertToMap(reminders: Reminder[]): Map<ReminderTypes, Offset[]>  {
-    const remindersMap = new Map<ReminderTypes, Offset[]>();
+    const map = new Map<ReminderTypes, Offset[]>();
 
     for (const reminder of reminders) {
       if (!reminder.type || !reminder.timeOffset) continue;
-      const currentKey = reminder.type;
-      const currentOffsets = remindersMap.get(currentKey) || [];
-      remindersMap.set(currentKey, [...currentOffsets, reminder.timeOffset]);
+
+      const key = reminder.type;
+      const offsets = map.get(key) || [];
+
+      map.set(key, [...offsets, reminder.timeOffset]);
     }
 
-    return remindersMap;
+    return map;
   }
 
   static stringifyList(reminders: Reminder[]): string {
     const LANG = BotService.language;
 
-    if (reminders.length === 0) {
-      return LangData[LANG]['list-is-empty'];
-    }
+    if (reminders.length === 0) return LangData[LANG]['list-is-empty'];
 
     const groupedReminders = Reminder.convertToMap(reminders);
     const result: string[] = [];
+
     for (const reminderType of groupedReminders.keys()) {
       const offsets = groupedReminders.get(reminderType);
-      if (!offsets) {
-        continue;
-      }
+
+      if (!offsets) continue;
+
       result.push(`\n*${LangData[LANG][reminderType]}*\n${offsets
         .map((offset) =>
           `• ${offset.formatDuration()}`,
