@@ -7,21 +7,25 @@ import { ICalendar } from './interface';
 const CalendarController = {
 
   async save(calendar: Calendar): Promise<ICalendar | undefined | null> {
-    const calendarExists = await this.exists(calendar.id);
-    const calendarObject = calendar.convertToObject();
-    if (calendarExists) {
+    const exists = await this.exists(calendar.id);
+    const object = calendar.convertToObject();
+
+    if (exists) {
       return CalendarModel.findOneAndUpdate(
-        { _id: calendar.id }, calendarObject);
+        { _id: calendar.id }, object);
     }
-    const calendarModel = new CalendarModel(calendarObject);
-    return calendarModel.save();
+
+    const model = new CalendarModel(object);
+    return model.save();
   },
 
   async getByID(id: Types.ObjectId | undefined): Promise<Calendar | undefined> {
     if (!id) return undefined;
-    const calendar = await CalendarModel.findOne({ _id: id });
-    if (!calendar) return undefined;
-    return Calendar.parse(calendar);
+
+    const model = await CalendarModel.findOne({ _id: id });
+    if (!model) return undefined;
+
+    return Calendar.parse(model);
   },
 
   async exists(id: Types.ObjectId | undefined): Promise<boolean> {
@@ -31,6 +35,7 @@ const CalendarController = {
   async insertEvent(calenadar: Calendar, event: IEvent) {
     const auth = calenadar._auth,
           calendarID = calenadar.calendarID;
+
     await calenadar._target.events.insert({
       auth,
       calendarId: calendarID,

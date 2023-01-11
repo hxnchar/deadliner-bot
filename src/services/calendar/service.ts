@@ -44,9 +44,10 @@ class Calendar {
     };
   }
 
-  static parse(calendarObject: ICalendar) {
-    const calendar = new Calendar(calendarObject.calendarID);
-    calendar.id = calendarObject._id;
+  static parse(object: ICalendar) {
+    const calendar = new Calendar(object.calendarID);
+    calendar.id = object._id;
+
     return calendar;
   }
 }
