@@ -3,8 +3,8 @@ import { Types } from 'mongoose';
 
 interface IReminder {
   _id?: Types.ObjectId,
-  _type?: ReminderTypes,
-  _date?: Date,
+  type?: ReminderTypes,
+  offset?: string,
 }
 
 export { IReminder };

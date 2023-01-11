@@ -15,12 +15,18 @@ export const SettingsKeyboard = (): InlineKeyboardButton[][] => {
     ],
     [
       {
-        'text': LangData[LANGUAGE]['language-name'],
-        'callback_data': CALLBACK_DATA.SETTINGS_LANGUAGE,
+        'text': LangData[LANGUAGE]['reminders'],
+        'callback_data': CALLBACK_DATA.SETTINGS_REMINDERS,
       },
       {
         'text': LangData[LANGUAGE]['calendar'],
         'callback_data': CALLBACK_DATA.SETTINGS_CALENDAR,
+      },
+    ],
+    [
+      {
+        'text': LangData[LANGUAGE]['language-name'],
+        'callback_data': CALLBACK_DATA.SETTINGS_LANGUAGE,
       },
     ],
     [

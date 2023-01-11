@@ -5,3 +5,4 @@ export * from './settings.keyboard';
 export * from './new-task.keyboard';
 export * from './language.keyboard';
 export * from './calendar.keyboard';
+export * from './settings';

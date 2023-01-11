@@ -2,8 +2,9 @@ import { format } from 'date-fns';
 import { DateTimeLongFormat } from 'consts/dateTime.format';
 import { commandsToString } from 'consts/replies/described-commands.constant';
 import { featuresToString } from 'consts/replies/bot-features.constant';
-import { Subject, Notification, User, Task, BotService, Calendar } from 'services';
+import { Subject, Notification, User, Task, BotService, Calendar, Reminder } from 'services';
 import { LangData } from 'consts/langdata.constant';
+import { Offset } from 'services/offset';
 
 const BotReplies = () => {
   const LANG = BotService.language;
@@ -19,7 +20,9 @@ const BotReplies = () => {
       return `${LangData[LANG]['command-new-notification-body']}\n${LangData[LANG]['will-be-sent']}: *${sendOn}*\n${LangData[LANG]['preview']}:\n\n${notification.toString()}`;
     },
     SETTINGS: (user: User = new User()) => user.toString(),
-    REMINDERS: (user: User = new User()) => `${LangData[LANG]['reminders']}:`,
+    REMINDER_TYPE: () => `${LangData[LANG]['reminder-type']}:`,
+    TUNE_REMINDERS: (user: User = new User()) => `${LangData[LANG]['your-reminders']}:\n${Reminder.stringifyList(user.reminders)}`,
+    SET_OFFSET: (offset: Offset = new Offset()) => `${LangData[LANG]['set-offset']}?\n\n${offset.toString()}`,
     PEEK_PERSONAL: () => `${LangData[LANG]['command-peek-personal']}:`,
     PEEK_LANGUAGE: () => `${LangData[LANG]['command-peek-language']}:`,
     TUNE_CALENDAR: (calendar: Calendar = new Calendar()) => `${LangData[LANG]['command-tune-calendar']}:\n\n${calendar.toString()}`,

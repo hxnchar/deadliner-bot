@@ -16,7 +16,11 @@ settingsMainScene.hears(BotCommands.SETTINGS,
   async (ctx) => ctx.scene.reenter());
 
 settingsMainScene.action(CALLBACK_DATA.SETTINGS_SUBJECTS, async (ctx) => {
-  ctx.scene.enter(SceneIDs.EDIT_PERSONAL_SUBJECTS);
+  await ctx.scene.enter(SceneIDs.EDIT_PERSONAL_SUBJECTS);
+});
+
+settingsMainScene.action(CALLBACK_DATA.SETTINGS_REMINDERS, async (ctx) => {
+  await ctx.scene.enter(SceneIDs.SETTINGS_REMINDERS);
 });
 
 settingsMainScene.action(CALLBACK_DATA.SETTINGS_LANGUAGE, async (ctx) => {

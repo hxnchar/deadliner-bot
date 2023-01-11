@@ -1,11 +1,20 @@
-interface IOffset {
-  years: number,
-  months: number,
-  weeks: number,
-  days: number,
-  hours: number,
-  minutes: number,
-  seconds: number,
+interface IOffsetItem {
+  value: number,
+  maxValue?: number,
+  nextIncrease?: string,
+  inputting: boolean,
 }
 
-export { IOffset };
+interface IOffset {
+  target: {
+    years: IOffsetItem,
+    months: IOffsetItem,
+    weeks: IOffsetItem,
+    days: IOffsetItem,
+    hours: IOffsetItem,
+    minutes: IOffsetItem,
+    seconds: IOffsetItem,
+  }
+}
+
+export { IOffset, IOffsetItem };

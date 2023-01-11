@@ -1,7 +1,9 @@
 const LangData: { [lang_key: string]: { [value: string]: string }; } = {
   'en': {
+    // Language data
     'language-name': '🏴󠁧󠁢󠁥󠁮󠁧󠁿 English',
     'language-code': 'en',
+
     'subject-list': '📝 Subject list',
     'calendar': '📅 Calendar',
     'remove-subject': '⛔️ Remove subject',
@@ -19,7 +21,8 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'calendar-id': '🌐 Calendar ID',
     'calenadar-tuned': '✅ Calendar is ready',
     'calenadar-not-tuned': '❌ Calendar not tuned',
-    'reminders': 'Your reminders:',
+    'reminders': '🔔 Reminders',
+    'your-reminders': 'Your reminders',
 
     //Bot features
     'subscriptions-feature': 'Subscriptions🤩',
@@ -49,6 +52,7 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'command-tune-calendar': 'Please, provide following information for tune Google Calendar',
 
     'not-defined': 'Not provided',
+    'set-offset': 'How much time before the deadline would you like to receive reminders',
 
     //Bot commands
     'bot-command-start': 'The basic command that you cannot avoid',
@@ -60,16 +64,37 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'bot-command-settings': 'Change your preferences here',
     'bot-command-help': 'Shows a list of available commands',
 
-    //General buttons
+    // Reminders
+    'reminder-type': 'Select the type of reminder',
+    'remind-by-bot': '🤖 By bot',
+    'remind-by-calendar': '🗓 From your calendar',
+    'remind-by-email': '📧 Via email',
+    'years': 'Years',
+    'months': 'Months',
+    'weeks': 'Weeks',
+    'days': 'Days',
+    'hours': 'Hours',
+    'minutes': 'Minutes',
+    'seconds': 'Seconds',
+
+    // General buttons
     'discard': '🛑 Discard',
     'save': '✅ Save',
     'reset': '🔄 Reset',
     'undo': '↩️ Undo',
     'redo': '↪️ Redo',
+    'add': '➕ Add',
+    'remove': '➖ Remove',
+
+    // General phrases
+    'please-provide-info-about': 'Please, provide information about',
+    'list-is-empty': 'The list is empty',
   },
   'ua': {
+    // Language data
     'language-name': '🇺🇦 Українська',
     'language-code': 'ua',
+
     'subject-list': '📝 Перелік предметів',
     'calendar': '📅 Календар',
     'remove-subject': '⛔️ Вилучити предмет',
@@ -87,7 +112,8 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'calendar-id': '🌐 ID календаря',
     'calenadar-tuned': '✅ Календар готовий',
     'calenadar-not-tuned': '❌ Календар не налаштовано',
-    'reminders': 'Твої нагадування:',
+    'reminders': '🔔 Нагадування',
+    'your-reminders': 'Твої нагадування',
 
     //Bot features
     'subscriptions-feature': 'Підписки🤩',
@@ -116,6 +142,7 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'command-help': 'Перелік доступних команд',
     'command-tune-calendar': 'Будь ласка, надайте наступні дані для доступу до Google Calendar',
 
+    'set-offset': 'За який час до дедлайну ви би хотіли отримувати нагадування',
     'not-defined': 'Не вказано',
 
     //Bot commands
@@ -128,12 +155,31 @@ const LangData: { [lang_key: string]: { [value: string]: string }; } = {
     'bot-command-settings': 'Змінює налаштування',
     'bot-command-help': 'Показує список доступних команд',
 
-    //General buttons
+    // Reminders
+    'reminder-type': 'Оберіть тип нагадування',
+    'remind-by-bot': '🤖 Ботом',
+    'remind-by-calendar': '🗓 З календаря',
+    'remind-by-email': '📧 Лист на пошту',
+    'years': 'Роки',
+    'months': 'Місяці',
+    'weeks': 'Тижні',
+    'days': 'Дні',
+    'hours': 'Години',
+    'minutes': 'Хвилини',
+    'seconds': 'Секунди',
+
+    // General buttons
     'discard': '🛑 Відмінити',
     'save': '✅ Зберегти',
     'reset': '🔄 Скинути',
     'undo': '↩️ Відмінити',
     'redo': '↪️ Повторити',
+    'add': '➕ Додати',
+    'remove': '➖ Вилучити',
+
+    // General phrases
+    'please-provide-info-about': 'Будь ласка, надайте інформацію про',
+    'list-is-empty': 'Список порожній',
   },
 };
 

@@ -79,6 +79,10 @@ class User {
     return this.subjects.filter((subject) => !subject.isGeneral);
   }
 
+  addReminder(reminder: Reminder) {
+    this.reminders.push(reminder);
+  }
+
   convertToObject() {
     const subjects = this.subjects.map((subject) => subject.convertToObject());
     const reminders =
@@ -99,7 +103,7 @@ class User {
     const user = new User(id, name);
 
     const parsedCalendar =
-      await CalendarController.getByID(calendar?._id?.toString());
+      await CalendarController.getByID(calendar?._id);
 
     const parsedSubjects: Subject[] = [];
     for (const subject of subjects) {
@@ -136,9 +140,9 @@ User.prototype.toString = function userToString() {
   const privateSubjects = this.privateSubjects.map((subject) => subject.name);
 
   const generalSubjectsStringified = generalSubjects.length > 0
-    ? generalSubjects.join(',\n') : NO_SUBJECTS_MSG;
+    ? generalSubjects.map((subject) => `• ${subject}`).join(',\n') : NO_SUBJECTS_MSG;
   const privateSubjectsStringified = privateSubjects.length > 0
-    ? privateSubjects.join(',\n') : NO_SUBJECTS_MSG;
+    ? privateSubjects.map((subject) => `• ${subject}`).join(',\n') : NO_SUBJECTS_MSG;
 
   const totalSubjectsRate = countSubjects === FIXMEPLS
     ? '✅' : countSubjects < FIXMEPLS
@@ -147,8 +151,8 @@ User.prototype.toString = function userToString() {
   const calendarTuned = this.calendar
     ? LangData[LANG]['calenadar-tuned'] : LangData[LANG]['calenadar-not-tuned'];
 
-  const reminders = Reminder.stringify(this.reminders);
-  return `*⚙️ Preferences*\n\n*${totalSubjectsRate} Total number of subjects:* ${countSubjects}/${FIXMEPLS}\n\n*👥 General subjects list:*\n${generalSubjectsStringified}\n\n*👤 Private subjects list:*\n${privateSubjectsStringified}\n\nCalendar: ${calendarTuned}\n\nReminders: ${reminders}`;
+  const remindersCount = this.reminders.length;
+  return `*⚙️ Preferences*\n\n*${totalSubjectsRate} Total number of subjects:* ${countSubjects}/${FIXMEPLS}\n\n*👥 General subjects list:*\n${generalSubjectsStringified}\n\n*👤 Private subjects list:*\n${privateSubjectsStringified}\n\nCalendar: ${calendarTuned}\n\nReminders: ${remindersCount}`;
 };
 
 export { User };

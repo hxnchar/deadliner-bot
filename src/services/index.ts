@@ -6,3 +6,4 @@ export * from './bot.service';
 export * from './task';
 export * from './reminder';
 export * from './event';
+export * from './offset';

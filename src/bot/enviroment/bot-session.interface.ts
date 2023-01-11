@@ -1,5 +1,6 @@
 import { Scenes } from 'telegraf';
-import { Subject, Notification, User, Task } from 'services';
+import { Subject, Notification, User, Task, Reminder } from 'services';
+import { Offset } from 'services/offset';
 
 interface SceneSession extends Scenes.SceneSessionData {
   taskBodyInput: boolean;
@@ -14,18 +15,25 @@ interface SceneSession extends Scenes.SceneSessionData {
   notificationDeadlineInput: boolean;
 
   calendarIDinput: boolean;
+
+  reminderCountdownInput: boolean;
 }
 
 interface BotSession extends Scenes.SceneSession<SceneSession> {
-  chatID: number | undefined;
-  messageID: number | undefined;
+  // Used for editing and deleting target message
+  chatID?: number;
+  messageID?: number;
   cleanUpMessages: number[];
 
-  subjectsFromDB: Subject[];
-  subject: Subject;
-  notification: Notification;
+  // Used for temporary storing of some data
   user: User;
+  notification: Notification;
+  subject: Subject;
   task: Task;
+  reminder: Reminder;
+  offset?: Offset;
+
+  subjectsFromDB: Subject[];
 }
 
 export { BotSession, SceneSession };

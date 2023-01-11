@@ -6,6 +6,8 @@ const escapeMessage = (message: string) =>
     .replaceAll('(', '\\(')
     .replaceAll(')', '\\)')
     .replaceAll('-', '\\-')
-    .replaceAll('`', '\\`');
+    .replaceAll('`', '\\`')
+    .replaceAll(']', '\\]');
+
 
 export { escapeMessage };
