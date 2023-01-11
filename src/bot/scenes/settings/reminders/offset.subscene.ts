@@ -57,7 +57,7 @@ offsetSubScene.enter(async (ctx) => {
 });
 
 offsetSubScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
-  if (ctx.session.offset && ctx.session.offset.notNull()) {
+  if (ctx.session.offset && ctx.session.offset.notZero) {
     await ctx.scene.enter(SceneIDs.SETTINGS_REMINDERS);
   }
 
@@ -92,7 +92,7 @@ offsetSubScene.on('text', async (ctx) => {
   if (inputtingKey) {
     const dataToSet = Number(ctx.message.text);
     ctx.session.offset.setValue(inputtingKey, dataToSet);
-    ctx.session.offset.resetFlag(inputtingKey);
+    ctx.session.offset.resetInputting(inputtingKey);
   }
 
   await updateTargetMessage(ctx);

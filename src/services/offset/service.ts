@@ -30,6 +30,26 @@ class Offset implements IOffset {
     return this._target;
   }
 
+  get duration() {
+    const duration : Duration = {};
+
+    Object.keys(this.target)
+      .map((key) => {
+        duration[key as keyof typeof duration] =
+          this.target[key as keyof typeof this.target].value;
+      });
+
+    return duration;
+  }
+
+  get notZero() {
+    for (const key of Object.keys(this.target)) {
+      if (this.target[key as keyof typeof this.target].value !== 0) return true;
+    }
+
+    return false;
+  }
+
   getValue(key: string) {
     return this.target[key as keyof typeof this.target].value;
   }
@@ -39,12 +59,12 @@ class Offset implements IOffset {
   }
 
   setValue(key: string, value: number) {
-    const currentMeasure = this.target[key as keyof typeof this.target];
+    const measure = this.target[key as keyof typeof this.target];
 
     if (value < 0) {
-      if (currentMeasure.maxValue) {
+      if (measure.maxValue) {
         this.target[key as keyof typeof this.target].value =
-          currentMeasure.maxValue - 1;
+          measure.maxValue - 1;
         return;
       }
 
@@ -52,16 +72,13 @@ class Offset implements IOffset {
     }
 
     if (value > 0) {
+      if (measure.maxValue && measure.nextIncrease &&
+      value >= measure.maxValue) {
+        const toIncrease = measure.nextIncrease;
 
-      if (currentMeasure.maxValue && currentMeasure.nextIncrease &&
-      value >= currentMeasure.maxValue) {
-        const itemToIncrease = currentMeasure.nextIncrease;
-
-        while (value >= currentMeasure.maxValue) {
-          const nextNotIncreased = this.getValue(itemToIncrease);
-
-          this.setValue(itemToIncrease, nextNotIncreased + 1);
-          value -= currentMeasure.maxValue;
+        while (value >= measure.maxValue) {
+          this.setValue(toIncrease, this.getValue(toIncrease) + 1);
+          value -= measure.maxValue;
         }
 
         this.setValue(key, value);
@@ -80,32 +97,12 @@ class Offset implements IOffset {
       ));
   }
 
-  resetFlag(flag: string) {
+  resetInputting(flag: string) {
     this.target[flag as keyof typeof this.target].inputting = false;
   }
 
-  convertToObject(): Duration {
-    const finalDuration : Duration = {};
-    Object.keys(this.target)
-      .map((key) => {
-        finalDuration[key as keyof typeof finalDuration] =
-        this.target[key as keyof typeof this.target].value;
-      });
-    return finalDuration;
-  }
-
   formatDuration() {
-    return formatDuration(this.convertToObject());
-  }
-
-  notNull(): boolean {
-    for (const key of Object.keys(this.target)) {
-      if (this.target[key as keyof typeof this.target].value !== 0) {
-        return true;
-      }
-    }
-
-    return false;
+    return formatDuration(this.duration);
   }
 
   static parse(iso8601: string) {
