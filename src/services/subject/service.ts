@@ -41,6 +41,10 @@ class Subject {
     this._isGeneral = newisGeneral;
   }
 
+  get buttonText() {
+    return `${this.isGeneral ? '👥' : '👤'} ${this.name}`;
+  }
+
   constructor(name?: string, isGeneral?: boolean) {
     this._name = name;
     this._isGeneral = isGeneral;
@@ -93,17 +97,16 @@ class Subject {
     if (typeof this.isGeneral  === 'undefined') {
       throw new Error('Please, provide if subject is general or not');
     }
-    return { _id: this.id, name: this.name, isGeneral: this.isGeneral };
-  }
 
-  buttonText() {
-    return `${this.isGeneral ? '👥' : '👤'} ${this.name}`;
+    return { _id: this.id, name: this.name, isGeneral: this.isGeneral };
   }
 
   static parse(object: ISubject): Subject {
     const { name, isGeneral, _id } = object;
+
     const subject = new Subject(name, isGeneral);
     subject.id = _id;
+
     return subject;
   }
 
@@ -122,14 +125,10 @@ class Subject {
 
   static indexOf(subjectsList: Subject[], subject: Subject): number {
     let index = 0;
-    let currentSubject: Subject;
     const subjectStringified = subject.toString();
 
     while (index < subjectsList.length) {
-      currentSubject = subjectsList[index];
-      if (currentSubject.toString() === subjectStringified) {
-        return index;
-      }
+      if (subjectsList[index].toString() === subjectStringified) return index;
       index += 1;
     }
 
@@ -142,6 +141,7 @@ Subject.prototype.toString = function subjectToString() {
     typeof this.isGeneral === 'undefined' ? UNDEFINED_MESSAGE
       : this.isGeneral
         ? '👥 General' : '👤 Non-general';
+
   return `*Name:* ${this.name || UNDEFINED_MESSAGE}\n*Accessibility:* ${accessibility}`;
 };
 

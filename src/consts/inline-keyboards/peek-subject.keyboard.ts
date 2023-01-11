@@ -14,7 +14,7 @@ const PeekSubject = async () => {
   subjects.forEach((subject) => {
     keyboard.push([
       {
-        'text': subject.buttonText(),
+        'text': subject.buttonText,
         'callback_data': `${CALLBACK_DATA.LINK_SUBJECT}_${subject.id}`,
       },
     ]);
@@ -45,7 +45,7 @@ const PeekPersonalSubject = async (
   ctx.session.subjectsFromDB = subjects;
   const keyboard: InlineKeyboardButton[][] = [];
   subjects.forEach((subject) => {
-    const buttonText = `${Subject.listIncludes(subscribedTo, subject) ? '✅' : '❌'}${subject.buttonText()}`;
+    const buttonText = `${Subject.listIncludes(subscribedTo, subject) ? '✅' : '❌'}${subject.buttonText}`;
     keyboard.push([{
       'text': buttonText,
       'callback_data': `${CALLBACK_DATA.SUBJECT_SWITCH_PERSONAL}_${subject.id}`,

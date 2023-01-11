@@ -5,15 +5,15 @@ import { Types } from 'mongoose';
 const SubjectController = {
 
   async save(subject: Subject) {
-    const subjectModel = new SubjectModel(subject.convertToObject());
-    await subjectModel.save();
+    const model = new SubjectModel(subject.convertToObject());
+    await model.save();
   },
 
   async getAll(): Promise<Subject[]> {
-    const fetchedSubjects = await SubjectModel.find(),
+    const models = await SubjectModel.find(),
           subjects: Subject[] = [];
 
-    fetchedSubjects.forEach((subject) => subjects.push(
+    models.forEach((subject) => subjects.push(
       Subject.parse(subject),
     ));
 
@@ -21,15 +21,12 @@ const SubjectController = {
   },
 
   async getByID(id: string): Promise<Subject | undefined> {
-    //TODO implement find by id
-    // const fetchedSubject =
-    //   (await SubjectModel.findById(id));
-    const fetchedSubject =
+    const model =
       (await SubjectModel.find({ _id: new Types.ObjectId(id) }))[0];
-    if (fetchedSubject) {
-      return Subject.parse(fetchedSubject);
-    }
-    return undefined;
+
+    if (!model) return undefined;
+
+    return Subject.parse(model);
   },
 
 };
