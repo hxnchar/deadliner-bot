@@ -1,20 +1,54 @@
 import { User } from 'services/user/service';
 import { UserModel } from 'services/user/model';
 import { SubjectController } from 'services/subject';
+import { IUser } from 'services/user/interface';
+import { CalendarController } from 'services/calendar';
+import { Subject } from 'services/subject';
 
 const UserController = {
+
+  async parse(object: IUser): Promise<User> {
+    const { id, name, subjects, calendar, language } = object;
+
+    const user = new User(id, name);
+
+    const parsedCalendar =
+      await CalendarController.getByID(calendar?._id);
+
+    const parsedSubjects: Subject[] = [];
+
+    for (const subject of subjects) {
+      if (subject._id) {
+        const fetchedSubject =
+          await SubjectController.getByID(subject._id?.toString());
+        if (fetchedSubject) parsedSubjects.push(fetchedSubject);
+      }
+    }
+
+    user.subjects = parsedSubjects;
+    user.language = language;
+    user.calendar = parsedCalendar;
+
+    return user;
+  },
 
   async save(user: User) {
     const exists = await this.exists(user.id),
           object = user.convertToObject();
 
     if (exists) {
-      await UserModel.findOneAndUpdate({ id: user.id }, object);
-      return;
+      return UserModel.findOneAndUpdate({ id: user.id }, object);
     }
 
     const model = new UserModel(object);
-    await model.save();
+    return model.save();
+  },
+
+  async returnSaved(user: User): Promise<User | undefined> {
+    const model = await this.save(user);
+    if (!model) return undefined;
+
+    return this.parse(model);
   },
 
   async getAll(): Promise<User[]> {
@@ -22,7 +56,7 @@ const UserController = {
           users: User[] = [];
 
     for (const model of models) {
-      users.push(await User.parse(model));
+      users.push(await this.parse(model));
     }
 
     return users;
@@ -35,7 +69,7 @@ const UserController = {
       return this.create(id);
     }
 
-    return User.parse(model);
+    return this.parse(model);
   },
 
   async exists(id: number | undefined): Promise<boolean> {

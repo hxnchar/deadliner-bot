@@ -119,22 +119,6 @@ class Notification {
     };
   }
 
-  static parse(object: INotification): Notification {
-    const { _id, header, body, date, deadline, isRequired, subject } = object;
-
-    const notification = new Notification(
-      header,
-      body,
-      date,
-      deadline,
-      isRequired,
-      subject,
-    );
-    notification.id = _id;
-
-    return notification;
-  }
-
 }
 
 Notification.prototype.toString = function notificationToString() {

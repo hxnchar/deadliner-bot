@@ -1,4 +1,4 @@
-import { Duration, formatDuration, parseISO } from 'date-fns';
+import { Duration, formatDuration } from 'date-fns';
 import * as duration from 'duration-fns';
 import { IOffset, IOffsetItem } from 'services/offset/interface';
 import { LangData } from 'consts';
@@ -111,17 +111,6 @@ class Offset implements IOffset {
 
   formatDuration() {
     return formatDuration(this.duration);
-  }
-
-  static parse(ISOstring: string) {
-    const durationObject = duration.parse(ISOstring);
-    const offset = new Offset();
-
-    for (const [key, value] of Object.entries(durationObject)) {
-      offset.target[key as keyof typeof offset.target] = value;
-    }
-
-    return offset;
   }
 
 }

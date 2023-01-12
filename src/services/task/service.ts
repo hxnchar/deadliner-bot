@@ -71,16 +71,6 @@ class Task {
     };
   }
 
-  static async parse(object: any): Promise<Task> {
-    const { id, body, date, subject } = object;
-
-    const parsedSubject = await SubjectController.getByID(subject._id);
-    const task = new Task(body, date, parsedSubject);
-    task.id = id;
-
-    return task;
-  }
-
 }
 
 Task.prototype.toString = function taskToString() {

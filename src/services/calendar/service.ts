@@ -44,12 +44,6 @@ class Calendar {
     };
   }
 
-  static parse(object: ICalendar) {
-    const calendar = new Calendar(object.calendarID);
-    calendar.id = object._id;
-
-    return calendar;
-  }
 }
 
 Calendar.prototype.toString = function calendarToString() {

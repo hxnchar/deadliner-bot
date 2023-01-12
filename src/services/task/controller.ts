@@ -1,11 +1,29 @@
 import { Task } from 'services/task/service';
 import { TaskModel } from 'services/task/model';
+import { SubjectController } from 'services/subject/controller';
 
 const TaskController = {
 
+  async parse(object: any): Promise<Task> {
+    const { id, body, date, subject } = object;
+
+    const parsedSubject = await SubjectController.getByID(subject._id);
+    const task = new Task(body, date, parsedSubject);
+    task.id = id;
+
+    return task;
+  },
+
   async save(task: Task) {
     const model = new TaskModel(task.convertToObject());
-    await model.save();
+    return model.save();
+  },
+
+  async returnSaved(task: Task): Promise<Task | undefined> {
+    const model = await this.save(task);
+    if (!model) return undefined;
+
+    return this.parse(model);
   },
 
   async getAll() {
@@ -13,7 +31,7 @@ const TaskController = {
           tasks = [];
 
     for (const model of models) {
-      tasks.push(await Task.parse(model));
+      tasks.push(await this.parse(model));
     }
 
     return tasks;

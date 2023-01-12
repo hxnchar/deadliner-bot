@@ -99,31 +99,6 @@ class User {
     };
   }
 
-  static async parse(object: IUser): Promise<User> {
-    const { id, name, subjects, calendar, language } = object;
-
-    const user = new User(id, name);
-
-    const parsedCalendar =
-      await CalendarController.getByID(calendar?._id);
-
-    const parsedSubjects: Subject[] = [];
-
-    for (const subject of subjects) {
-      if (subject._id) {
-        const fetchedSubject =
-          await SubjectController.getByID(subject._id?.toString());
-        if (fetchedSubject) parsedSubjects.push(fetchedSubject);
-      }
-    }
-
-    user.subjects = parsedSubjects;
-    user.language = language;
-    user.calendar = parsedCalendar;
-
-    return user;
-  }
-
   static async subscribeUserTo(user: User, subject: Subject) {
     user.subjects.push(subject);
     await UserController.save(user);

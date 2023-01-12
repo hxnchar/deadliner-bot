@@ -40,18 +40,6 @@ class Reminder implements IReminder {
     this._timeOffset = newTimeOffset;
   }
 
-  static parse(object: IReminder): Reminder {
-    const { type, offset } = object;
-
-    if (type && offset) {
-      const parsedOffset = Offset.parse(offset);
-
-      return new Reminder(type, parsedOffset);
-    }
-
-    return new Reminder();
-  }
-
   convertToObject() {
     if (typeof this.type === 'undefined') {
       throw new Error('Please, provide type');

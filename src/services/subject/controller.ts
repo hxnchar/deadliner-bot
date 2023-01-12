@@ -1,12 +1,29 @@
+import { Types } from 'mongoose';
 import { SubjectModel } from 'services/subject/model';
 import { Subject } from 'services/subject/service';
-import { Types } from 'mongoose';
+import { ISubject } from 'services/subject/interface';
 
 const SubjectController = {
 
+  parse(object: ISubject): Subject {
+    const { name, isGeneral, _id } = object;
+
+    const subject = new Subject(name, isGeneral);
+    subject.id = _id;
+
+    return subject;
+  },
+
   async save(subject: Subject) {
     const model = new SubjectModel(subject.convertToObject());
-    await model.save();
+    return model.save();
+  },
+
+  async returnSaved(subject: Subject): Promise<Subject | undefined> {
+    const model = await this.save(subject);
+    if (!model) return undefined;
+
+    return this.parse(model);
   },
 
   async getAll(): Promise<Subject[]> {
@@ -14,7 +31,7 @@ const SubjectController = {
           subjects: Subject[] = [];
 
     models.forEach((subject) => subjects.push(
-      Subject.parse(subject),
+      this.parse(subject),
     ));
 
     return subjects;
@@ -26,7 +43,7 @@ const SubjectController = {
 
     if (!model) return undefined;
 
-    return Subject.parse(model);
+    return this.parse(model);
   },
 
 };

@@ -101,15 +101,6 @@ class Subject {
     return { _id: this.id, name: this.name, isGeneral: this.isGeneral };
   }
 
-  static parse(object: ISubject): Subject {
-    const { name, isGeneral, _id } = object;
-
-    const subject = new Subject(name, isGeneral);
-    subject.id = _id;
-
-    return subject;
-  }
-
   static listIncludes(subjectsList: Subject[], subject: Subject): boolean {
     let result: boolean = false;
     const subjectStringified = subject.toString();
