@@ -22,6 +22,13 @@ const CalendarController = {
     return model.save();
   },
 
+  async returnSaved(calendar: Calendar): Promise<Calendar | undefined> {
+    const model = await this.save(calendar);
+    if (!model) return undefined;
+
+    return Calendar.parse(model);
+  },
+
   async getByID(id: Types.ObjectId | undefined): Promise<Calendar | undefined> {
     if (!id) return undefined;
 
