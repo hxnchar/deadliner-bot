@@ -12,7 +12,10 @@ const CalendarController = {
 
     if (exists) {
       return CalendarModel.findOneAndUpdate(
-        { _id: calendar.id }, object);
+        { _id: calendar.id },
+        object,
+        { new: true },
+      );
     }
 
     const model = new CalendarModel(object);
