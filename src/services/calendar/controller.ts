@@ -32,11 +32,11 @@ const CalendarController = {
     return (await CalendarModel.find({ _id: id })).length > 0;
   },
 
-  async insertEvent(calenadar: Calendar, event: IEvent) {
-    const auth = calenadar._auth,
-          calendarID = calenadar.calendarID;
+  async insertEvent(calendar: Calendar, event: IEvent) {
+    const auth = calendar._auth,
+          calendarID = calendar.calendarID;
 
-    await calenadar._target.events.insert({
+    await calendar._target.events.insert({
       auth,
       calendarId: calendarID,
       requestBody: event,
