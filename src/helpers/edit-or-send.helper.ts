@@ -1,6 +1,6 @@
 import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { BotContext } from 'bot';
-import { editMessageByID } from 'helpers/message-editer.helper';
+import { editMessageByID } from 'helpers/message-editor.helper';
 import { sendMessage } from 'helpers/message-sender.helper';
 
 const editOrSend =
