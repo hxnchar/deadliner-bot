@@ -63,6 +63,8 @@ const LangData: { [lang_key: string]: { [phrase_key: string]: string }; } = {
     'seconds': 'Seconds',
 
     // General buttons
+    'delete': '🚫 Delete',
+    'confirm': '✅ Confirm',
     'discard': '🛑 Discard',
     'save': '✅ Save',
     'reset': '🔄 Reset',
@@ -161,6 +163,8 @@ const LangData: { [lang_key: string]: { [phrase_key: string]: string }; } = {
     'seconds': 'Секунди',
 
     // General buttons
+    'delete': '🚫 Видалити',
+    'confirm': '✅ Підтвердити',
     'discard': '🛑 Відмінити',
     'save': '✅ Зберегти',
     'reset': '🔄 Скинути',

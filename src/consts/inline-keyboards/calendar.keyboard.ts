@@ -15,6 +15,10 @@ export const CalendarKeyboard = (): InlineKeyboardButton[][] => {
     ],
     [
       {
+        'text': LangData[LANG]['delete'],
+        'callback_data': CALLBACK_DATA.DELETE,
+      },
+      {
         'text': LangData[LANG]['discard'],
         'callback_data': CALLBACK_DATA.DISCARD,
       },
