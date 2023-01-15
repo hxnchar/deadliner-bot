@@ -8,9 +8,10 @@ const OffsetController = {
     const offset = new Offset();
 
     for (const [key, value] of Object.entries(durationObject)) {
-      offset.target[key as keyof typeof offset.target] = value;
+      if (key in offset.target) {
+        offset.setValue(key, value);
+      }
     }
-
     return offset;
   },
 

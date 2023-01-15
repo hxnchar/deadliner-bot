@@ -1,4 +1,4 @@
-import { Duration, formatDuration } from 'date-fns';
+import { Duration, formatDuration, formatISODuration } from 'date-fns';
 import * as duration from 'duration-fns';
 import { IOffset, IOffsetItem } from 'services/offset/interface';
 import { LangData } from 'consts';
@@ -13,7 +13,10 @@ class Offset implements IOffset {
     hours: IOffsetItem,
     minutes: IOffsetItem,
     seconds: IOffsetItem,
-  } = {
+  };
+
+  constructor() {
+    this._target = {
       years: { value: 0, inputting: false },
       months: { value: 0, maxValue: 12, nextIncrease: 'years', inputting: false },
       weeks: { value: 0, maxValue: 4, nextIncrease: 'months', inputting: false },
@@ -22,8 +25,6 @@ class Offset implements IOffset {
       minutes: { value: 0, maxValue: 60, nextIncrease: 'hours', inputting: false },
       seconds: { value: 0, maxValue: 60, nextIncrease: 'minutes', inputting: false },
     };
-
-  constructor() {
   }
 
   get target() {
@@ -32,13 +33,14 @@ class Offset implements IOffset {
 
   get duration() {
     const duration: Duration = {};
-
     Object.keys(this.target)
       .map((key) => {
-        duration[key as keyof typeof duration] =
-          this.target[key as keyof typeof this.target].value;
-      });
+        const unit = this.target[key as keyof typeof this.target];
 
+        if (unit.value && unit.value > 0) {
+          duration[key as keyof typeof duration] = unit.value;
+        }
+      });
     return duration;
   }
 
@@ -62,17 +64,21 @@ class Offset implements IOffset {
     return duration.toSeconds(this.duration);
   }
 
+  get ISODuration() {
+    return formatISODuration(this.duration);
+  }
+
   setTarget(newTarget: IOffset['target']) {
     this._target = newTarget;
   }
 
   setValue(key: string, value: number) {
-    const measure = this.target[key as keyof typeof this.target];
+    const unit = this.target[key as keyof typeof this.target];
 
     if (value < 0) {
-      if (measure.maxValue) {
+      if (unit.maxValue) {
         this.target[key as keyof typeof this.target].value =
-          measure.maxValue - 1;
+          unit.maxValue - 1;
         return;
       }
 
@@ -80,13 +86,13 @@ class Offset implements IOffset {
     }
 
     if (value > 0) {
-      if (measure.maxValue && measure.nextIncrease &&
-      value >= measure.maxValue) {
-        const toIncrease = measure.nextIncrease;
+      if (unit.maxValue && unit.nextIncrease &&
+      value >= unit.maxValue) {
+        const toIncrease = unit.nextIncrease;
 
-        while (value >= measure.maxValue) {
+        while (value >= unit.maxValue) {
           this.setValue(toIncrease, this.getValue(toIncrease) + 1);
-          value -= measure.maxValue;
+          value -= unit.maxValue;
         }
 
         this.setValue(key, value);
