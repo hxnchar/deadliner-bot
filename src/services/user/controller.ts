@@ -4,30 +4,27 @@ import { SubjectController } from 'services/subject';
 import { IUser } from 'services/user/interface';
 import { CalendarController } from 'services/calendar';
 import { Subject } from 'services/subject';
+import { Reminder } from 'services/reminder/service';
+import { ReminderController } from 'services/reminder/controller';
 
 const UserController = {
 
   async parse(object: IUser): Promise<User> {
-    const { id, name, subjects, calendar, language } = object;
+    const { id, name, subjects, calendar, language, reminders } = object;
 
     const user = new User(id, name);
 
+    const parsedSubjects: Subject[] =
+      await SubjectController.getManyByIDs(subjects);
+    const parsedReminders: Reminder[] =
+      await ReminderController.getManyByIDs(reminders);
     const parsedCalendar =
       await CalendarController.getByID(calendar?._id);
-
-    const parsedSubjects: Subject[] = [];
-
-    for (const subject of subjects) {
-      if (subject._id) {
-        const fetchedSubject =
-          await SubjectController.getByID(subject._id?.toString());
-        if (fetchedSubject) parsedSubjects.push(fetchedSubject);
-      }
-    }
 
     user.subjects = parsedSubjects;
     user.language = language;
     user.calendar = parsedCalendar;
+    user.reminders = parsedReminders;
 
     return user;
   },
@@ -37,7 +34,9 @@ const UserController = {
           object = user.convertToObject();
 
     if (exists) {
-      return UserModel.findOneAndUpdate({ id: user.id }, object);
+      return UserModel.findOneAndUpdate(
+        { id: user.id }, object, { new: true },
+      );
     }
 
     const model = new UserModel(object);

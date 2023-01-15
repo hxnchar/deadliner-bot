@@ -46,6 +46,20 @@ const SubjectController = {
     return this.parse(model);
   },
 
+  async getManyByIDs(objects: Subject[]): Promise<Subject[]> {
+    const subjects: Subject[] = [];
+
+    for (const object of objects) {
+      if (object._id) {
+        const subject: Subject | undefined =
+          await SubjectController.getByID(object._id.toString());
+        if (subject) subjects.push(subject);
+      }
+    }
+
+    return subjects;
+  },
+
 };
 
 export { SubjectController };
