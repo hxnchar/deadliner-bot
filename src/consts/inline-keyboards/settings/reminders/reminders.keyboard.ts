@@ -22,6 +22,10 @@ export const RemindersKeyboard = (): InlineKeyboardButton[][] => {
         'text': LangData[LANG]['discard'],
         'callback_data': CALLBACK_DATA.DISCARD,
       },
+      {
+        'text': LangData[LANG]['save'],
+        'callback_data': CALLBACK_DATA.SAVE,
+      },
     ],
   ];
   return keyboard;
