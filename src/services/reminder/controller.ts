@@ -3,18 +3,16 @@ import { ReminderModel } from 'services/reminder/model';
 import { IReminder } from 'services/reminder/interface';
 import { OffsetController } from 'services/offset/controller';
 
-const UserController = {
+const ReminderController = {
 
   parse(object: IReminder): Reminder {
-    const { type, offset } = object;
+    const { type, offset, _id } = object;
 
-    if (type && offset) {
-      const parsedOffset = OffsetController.parse(offset);
+    const parsedOffset = offset ? OffsetController.parse(offset) : undefined;
+    const reminder = new Reminder(type, parsedOffset);
+    reminder.id = _id;
 
-      return new Reminder(type, parsedOffset);
-    }
-
-    return new Reminder();
+    return reminder;
   },
 
   async save(reminder: Reminder) {
@@ -29,7 +27,8 @@ const UserController = {
     return this.parse(model);
   },
 
-  async getByID(id: number | undefined): Promise<Reminder | undefined> {
+  async getByID(id: number | string | undefined)
+  : Promise<Reminder | undefined> {
     const model = await ReminderModel.findOne({ _id: id });
     if (!model) {
       return undefined;
@@ -38,6 +37,20 @@ const UserController = {
     return this.parse(model);
   },
 
+  async getManyByIDs(objects: Reminder[]): Promise<Reminder[]> {
+    const reminders: Reminder[] = [];
+
+    for (const object of objects) {
+      if (object._id) {
+        const reminder: Reminder | undefined =
+          await this.getByID(object._id.toString());
+        if (reminder) reminders.push(reminder);
+      }
+    }
+
+    return reminders;
+  },
+
 };
 
-export { UserController };
+export { ReminderController };

@@ -5,8 +5,8 @@ import { IReminder } from './interface';
 const ReminderSchema = new Schema({
   type: {
     type: String,
-    enum: ['bot', 'email', 'calendar'],
-    default: 'bot',
+    enum: ['remind-by-bot', 'remind-by-email', 'remind-by-calendar'],
+    default: 'remind-by-bot',
   },
   offset: { 'type': String, 'unique': false, 'required': false },
 });

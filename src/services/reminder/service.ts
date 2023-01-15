@@ -47,7 +47,12 @@ class Reminder implements IReminder {
     if (typeof this.timeOffset === 'undefined') {
       throw new Error('Please, provide the time offset');
     }
-    return { _id: this.id, type: this.type, timeOffset: this.timeOffset };
+
+    return {
+      _id: this.id,
+      type: this.type,
+      offset: this.timeOffset.ISODuration,
+    };
   }
 
   static convertToMap(reminders: Reminder[]): Map<ReminderTypes, Offset[]>  {

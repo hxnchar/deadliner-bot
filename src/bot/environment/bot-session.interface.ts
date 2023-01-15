@@ -30,7 +30,7 @@ interface BotSession extends Scenes.SceneSession<SceneSession> {
   notification: Notification;
   subject: Subject;
   task: Task;
-  reminder: Reminder;
+  reminder?: Reminder;
   offset?: Offset;
 
   subjectsFromDB: Subject[];

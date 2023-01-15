@@ -3,7 +3,8 @@ import { callbackQuery } from 'telegraf/filters';
 import { BotReplies, SceneIDs, CALLBACK_DATA, CalendarKeyboard, RemindersKeyboard, ReminderTypeKeyboard, ReminderTypes } from 'consts';
 import { BotContext } from 'bot';
 import { cleanMessagesBin, messageToBin, sendMessage, editOrSend } from 'helpers';
-import { Calendar, CalendarController, Reminder } from 'services';
+import { Calendar, CalendarController, Reminder, UserController, User } from 'services';
+import { ReminderController } from 'services/reminder/controller';
 
 const { enter } = Scenes.Stage;
 
@@ -40,9 +41,9 @@ const remindersSubScene =
 remindersSubScene.enter(async (ctx) => {
   const sessionOffset = ctx.session.offset;
 
-  if (sessionOffset) {
+  if (sessionOffset && ctx.session.reminder) {
     ctx.session.reminder.timeOffset = sessionOffset;
-    ctx.session.user.addReminder(ctx.session.reminder);
+
     ctx.session.offset = undefined;
   }
 
@@ -50,6 +51,21 @@ remindersSubScene.enter(async (ctx) => {
 });
 
 remindersSubScene.action(CALLBACK_DATA.DISCARD, async (ctx) => {
+  await ctx.scene.enter(SceneIDs.SETTINGS);
+});
+
+remindersSubScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
+  if (ctx.session.reminder) {
+    const savedReminder =
+      await ReminderController.returnSaved(ctx.session.reminder);
+
+    if (savedReminder) {
+      ctx.session.user.addReminder(savedReminder);
+    }
+
+    ctx.session.reminder = undefined;
+  }
+
   await ctx.scene.enter(SceneIDs.SETTINGS);
 });
 
