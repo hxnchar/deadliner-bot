@@ -34,13 +34,14 @@ class Offset implements IOffset {
   get duration() {
     const duration: Duration = {};
     Object.keys(this.target)
-      .map((key) => {
+      .forEach((key) => {
         const unit = this.target[key as keyof typeof this.target];
 
         if (unit.value && unit.value > 0) {
           duration[key as keyof typeof duration] = unit.value;
         }
       });
+
     return duration;
   }
 
