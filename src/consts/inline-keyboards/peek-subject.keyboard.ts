@@ -8,8 +8,12 @@ const PeekSubject = async () => {
   const LANGUAGE = BotService.language;
 
   let subjects = await SubjectController.getAll();
-  subjects = subjects.sort((a, b) => a.isGeneral && b.isGeneral ? 0
-    : !a.isGeneral && b.isGeneral ? 1 : -1);
+
+  subjects = subjects.sort((a, b) => {
+    if (a.isGeneral && b.isGeneral) return 0;
+    return !a.isGeneral && b.isGeneral ? 1 : -1;
+  });
+
   const keyboard: InlineKeyboardButton[][] = [];
   subjects.forEach((subject) => {
     keyboard.push([
