@@ -67,8 +67,8 @@ class User {
     return this._reminders;
   }
 
-  set reminders(newRemindes) {
-    this._reminders = newRemindes;
+  set reminders(newReminders) {
+    this._reminders = newReminders;
   }
 
   get generalSubjects() {
