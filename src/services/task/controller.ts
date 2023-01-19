@@ -5,10 +5,10 @@ import { SubjectController } from 'services/subject/controller';
 const TaskController = {
 
   async parse(object: any): Promise<Task> {
-    const { id, body, date, subject } = object;
+    const { id, body, deadline, subject } = object;
 
     const parsedSubject = await SubjectController.getByID(subject._id);
-    const task = new Task(body, date, parsedSubject);
+    const task = new Task(body, deadline, parsedSubject);
     task.id = id;
 
     return task;

@@ -52,22 +52,20 @@ class BotService {
     const tasks = await TaskController.getAll();
     const notifications = await NotificationController.getAll();
 
-    let todolist: (Task | Notification)[] = [...tasks, ...notifications];
+    let todoList: (Task | Notification)[] = [...tasks, ...notifications];
 
-    todolist = todolist.sort((a, b) => {
-      if (!a.date || !b.date || a.date === b.date) {
+    todoList = todoList.sort((a, b) => {
+      const aDeadline = a.deadline,
+            bDeadline = b.deadline;
+
+      if (!aDeadline || !bDeadline || aDeadline === bDeadline) {
         return 0;
       }
-      if (a.date < b.date) {
-        return -1;
-      }
-      if (a.date > b.date) {
-        return 1;
-      }
-      return 0;
+
+      return aDeadline > bDeadline ? 1 : -1;
     });
 
-    const message = todolist.map((todo) => todo.toString()).join('\n');
+    const message = todoList.map((todo) => todo.toString()).join('\n');
 
     return sendMessage(ctx, message);
   }

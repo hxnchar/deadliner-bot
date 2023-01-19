@@ -1,14 +1,12 @@
 import { Types } from 'mongoose';
 import { format } from 'date-fns';
-import { DateTimeLongFormat } from 'consts';
-import { Subject, SubjectController } from 'services';
-
-const UNDEFINED_MESSAGE: string = 'Not provided';
+import { DateTimeLongFormat, LangData } from 'consts';
+import { BotService, Subject, SubjectController } from 'services';
 
 class Task {
   _id: Types.ObjectId | undefined;
   _body: string | undefined = '';
-  _date: Date | undefined;
+  _deadline: Date | undefined;
   _subject: Subject | undefined;
 
   set id(newID) {
@@ -27,12 +25,12 @@ class Task {
     this._body = newBody;
   }
 
-  get date() {
-    return this._date;
+  get deadline() {
+    return this._deadline;
   }
 
-  set date(newDate) {
-    this._date = newDate;
+  set deadline(newDeadline) {
+    this._deadline = newDeadline;
   }
 
   get subject() {
@@ -45,11 +43,11 @@ class Task {
 
   constructor(
     body?: string,
-    date?: Date,
+    deadline?: Date,
     subject?: Subject,
   ) {
     this.body = body;
-    this.date = date;
+    this.deadline = deadline;
     this.subject = subject;
   }
 
@@ -57,7 +55,7 @@ class Task {
     if (typeof this.body === 'undefined') {
       throw new Error('Please, provide body');
     }
-    if (typeof this.date === 'undefined') {
+    if (typeof this.deadline === 'undefined') {
       throw new Error('Please, provide date');
     }
     if (typeof this.subject === 'undefined') {
@@ -66,7 +64,7 @@ class Task {
     return {
       _id: this.id,
       body: this.body,
-      date: this.date,
+      date: this.deadline,
       subject: this.subject.convertToObject(),
     };
   }
@@ -74,15 +72,19 @@ class Task {
 }
 
 Task.prototype.toString = function taskToString() {
-  const subjectName = !this.subject ? UNDEFINED_MESSAGE
+  const LANG = BotService.language;
+
+  const notDefinedMessage = LangData[LANG]['not-defined'];
+
+  const subjectName = !this.subject ? notDefinedMessage
     : this.subject.isGeneral
       ? `👥${this.subject?.name}`
       : `👤${this.subject?.name}`;
-  const formattedDate = this.date
-    ? format(this.date, DateTimeLongFormat)
-    : UNDEFINED_MESSAGE;
+  const formattedDate = this.deadline
+    ? format(this.deadline, DateTimeLongFormat)
+    : notDefinedMessage;
 
-  return `*[${formattedDate}]*\n${subjectName ?? UNDEFINED_MESSAGE}\n\n${this.body ?? UNDEFINED_MESSAGE}`;
+  return `*[${formattedDate}]*\n${subjectName ?? notDefinedMessage}\n\n${this.body ?? notDefinedMessage}`;
 };
 
 export { Task };

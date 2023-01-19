@@ -98,7 +98,7 @@ newTaskScene.on('text', async (ctx) => {
     await updateTaskMessage(ctx);
   }
   if (inputingDate) {
-    ctx.session.task.date =
+    ctx.session.task.deadline =
       parse(ctx.message.text, DateTimeCommonFormat, new Date());
     ctx.scene.session.taskDateInput = false;
     messageToBin(ctx);

@@ -5,7 +5,7 @@ import { SubjectSchema, SubjectModel } from 'services/subject';
 
 const TaskSchema = new Schema({
   body: { 'type': String, 'unique': false, 'required': true },
-  date: { 'type': Date, 'unique': false, 'required': true },
+  deadline: { 'type': Date, 'unique': false, 'required': true },
   subject: { 'type': SubjectSchema, ref: SubjectModel, 'unique': false, 'required': true },
 });
 
