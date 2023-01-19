@@ -89,8 +89,8 @@ const LangData: { [lang_key: string]: { [phrase_key: string]: string }; } = {
     'non-general': '🟡 Non-general',
     'task': '✏️ Task',
     'calendar-id': '🌐 Calendar ID',
-    'calenadar-tuned': '✅ Calendar is ready',
-    'calenadar-not-tuned': '❌ Calendar not tuned',
+    'calendar-tuned': '✅ Calendar is ready',
+    'calendar-not-tuned': '❌ Calendar not tuned',
     'reminders': '🔔 Reminders',
 
     // General phrases
@@ -189,8 +189,8 @@ const LangData: { [lang_key: string]: { [phrase_key: string]: string }; } = {
     'non-general': '🟡 Вибірковий',
     'task': '✏️ Завдання',
     'calendar-id': '🌐 ID календаря',
-    'calenadar-tuned': '✅ Календар готовий',
-    'calenadar-not-tuned': '❌ Календар не налаштовано',
+    'calendar-tuned': '✅ Календар готовий',
+    'calendar-not-tuned': '❌ Календар не налаштовано',
     'reminders': '🔔 Нагадування',
 
     // General phrases

@@ -127,7 +127,7 @@ User.prototype.toString = function userToString() {
       ? '⚠️' : '🤨';
 
   const calendarTuned = this.calendar
-    ? LangData[LANG]['calenadar-tuned'] : LangData[LANG]['calenadar-not-tuned'];
+    ? LangData[LANG]['calendar-tuned'] : LangData[LANG]['calendar-not-tuned'];
 
   return `*⚙️ Preferences*\n\n*${totalSubjectsRate} Total number of subjects:* ${countSubjects}/${FIXMEPLS}\n\n*👥 General subjects list:*\n${generalSubjectsStringified}\n\n*👤 Private subjects list:*\n${privateSubjectsStringified}\n\nCalendar: ${calendarTuned}\n\nReminders: ${remindersCount}`;
 };
