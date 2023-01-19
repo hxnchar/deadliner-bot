@@ -85,9 +85,9 @@ offsetSubScene.on('text', async (ctx) => {
     return;
   }
 
-  const inputingData = ctx.session.offset.targetToArray()
+  const inputtingData = ctx.session.offset.targetToArray()
     .filter((elem) => elem.value.inputting === true)[0];
-  const inputtingKey = inputingData.key;
+  const inputtingKey = inputtingData.key;
 
   if (inputtingKey) {
     const dataToSet = Number(ctx.message.text);

@@ -93,8 +93,8 @@ newSubjectScene.hears(BotCommands.NEW_SUBJECT,
   async (ctx) => ctx.scene.reenter());
 
 newSubjectScene.on('text', async (ctx) => {
-  const inputingName = ctx.scene.session.subjectNameInput;
-  if (inputingName) {
+  const inputtingName = ctx.scene.session.subjectNameInput;
+  if (inputtingName) {
     ctx.session.subject.name = ctx.message.text;
     ctx.scene.session.subjectNameInput = false;
     messageToBin(ctx);

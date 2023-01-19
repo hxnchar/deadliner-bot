@@ -89,15 +89,15 @@ newTaskScene.action(
 newTaskScene.hears(BotCommands.NEW_TASK, async (ctx) => ctx.scene.reenter());
 
 newTaskScene.on('text', async (ctx) => {
-  const inputingBody = ctx.scene.session.taskBodyInput,
-        inputingDate = ctx.scene.session.taskDateInput;
-  if (inputingBody) {
+  const inputtingBody = ctx.scene.session.taskBodyInput,
+        inputtingDate = ctx.scene.session.taskDateInput;
+  if (inputtingBody) {
     ctx.session.task.body = ctx.message.text;
     ctx.scene.session.taskBodyInput = false;
     messageToBin(ctx);
     await updateTaskMessage(ctx);
   }
-  if (inputingDate) {
+  if (inputtingDate) {
     ctx.session.task.deadline =
       parse(ctx.message.text, DateTimeCommonFormat, new Date());
     ctx.scene.session.taskDateInput = false;

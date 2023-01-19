@@ -21,27 +21,30 @@ const resetSession = (ctx: BotContext) => {
 };
 
 const setNotificationData = (ctx: BotContext, data: string): boolean => {
-  const headerInput = ctx.scene.session.notificationHeaderInput,
-        bodyInput = ctx.scene.session.notificationBodyInput,
-        dateInput = ctx.scene.session.notificationDateInput,
-        deadlintInput = ctx.scene.session.notificationDeadlineInput;
-  if (!ctx.message) {
-    return false;
-  }
-  if (headerInput) {
+  const inputtingHeader = ctx.scene.session.notificationHeaderInput,
+        inputtingBody = ctx.scene.session.notificationBodyInput,
+        inputtingDate = ctx.scene.session.notificationDateInput,
+        inputtingDeadline = ctx.scene.session.notificationDeadlineInput;
+
+  if (!ctx.message) return false;
+
+  if (inputtingHeader) {
     ctx.session.notification.header = data;
     return true;
   }
-  if (bodyInput) {
+
+  if (inputtingBody) {
     ctx.session.notification.body = data;
     return true;
   }
-  if (dateInput) {
+
+  if (inputtingDate) {
     ctx.session.notification.date =
       parse(data, DateTimeCommonFormat, new Date());
     return true;
   }
-  if (deadlintInput) {
+
+  if (inputtingDeadline) {
     ctx.session.notification.deadline =
       parse(data, DateTimeCommonFormat, new Date());
     return true;
