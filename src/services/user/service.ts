@@ -9,7 +9,7 @@ import { Reminder } from 'services/reminder';
 
 const NO_SUBJECTS_MSG = 'No subjects in this list yet';
 
-class User {
+class User implements IUser {
   _id: number | undefined;
   _name: string | undefined = '';
   _subjects: Subject[];

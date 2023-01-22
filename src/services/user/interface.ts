@@ -4,7 +4,7 @@ import { Subject } from 'services/subject';
 import { Reminder } from 'services/reminder';
 
 interface IUser {
-  id: number,
+  id?: number,
   name?: string,
   subjects: Subject[]
   calendar?: Calendar,
