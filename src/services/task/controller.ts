@@ -15,7 +15,7 @@ const TaskController = {
   },
 
   async save(task: Task) {
-    const model = new TaskModel(task.convertToObject());
+    const model = new TaskModel(task.mongooseObject);
     return model.save();
   },
 

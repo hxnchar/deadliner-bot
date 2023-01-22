@@ -41,17 +41,7 @@ class Task implements ITask {
     this._subject = newSubject;
   }
 
-  constructor(
-    body?: string,
-    deadline?: Date,
-    subject?: Subject,
-  ) {
-    this.body = body;
-    this.deadline = deadline;
-    this.subject = subject;
-  }
-
-  convertToObject() {
+  get mongooseObject() {
     if (typeof this.body === 'undefined') {
       throw new Error('Please, provide body');
     }
@@ -64,9 +54,19 @@ class Task implements ITask {
     return {
       _id: this.id,
       body: this.body,
-      date: this.deadline,
+      deadline: this.deadline,
       subject: this.subject.convertToObject(),
     };
+  }
+
+  constructor(
+    body?: string,
+    deadline?: Date,
+    subject?: Subject,
+  ) {
+    this.body = body;
+    this.deadline = deadline;
+    this.subject = subject;
   }
 
 }
@@ -76,15 +76,11 @@ Task.prototype.toString = function taskToString() {
 
   const notDefinedMessage = LangData[LANG]['not-defined'];
 
-  const subjectName = !this.subject ? notDefinedMessage
-    : this.subject.isGeneral
-      ? `👥${this.subject?.name}`
-      : `👤${this.subject?.name}`;
+  const subjectName = this.subject ? this.subject.shortName : notDefinedMessage;
   const formattedDate = this.deadline
-    ? format(this.deadline, DateTimeLongFormat)
-    : notDefinedMessage;
+    ? format(this.deadline, DateTimeLongFormat) : notDefinedMessage;
 
-  return `*[${formattedDate}]*\n${subjectName ?? notDefinedMessage}\n\n${this.body ?? notDefinedMessage}`;
+  return `*[${formattedDate}]*\n${subjectName}\n\n${this.body ?? notDefinedMessage}`;
 };
 
 export { Task };

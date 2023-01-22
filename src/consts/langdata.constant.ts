@@ -62,6 +62,10 @@ const LangData: { [lang_key: string]: { [phrase_key: string]: string }; } = {
     'minutes': 'Minutes',
     'seconds': 'Seconds',
 
+    // Reminders
+    'subject-general': '👥 General',
+    'subject-not-general': '👤 Non-general',
+
     // General buttons
     'delete': '🚫 Delete',
     'confirm': '✅ Confirm',
@@ -161,6 +165,10 @@ const LangData: { [lang_key: string]: { [phrase_key: string]: string }; } = {
     'hours': 'Години',
     'minutes': 'Хвилини',
     'seconds': 'Секунди',
+
+    // Reminders
+    'subject-general': '👥 Основний',
+    'subject-not-general': '👤 Вибірковий',
 
     // General buttons
     'delete': '🚫 Видалити',

@@ -1,9 +1,11 @@
 import { Types } from 'mongoose';
 import { ISubject } from 'services/subject/interface';
+import { LangData } from 'consts/langdata.constant';
+import { BotService } from 'services/bot.service';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
-class Subject {
+class Subject implements ISubject {
   _id: Types.ObjectId | undefined;
   _name: string | undefined = '';
   _isGeneral: boolean | undefined = false;
@@ -41,8 +43,17 @@ class Subject {
     this._isGeneral = newisGeneral;
   }
 
-  get buttonText() {
+  get shortName() {
     return `${this.isGeneral ? '👥' : '👤'} ${this.name}`;
+  }
+
+  get accessibility() {
+    const LANG = BotService.language;
+
+    if (typeof this.isGeneral === 'undefined') return LangData[LANG]['not-defined'];
+
+    return this.isGeneral
+      ? LangData[LANG]['subject-general'] : LangData[LANG]['subject-not-general'];
   }
 
   constructor(name?: string, isGeneral?: boolean) {
@@ -125,15 +136,15 @@ class Subject {
 
     return -1;
   }
+
+  static getRate = (goal: number, selected: number): string => {
+    if (selected === goal) return '✅';
+    return selected < goal ? '⚠️' : '🤨';
+  };
 }
 
 Subject.prototype.toString = function subjectToString() {
-  const accessibility =
-    typeof this.isGeneral === 'undefined' ? UNDEFINED_MESSAGE
-      : this.isGeneral
-        ? '👥 General' : '👤 Non-general';
-
-  return `*Name:* ${this.name || UNDEFINED_MESSAGE}\n*Accessibility:* ${accessibility}`;
+  return `*Name:* ${this.name || UNDEFINED_MESSAGE}\n*Accessibility:* ${this.accessibility}`;
 };
 
 export { Subject };
