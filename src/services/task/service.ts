@@ -1,9 +1,9 @@
 import { Types } from 'mongoose';
 import { format } from 'date-fns';
 import { DateTimeLongFormat, LangData } from 'consts';
-import { BotService, Subject, SubjectController } from 'services';
+import { BotService, ITask, Subject } from 'services';
 
-class Task {
+class Task implements ITask {
   _id: Types.ObjectId | undefined;
   _body: string | undefined = '';
   _deadline: Date | undefined;
