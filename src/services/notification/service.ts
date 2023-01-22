@@ -6,14 +6,13 @@ import { INotification } from 'services/notification/interface';
 
 const UNDEFINED_MESSAGE: string = 'Not provided';
 
-class Notification {
+class Notification implements INotification {
   _id: Types.ObjectId | undefined;
-  _header: string | undefined = '';
   _body: string | undefined = '';
-  _date: Date | undefined;
   _deadline: Date | undefined;
-  _isRequired: boolean | undefined = false;
   _subject: Subject | undefined;
+  _header: string | undefined = '';
+  _isRequired: boolean | undefined = false;
 
   get id() {
     return this._id;
@@ -37,14 +36,6 @@ class Notification {
 
   set body(newBody) {
     this._body = newBody;
-  }
-
-  get date() {
-    return this._date;
-  }
-
-  set date(newDate) {
-    this._date = newDate;
   }
 
   get deadline() {
@@ -74,23 +65,20 @@ class Notification {
   constructor(
     header?: string,
     body?: string,
-    date?: Date,
     deadline?: Date,
     isRequired?: boolean,
     subject?: Subject,
   ) {
-    this.header = header;
     this.body = body;
-    this.date = date;
     this.deadline = deadline;
-    this.isRequired = isRequired;
     this.subject = subject;
+    this.header = header;
+    this.isRequired = isRequired;
   }
 
   isEqualTo(notification: Notification): boolean {
     return this.header === notification.header &&
       this.body === notification.body &&
-      this.date === notification.date &&
       this.deadline === notification.deadline &&
       this.isRequired === notification.isRequired &&
       this.subject === notification.subject;
