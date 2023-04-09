@@ -1,6 +1,6 @@
 import { UserController } from 'services/user/controller';
-import { Subject, SubjectController } from 'services/subject';
-import { Calendar, CalendarController } from 'services/calendar';
+import { Subject } from 'services/subject';
+import { Calendar } from 'services/calendar';
 import { Language } from 'consts/enums';
 import { IUser } from 'services/user/interface';
 import { BotService } from 'services/bot.service';
@@ -122,9 +122,7 @@ User.prototype.toString = function userToString() {
   const privateSubjectsStringified = privateSubjects.length > 0
     ? privateSubjects.map((subject) => `• ${subject}`).join(',\n') : NO_SUBJECTS_MSG;
 
-  const totalSubjectsRate = countSubjects === FIXMEPLS
-    ? '✅' : countSubjects < FIXMEPLS
-      ? '⚠️' : '🤨';
+  const totalSubjectsRate = Subject.getRate(FIXMEPLS, this.subjects.length);
 
   const calendarTuned = this.calendar
     ? LangData[LANG]['calendar-tuned'] : LangData[LANG]['calendar-not-tuned'];

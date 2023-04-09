@@ -3,7 +3,7 @@ import { callbackQuery } from 'telegraf/filters';
 import { parse } from 'date-fns';
 import { BotReplies, SceneIDs, NewTaskKeyboard, BotCommands, CALLBACK_DATA, DateTimeCommonFormat, PeekSubject } from 'consts';
 import { BotContext } from 'bot';
-import { Task, TaskController, SubjectController } from 'services';
+import { Task, TaskController, SubjectController, UserController } from 'services';
 import { sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMessage } from 'helpers';
 
 const updateTaskMessage = async (ctx: BotContext) => {
