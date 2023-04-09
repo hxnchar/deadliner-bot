@@ -23,7 +23,6 @@ const resetSession = (ctx: BotContext) => {
 const setNotificationData = (ctx: BotContext, data: string): boolean => {
   const inputtingHeader = ctx.scene.session.notificationHeaderInput,
         inputtingBody = ctx.scene.session.notificationBodyInput,
-        inputtingDate = ctx.scene.session.notificationDateInput,
         inputtingDeadline = ctx.scene.session.notificationDeadlineInput;
 
   if (!ctx.message) return false;
@@ -35,12 +34,6 @@ const setNotificationData = (ctx: BotContext, data: string): boolean => {
 
   if (inputtingBody) {
     ctx.session.notification.body = data;
-    return true;
-  }
-
-  if (inputtingDate) {
-    ctx.session.notification.date =
-      parse(data, DateTimeCommonFormat, new Date());
     return true;
   }
 
@@ -136,7 +129,6 @@ notificationScene.action(
   async (ctx) => {
     const targetNotification = ctx.session.notification;
     await NotificationController.save(targetNotification);
-    await ctx.answerCbQuery(`Notification ${targetNotification.date ? 'was scheduled' : 'has been sent'} successfully`);
     ctx.session.notification = new Notification();
     await deleteTargetMessage(ctx);
     await ctx.scene.leave();
