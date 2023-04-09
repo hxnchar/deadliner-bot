@@ -61,6 +61,15 @@ const UserController = {
     return users;
   },
 
+  async getAllBySubject(subject: Subject): Promise<User[]> {
+    const users = await UserController.getAll();
+
+    return subject.isGeneral
+      ? users
+      : users.filter((user) =>
+        user.subjects.some((userSubject) => userSubject.id === subject.id));
+  },
+
   async getByID(id: number | undefined): Promise<User> {
     const model = await UserModel.findOne({ id });
 
