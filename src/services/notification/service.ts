@@ -62,6 +62,29 @@ class Notification implements INotification {
     this._subject = newSubject;
   }
 
+  get mongooseObject(): any {
+    if (typeof this.header === 'undefined') {
+      throw new Error('Please, provide header');
+    }
+    if (typeof this.body  === 'undefined') {
+      throw new Error('Please, provide body');
+    }
+    if (typeof this.deadline  === 'undefined') {
+      throw new Error('Please, provide a deadline');
+    }
+    if (typeof this.isRequired === 'undefined') {
+      throw new Error('Please, provide if notification is required');
+    }
+    return {
+      _id: this.id,
+      header: this.header,
+      body: this.body,
+      deadline: this.deadline,
+      isRequired: this.isRequired,
+      subject: this.subject?.convertToObject(),
+    };
+  }
+
   constructor(
     header?: string,
     body?: string,
@@ -82,29 +105,6 @@ class Notification implements INotification {
       this.deadline === notification.deadline &&
       this.isRequired === notification.isRequired &&
       this.subject === notification.subject;
-  }
-
-  convertToObject() {
-    if (typeof this.header === 'undefined') {
-      throw new Error('Please, provide header');
-    }
-    if (typeof this.body  === 'undefined') {
-      throw new Error('Please, provide body');
-    }
-    if (typeof this.deadline  === 'undefined') {
-      throw new Error('Please, provide a deadline');
-    }
-    if (typeof this.isRequired === 'undefined') {
-      throw new Error('Please, provide if notification is required');
-    }
-    return {
-      header: this.header,
-      body: this.body,
-      date: this.date ?? Date.now(),
-      deadline: this.deadline,
-      isRequired: this.isRequired,
-      subject: this.subject || null,
-    };
   }
 
 }

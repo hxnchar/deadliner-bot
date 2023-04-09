@@ -5,12 +5,11 @@ import { INotification } from 'services/notification/interface';
 const NotificationController = {
 
   parse(object: INotification): Notification {
-    const { _id, header, body, date, deadline, isRequired, subject } = object;
+    const { _id, header, body, deadline, isRequired, subject } = object;
 
     const notification = new Notification(
       header,
       body,
-      date,
       deadline,
       isRequired,
       subject,
@@ -21,7 +20,7 @@ const NotificationController = {
   },
 
   async save(notification: Notification) {
-    const model = new NotificationModel(notification.convertToObject());
+    const model = new NotificationModel(notification.mongooseObject);
     return model.save();
   },
 
