@@ -76,11 +76,12 @@ Task.prototype.toString = function taskToString() {
 
   const notDefinedMessage = LangData[LANG]['not-defined'];
 
-  const subjectName = this.subject ? this.subject.shortName : notDefinedMessage;
   const formattedDate = this.deadline
     ? format(this.deadline, DateTimeLongFormat) : notDefinedMessage;
+  const subjectName = this.subject ? this.subject.shortName : notDefinedMessage;
+  const deadlineBody = this.body ?? notDefinedMessage;
 
-  return `*[${formattedDate}]*\n${subjectName}\n\n${this.body ?? notDefinedMessage}`;
+  return `📅 *${formattedDate}*\n🔗 ${subjectName}\n\n✏️ ${deadlineBody}`;
 };
 
 export { Task };
