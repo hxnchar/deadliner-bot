@@ -11,14 +11,16 @@ const NO_SUBJECTS_MSG = 'No subjects in this list yet';
 
 class User implements IUser {
   _id: number | undefined;
+  _chatID: number | undefined;
   _name: string | undefined = '';
   _subjects: Subject[];
   _calendar: Calendar | undefined;
   _language: Language = Language.en;
   _reminders: Reminder[] = [];
 
-  constructor(id?: number, name?: string) {
+  constructor(id?: number, chatID?: number, name?: string) {
     this._id = id;
+    this._chatID = chatID;
     this._name = name;
     this._subjects = [];
   }
@@ -29,6 +31,14 @@ class User implements IUser {
 
   set id(newId) {
     this._id = newId;
+  }
+
+  get chatID() {
+    return this._chatID;
+  }
+
+  set chatID(newChatID) {
+    this._chatID = newChatID;
   }
 
   get name() {
@@ -88,9 +98,18 @@ class User implements IUser {
           reminders = this.reminders.map((reminder) =>
             reminder.convertToObject()),
           calendar = this.calendar?.convertToObject();
-
+    console.log({
+      id: this.id,
+      chatID: this.chatID,
+      name: this.name,
+      subjects,
+      calendar,
+      reminders,
+      language: this.language,
+    });
     return {
       id: this.id,
+      chatID: this.chatID,
       name: this.name,
       subjects,
       calendar,
@@ -99,7 +118,7 @@ class User implements IUser {
     };
   }
 
-  static async subscribeUserTo(user: User, subject: Subject) {
+  static async subscribeToSubject(user: User, subject: Subject) {
     user.subjects.push(subject);
     await UserController.save(user);
   }

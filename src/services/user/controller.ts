@@ -10,9 +10,10 @@ import { ReminderController } from 'services/reminder/controller';
 const UserController = {
 
   async parse(object: IUser): Promise<User> {
-    const { id, name, subjects, calendar, language, reminders } = object;
+    const { id, chatID, name, subjects, calendar, language, reminders } =
+      object;
 
-    const user = new User(id, name);
+    const user = new User(id, chatID, name);
 
     const parsedSubjects: Subject[] =
       await SubjectController.getManyByIDs(subjects);
@@ -70,11 +71,15 @@ const UserController = {
         user.subjects.some((userSubject) => userSubject.id === subject.id));
   },
 
-  async getByID(id: number | undefined): Promise<User> {
+  async getByID(
+    id: number | undefined,
+    chatID: number | undefined,
+    username: string | undefined,
+  ): Promise<User> {
     const model = await UserModel.findOne({ id });
 
     if (!model) {
-      return this.create(id);
+      return this.create(id, chatID, username);
     }
 
     return this.parse(model);
@@ -84,8 +89,11 @@ const UserController = {
     return (await UserModel.find({ id })).length > 0;
   },
 
-  async create(id?: number | undefined, username?: string): Promise<User> {
-    const user = new User(id, username);
+  async create(
+    id?: number | undefined,
+    chatID?: number | undefined,
+    username?: string): Promise<User> {
+    const user = new User(id, chatID, username);
 
     const generalSubjects =
       (await SubjectController.getAll()).filter((subject) => subject.isGeneral);

@@ -6,6 +6,7 @@ import { IUser } from 'services/user/interface';
 
 const UserSchema = new Schema({
   id: { 'type': Number, 'unique': true, 'required': true },
+  chatID: { 'type': Number, 'unique': true, 'required': true },
   name: { 'type': String, 'unique': false, 'required': false },
   subjects: { 'type': [SubjectSchema], ref: SubjectModel },
   reminders: { 'type': [ReminderSchema], ref: ReminderModel },

@@ -5,6 +5,7 @@ import { Reminder } from 'services/reminder';
 
 interface IUser {
   id?: number,
+  chatID?: number,
   name?: string,
   subjects: Subject[]
   calendar?: Calendar,
