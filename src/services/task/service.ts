@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 import { format, subDays } from 'date-fns';
 import schedule from 'node-schedule';
 import { BotContext } from 'bot';
-import { DateTimeLongFormat, LangData } from 'consts';
+import { DateTimeCommonFormat, DateTimeLongFormat, LangData } from 'consts';
 import { BotService, ITask, Subject } from 'services';
 import { sendMessageToChat } from 'helpers';
 
@@ -62,6 +62,11 @@ class Task implements ITask {
     };
   }
 
+  get deadlineDescription() {
+    const formattedDate = this.deadline ? format(this.deadline, DateTimeCommonFormat) : '-';
+    return `*Upcoming deadline!*\n\n${this.subject?.name}\n\n*Due:* ${formattedDate}\n\n${this.body}`;
+  }
+
   constructor(
     body?: string,
     deadline?: Date,
@@ -82,7 +87,7 @@ class Task implements ITask {
         schedule.scheduleJob(
           dtToNotify,
           async () => {
-            await sendMessageToChat(ctx, chatID, 'Data');
+            await sendMessageToChat(ctx, chatID, task.deadlineDescription);
           },
         );
       }
