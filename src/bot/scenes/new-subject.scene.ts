@@ -80,7 +80,7 @@ newSubjectScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
     const users = await UserController.getAll();
 
     for (const user of users) {
-      await User.subscribeUserTo(user, targetSubject);
+      await User.subscribeToSubject(user, targetSubject);
     }
 
     await ctx.answerCbQuery('Subject was added to each user');
