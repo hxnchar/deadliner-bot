@@ -3,6 +3,9 @@ import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { BotContext } from 'bot';
 import { escapeMessage } from 'helpers';
 
+const sendMessageToChat = (ctx: BotContext, chatID: number, data: string) =>
+  ctx.telegram.sendMessage(chatID, data);
+
 const sendMessage = (
   ctx: BotContext,
   message: string,
@@ -18,4 +21,4 @@ const sendMessage = (
   return ctx.replyWithMarkdownV2(escapeMessage(message));
 };
 
-export { sendMessage };
+export { sendMessage, sendMessageToChat };

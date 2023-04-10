@@ -1,7 +1,10 @@
 import { Types } from 'mongoose';
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
+import schedule from 'node-schedule';
+import { BotContext } from 'bot';
 import { DateTimeLongFormat, LangData } from 'consts';
 import { BotService, ITask, Subject } from 'services';
+import { sendMessageToChat } from 'helpers';
 
 class Task implements ITask {
   _id: Types.ObjectId | undefined;
@@ -67,6 +70,23 @@ class Task implements ITask {
     this.body = body;
     this.deadline = deadline;
     this.subject = subject;
+  }
+
+  static scheduleMessages(ctx: BotContext, chatID: number, task: Task) {
+    const currentDate = new Date(Date.now()),
+          taskDeadline = task.deadline!,
+          amountOfDays = [30, 14, 7, 3];
+    amountOfDays.forEach((numberOfDays) => {
+      const dtToNotify = subDays(taskDeadline, numberOfDays);
+      if (currentDate < dtToNotify) {
+        schedule.scheduleJob(
+          dtToNotify,
+          async () => {
+            await sendMessageToChat(ctx, chatID, 'Data');
+          },
+        );
+      }
+    });
   }
 
 }

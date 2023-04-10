@@ -1,10 +1,9 @@
 import { Scenes } from 'telegraf';
 import { callbackQuery } from 'telegraf/filters';
-import { parse, subDays } from 'date-fns';
-import schedule from 'node-schedule';
+import { parse } from 'date-fns';
 import { BotReplies, SceneIDs, NewTaskKeyboard, BotCommands, CALLBACK_DATA, DateTimeCommonFormat, PeekSubject } from 'consts';
 import { BotContext } from 'bot';
-import { Task, TaskController, SubjectController, UserController, BotService } from 'services';
+import { Task, TaskController, SubjectController, UserController } from 'services';
 import { sendMessage, editMessageByID, cleanMessagesBin, messageToBin, deleteMessage } from 'helpers';
 
 const updateTaskMessage = async (ctx: BotContext) => {
@@ -72,8 +71,6 @@ newTaskScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
   const targetTask = ctx.session.task;
 
   const taskDocument = await TaskController.save(targetTask);
-  const taskDeadline = targetTask.deadline!,
-        currentDate = new Date(Date.now());
 
   if (taskDocument) {
     await ctx.answerCbQuery('Task was saved successfully');
@@ -81,21 +78,9 @@ newTaskScene.action(CALLBACK_DATA.SAVE, async (ctx) => {
     // we definitely have a targetTask.subject
     const users = await UserController.getAllBySubject(targetTask.subject!);
     for (const user of users) {
-      const userID = user.id;
-      if (userID) {
-        const amountOfDays = [30, 14, 7, 3];
-        amountOfDays.forEach((numberOfDays) => {
-          const dtToNotify = subDays(taskDeadline, numberOfDays);
-          if (currentDate < dtToNotify) {
-            //TODO: replace data with actual data about the deadline
-            schedule.scheduleJob(
-              dtToNotify,
-              async () => {
-                await sendMessage(ctx, 'Data');
-              },
-            );
-          }
-        });
+      const chatID = user.chatID;
+      if (chatID) {
+        Task.scheduleMessages(ctx, chatID, targetTask);
       }
     }
   }
