@@ -3,8 +3,8 @@ import { InlineKeyboardButton } from 'telegraf/typings/core/types/typegram';
 import { BotContext } from 'bot';
 import { escapeMessage } from 'helpers';
 
-const sendMessageToChat = (ctx: BotContext, chatID: number, data: string) =>
-  ctx.telegram.sendMessage(chatID, data);
+const sendMessageToChat = (ctx: BotContext, chatID: number, message: string) =>
+  ctx.telegram.sendMessage(chatID, escapeMessage(message), { parse_mode: 'MarkdownV2' });
 
 const sendMessage = (
   ctx: BotContext,
